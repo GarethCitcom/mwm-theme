@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; font-family: Inter, -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: var(--link, #C2185B); text-decoration: none; }
+  a:hover { color: var(--link-hover, #A3144C); }
+  a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--link, #C2185B); outline-offset: 2px; border-radius: 4px; }
+  input::placeholder { color: var(--muted, #5C5C5C); opacity: 1; }
+  [data-mwm] { --head-h:84px; --pad-x:32px; --sec-y:96px; --h1:40px; --nav-disp:flex; --mob-disp:none; --logo-full:block; --logo-icon:none; }
+  @media (max-width: 700px) { [data-mwm] { --head-h:64px; --pad-x:16px; --sec-y:56px; --h1:32px; --nav-disp:none; --mob-disp:inline-flex; --logo-full:none; --logo-icon:block; } }
+</style>
+</helmet>
+<div data-mwm style="--surface:#FFFFFF; --card:#FFFFFF; --tint:#F9E8EE; --border:#F1CBD8; --ink:#171717; --muted:#5C5C5C; --action:#C2185B; --action-hover:#A3144C; --link:#C2185B; --link-hover:#A3144C; --band:#171717; --on-band:#FFFFFF; --on-band-muted:rgba(255,255,255,0.72); --band-border:rgba(255,255,255,0.16); --shadow:rgba(23,23,23,0.14)">
+  <div style="{{ themeVars }}">
+    <div data-screen-label="My Learning" style="background:var(--surface); color:var(--ink); min-height:100vh; display:flex; flex-direction:column">
+
+      <header style="position:sticky; top:0; z-index:50; border-bottom:1px solid var(--border); background:var(--surface)">
+        <div style="max-width:1264px; margin:0 auto; padding:12px var(--pad-x); min-height:var(--head-h, 84px); box-sizing:border-box; display:flex; align-items:center; justify-content:space-between; gap:16px 24px; flex-wrap:wrap">
+          <div style="display:flex; align-items:center; gap:16px 32px; flex-wrap:wrap">
+            <a href="Home.dc.html" aria-label="Maths with Melissa home" style="display:flex; align-items:center; flex-shrink:0">
+              <sc-if value="{{ isLight }}" hint-placeholder-val="{{ true }}"><img src="assets/logo-charcoal.svg" alt="Maths with Melissa" style="display:var(--logo-full, block); height:44px; width:auto"><img src="assets/icon-charcoal.svg" alt="Maths with Melissa" style="display:var(--logo-icon, none); height:36px; width:auto"></sc-if>
+              <sc-if value="{{ isDark }}" hint-placeholder-val="{{ false }}"><img src="assets/logo-white.svg" alt="Maths with Melissa" style="display:var(--logo-full, block); height:44px; width:auto"><img src="assets/icon-white.svg" alt="Maths with Melissa" style="display:var(--logo-icon, none); height:36px; width:auto"></sc-if>
+            </a>
+            <nav aria-label="Primary" style="display:var(--nav-disp, flex); align-items:center; gap:8px 24px; flex-wrap:wrap">
+              <a href="Browse.dc.html" style="color:var(--ink); font-size:16px; font-weight:500; line-height:1.5; padding:8px 0; white-space:nowrap" style-hover="color:var(--link)">Learn Maths</a>
+              <a href="Pathway.dc.html" style="color:var(--ink); font-size:16px; font-weight:500; line-height:1.5; padding:8px 0; white-space:nowrap" style-hover="color:var(--link)">Revision</a>
+              <a href="QuickMaths.dc.html" style="color:var(--ink); font-size:16px; font-weight:500; line-height:1.5; padding:8px 0; white-space:nowrap" style-hover="color:var(--link)">Quick Maths</a>
+              <a href="Gaming.dc.html" style="color:var(--ink); font-size:16px; font-weight:500; line-height:1.5; padding:8px 0; white-space:nowrap" style-hover="color:var(--link)">Gaming &amp; Story Maths</a>
+            </nav>
+          </div>
+          <div style="display:flex; align-items:center; gap:14px">
+            <button onClick="{{ toggleTheme }}" aria-label="Switch between light and dark mode" style="width:44px; height:44px; flex-shrink:0; border:1px solid var(--border); border-radius:12px; background:var(--card); color:var(--muted); cursor:pointer; display:inline-flex; align-items:center; justify-content:center" style-hover="background:var(--tint)">
+              <sc-if value="{{ isLight }}" hint-placeholder-val="{{ true }}"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M14.5 10.8A6 6 0 0 1 7.2 3.5a6 6 0 1 0 7.3 7.3z"></path></svg></sc-if>
+              <sc-if value="{{ isDark }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="9" r="3.6"></circle><line x1="9" y1="1.5" x2="9" y2="3.5"></line><line x1="9" y1="14.5" x2="9" y2="16.5"></line><line x1="1.5" y1="9" x2="3.5" y2="9"></line><line x1="14.5" y1="9" x2="16.5" y2="9"></line><line x1="3.7" y1="3.7" x2="5.1" y2="5.1"></line><line x1="12.9" y1="12.9" x2="14.3" y2="14.3"></line><line x1="3.7" y1="14.3" x2="5.1" y2="12.9"></line><line x1="12.9" y1="5.1" x2="14.3" y2="3.7"></line></svg></sc-if>
+            </button>
+            <sc-if value="{{ signedIn }}" hint-placeholder-val="{{ false }}">
+              <span style="display:inline-flex; align-items:center; gap:10px; height:44px; padding:0 16px 0 6px; border-radius:100px; border:1px solid var(--border); background:var(--card); color:var(--ink); font-size:14px; font-weight:600; white-space:nowrap"><span style="width:32px; height:32px; border-radius:50%; background:var(--action); color:#FFFFFF; display:inline-flex; align-items:center; justify-content:center; font-size:13px; font-weight:600">A</span>Alex</span>
+            </sc-if>
+            <button onClick="{{ toggleMenu }}" aria-label="Menu" aria-expanded="{{ menuOpen }}" style="display:var(--mob-disp, none); width:44px; height:44px; border:none; background:transparent; color:var(--ink); cursor:pointer; align-items:center; justify-content:center; border-radius:12px" style-hover="background:var(--tint)"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="3" y1="5.5" x2="17" y2="5.5"></line><line x1="3" y1="10" x2="17" y2="10"></line><line x1="3" y1="14.5" x2="17" y2="14.5"></line></svg></button>
+          </div>
+        </div>
+        <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+          <nav aria-label="Mobile" style="display:flex; flex-direction:column; padding:8px 16px 16px; border-top:1px solid var(--border)">
+            <a href="Browse.dc.html" style="color:var(--ink); font-size:16px; font-weight:500; padding:12px 0">Learn Maths</a>
+            <a href="Pathway.dc.html" style="color:var(--ink); font-size:16px; font-weight:500; padding:12px 0">Revision</a>
+            <a href="QuickMaths.dc.html" style="color:var(--ink); font-size:16px; font-weight:500; padding:12px 0">Quick Maths</a>
+            <a href="Gaming.dc.html" style="color:var(--ink); font-size:16px; font-weight:500; padding:12px 0">Gaming &amp; Story Maths</a>
+          </nav>
+        </sc-if>
+      </header>
+
+      <sc-if value="{{ signedOut }}" hint-placeholder-val="{{ true }}">
+        <div style="flex:1; max-width:680px; margin:0 auto; padding:64px var(--pad-x) var(--sec-y); box-sizing:border-box; width:100%">
+          <h1 style="margin:0; font-size:var(--h1); line-height:1.3; font-weight:600">My Learning</h1>
+          <p style="margin:12px 0 0; font-size:16px; line-height:1.5; color:var(--muted)">Accounts arrive with the full site. Here&#8217;s what My Learning will do:</p>
+          <div style="margin-top:28px; border:1px solid var(--border); border-radius:12px; background:var(--card); padding:8px 28px">
+            <div style="display:flex; align-items:center; gap:16px; padding:20px 0; border-bottom:1px solid var(--border)">
+              <span style="width:40px; height:40px; flex-shrink:0; border-radius:50%; background:var(--tint); display:inline-flex; align-items:center; justify-content:center; color:var(--link)"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M4 2h8v12l-4-3-4 3z"></path></svg></span>
+              <span style="font-size:16px; line-height:1.5">Save lessons to watch later</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:16px; padding:20px 0; border-bottom:1px solid var(--border)">
+              <span style="width:40px; height:40px; flex-shrink:0; border-radius:50%; background:var(--tint); display:inline-flex; align-items:center; justify-content:center; color:var(--link)"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.5l3 3 6-7"></path></svg></span>
+              <span style="font-size:16px; line-height:1.5">Tick off revision pathway topics across your devices</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:16px; padding:20px 0">
+              <span style="width:40px; height:40px; flex-shrink:0; border-radius:50%; background:var(--tint); display:inline-flex; align-items:center; justify-content:center; color:var(--link)"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="3" y1="13" x2="3" y2="9"></line><line x1="8" y1="13" x2="8" y2="4"></line><line x1="13" y1="13" x2="13" y2="7"></line></svg></span>
+              <span style="font-size:16px; line-height:1.5">Keep your quiz scores and see where to focus</span>
+            </div>
+          </div>
+          <div style="display:flex; gap:16px; margin-top:28px; flex-wrap:wrap; align-items:center">
+            <button onClick="{{ signIn }}" style="cursor:pointer; height:48px; padding:0 28px; border:none; border-radius:16px; background:var(--action); color:#FFFFFF; font-family:inherit; font-size:14px; font-weight:600" style-hover="background:var(--action-hover)">Sign in (demo)</button>
+            <a href="Pathway.dc.html" style="display:inline-flex; align-items:center; justify-content:center; height:48px; padding:0 28px; border-radius:16px; border:1px solid var(--link); color:var(--link); font-size:14px; font-weight:600; background:var(--card)" style-hover="background:var(--tint)">Start revising</a>
+          </div>
+          <p style="margin:16px 0 0; font-size:14px; line-height:1.5; color:var(--muted)">The demo sign-in shows the signed-in design with sample data — no real account is created.</p>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ signedIn }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:1; max-width:1200px; margin:0 auto; padding:64px var(--pad-x) var(--sec-y); box-sizing:border-box; width:100%">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap">
+            <div style="display:flex; align-items:center; gap:16px">
+              <span style="width:56px; height:56px; border-radius:50%; background:var(--action); color:#FFFFFF; display:inline-flex; align-items:center; justify-content:center; font-size:20px; font-weight:600">A</span>
+              <div>
+                <h1 style="margin:0; font-size:var(--h1); line-height:1.3; font-weight:600">Hi Alex</h1>
+                <p style="margin:2px 0 0; font-size:14px; line-height:1.5; color:var(--muted)">GCSE Higher · Edexcel</p>
+              </div>
+            </div>
+            <button onClick="{{ signOut }}" style="cursor:pointer; height:44px; padding:0 20px; border:1px solid var(--border); border-radius:12px; background:var(--card); color:var(--muted); font-family:inherit; font-size:14px; font-weight:500" style-hover="background:var(--tint); color:var(--ink)">Sign out</button>
+          </div>
+
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:24px; margin-top:40px">
+            <div style="border:1px solid var(--border); border-radius:12px; background:var(--card); padding:28px">
+              <h2 style="margin:0; font-size:20px; line-height:1.4; font-weight:600">Your pathway</h2>
+              <p style="margin:8px 0 0; font-size:14px; line-height:1.5; color:var(--muted)">GCSE Higher revision pathway</p>
+              <div style="display:flex; justify-content:space-between; font-size:14px; line-height:1.5; color:var(--muted); margin-top:20px"><span>4 of 32 ticked</span><span>13%</span></div>
+              <div style="margin-top:8px; height:8px; border-radius:100px; background:var(--tint); overflow:hidden"><div style="height:100%; width:13%; border-radius:100px; background:var(--action)"></div></div>
+              <p style="margin:12px 0 0; font-size:14px; line-height:1.5; color:var(--muted)">Next up: Standard form</p>
+              <a href="Pathway.dc.html" style="display:inline-flex; align-items:center; gap:6px; margin-top:16px; font-size:16px; font-weight:500">Continue pathway<span aria-hidden="true">→</span></a>
+            </div>
+            <div style="border:1px solid var(--border); border-radius:12px; background:var(--card); padding:28px">
+              <h2 style="margin:0; font-size:20px; line-height:1.4; font-weight:600">Quiz scores</h2>
+              <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; padding:16px 0; border-bottom:1px solid var(--border); margin-top:12px">
+                <a href="Quiz.dc.html" style="font-size:16px; line-height:1.5; font-weight:500; color:var(--ink)" style-hover="color:var(--link)">Quadratic simultaneous equations</a>
+                <span style="font-size:16px; font-weight:600; white-space:nowrap">4 / 5</span>
+              </div>
+              <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; padding:16px 0">
+                <a href="Lesson.dc.html" style="font-size:16px; line-height:1.5; font-weight:500; color:var(--ink)" style-hover="color:var(--link)">Exam-style questions on averages</a>
+                <span style="font-size:16px; font-weight:600; white-space:nowrap">3 / 5</span>
+              </div>
+              <p style="margin:12px 0 0; padding-top:16px; border-top:1px solid var(--border); font-size:14px; line-height:1.5; color:var(--muted)">Average 70% · Quiz scores are separate from your pathway ticks.</p>
+            </div>
+            <div style="border:1px solid var(--border); border-radius:12px; background:var(--card); padding:28px">
+              <h2 style="margin:0; font-size:20px; line-height:1.4; font-weight:600">Saved lessons</h2>
+              <a href="Lesson.dc.html" style="display:flex; align-items:center; gap:14px; padding:14px 0; border-bottom:1px solid var(--border); margin-top:12px; color:var(--ink)" style-hover="color:var(--link)">
+                <span style="width:88px; aspect-ratio:16/9; flex-shrink:0; border-radius:8px; border:1px solid var(--border); background-image:url(assets/thumb2-quadsimeq.jpg); background-size:cover; background-position:center"></span>
+                <span style="font-size:15px; line-height:1.5; font-weight:500">Quadratic simultaneous equations</span>
+              </a>
+              <a href="Lesson.dc.html" style="display:flex; align-items:center; gap:14px; padding:14px 0; color:var(--ink)" style-hover="color:var(--link)">
+                <span style="width:88px; aspect-ratio:16/9; flex-shrink:0; border-radius:8px; border:1px solid var(--border); background-image:url(assets/thumb2-circumference.jpg); background-size:cover; background-position:center"></span>
+                <span style="font-size:15px; line-height:1.5; font-weight:500">Circumference of a circle</span>
+              </a>
+              <a href="Browse.dc.html" style="display:inline-flex; align-items:center; gap:6px; margin-top:8px; font-size:16px; font-weight:500">Find more lessons<span aria-hidden="true">→</span></a>
+            </div>
+          </div>
+          <p style="margin:24px 0 0; font-size:14px; line-height:1.5; color:var(--muted)">Demo account with sample data — sign out to see the signed-out design.</p>
+        </div>
+      </sc-if>
+
+      <footer style="background:var(--band)">
+        <div style="max-width:1200px; margin:0 auto; padding:56px var(--pad-x) 0">
+          <div style="display:flex; justify-content:space-between; gap:64px; align-items:flex-start; flex-wrap:wrap">
+            <img src="assets/logo-white.svg" alt="Maths with Melissa" style="display:block; height:48px; width:auto">
+            <div style="display:flex; gap:32px; flex-wrap:wrap">
+              <a href="Browse.dc.html" style="color:var(--on-band); font-size:16px; line-height:1.5" style-hover="color:#F9E8EE" style-focus="outline:2px solid #F9E8EE; outline-offset:2px">Learn Maths</a>
+              <a href="Pathway.dc.html" style="color:var(--on-band); font-size:16px; line-height:1.5" style-hover="color:#F9E8EE" style-focus="outline:2px solid #F9E8EE; outline-offset:2px">Revision</a>
+              <a href="QuickMaths.dc.html" style="color:var(--on-band); font-size:16px; line-height:1.5" style-hover="color:#F9E8EE" style-focus="outline:2px solid #F9E8EE; outline-offset:2px">Quick Maths</a>
+              <a href="Gaming.dc.html" style="color:var(--on-band); font-size:16px; line-height:1.5" style-hover="color:#F9E8EE" style-focus="outline:2px solid #F9E8EE; outline-offset:2px">Gaming &amp; Story Maths</a>
+              <a href="https://www.youtube.com/@mathswithmelissa" target="_blank" rel="noopener" style="color:var(--on-band); font-size:16px; line-height:1.5" style-hover="color:#F9E8EE" style-focus="outline:2px solid #F9E8EE; outline-offset:2px">Subscribe on YouTube</a>
+            </div>
+          </div>
+          <div style="border-top:1px solid var(--band-border); margin-top:40px; padding:24px 0 32px; display:flex; justify-content:space-between; align-items:center">
+            <span style="font-size:14px; line-height:1.5; color:var(--on-band-muted)">© 2026 Maths with Melissa</span>
+            <a href="mailto:hello@mathswithmelissa.co.uk" style="color:var(--on-band-muted); font-size:14px; line-height:1.5" style-hover="color:#FFFFFF" style-focus="outline:2px solid #F9E8EE; outline-offset:2px">hello@mathswithmelissa.co.uk</a>
+          </div>
+        </div>
+      </footer>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    dark: typeof localStorage !== 'undefined' && localStorage.getItem('mwm-theme') === 'dark',
+    menuOpen: false,
+    user: typeof localStorage !== 'undefined' && localStorage.getItem('mwm-user') === 'demo',
+  };
+  DARK = {
+    '--surface': '#171717', '--card': '#211D1F', '--tint': '#271D22', '--border': '#4A353D',
+    '--ink': '#FFFFFF', '--muted': '#BBAFB5', '--action': '#C2185B', '--action-hover': '#E0447F',
+    '--link': '#F088B0', '--link-hover': '#F7ABC8', '--band': '#0D0D0D',
+    '--shadow': 'rgba(0,0,0,0.5)',
+  };
+  setTheme(dark) {
+    localStorage.setItem('mwm-theme', dark ? 'dark' : 'light');
+    this.setState({ dark });
+  }
+  renderVals() {
+    const { dark, user } = this.state;
+    return {
+      isDark: dark, isLight: !dark,
+      themeVars: dark ? this.DARK : {},
+      toggleTheme: () => this.setTheme(!dark),
+      menuOpen: this.state.menuOpen,
+      toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
+      signedIn: user, signedOut: !user,
+      signIn: () => { localStorage.setItem('mwm-user', 'demo'); this.setState({ user: true }); },
+      signOut: () => { localStorage.removeItem('mwm-user'); this.setState({ user: false }); },
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "acf/quick-maths",
+	"title": "Quick Maths page",
+	"category": "mwm",
+	"icon": "video-alt2",
+	"description": "Ink hero, level filter and the grid of shorts.",
+	"keywords": [ "mwm" ],
+	"textdomain": "mwm-theme",
+	"acf": { "mode": "preview", "renderTemplate": "render.php" },
+	"supports": { "html": false, "anchor": false, "align": false, "mode": false, "jsx": false, "multiple": false, "customClassName": false }
+}

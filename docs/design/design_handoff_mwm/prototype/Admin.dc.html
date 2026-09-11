@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; font-family: Inter, -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: var(--link, #C2185B); text-decoration: none; }
+  a:hover { color: var(--link-hover, #A3144C); }
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--link, #C2185B); outline-offset: 2px; border-radius: 4px; }
+  input::placeholder { color: var(--muted, #5C5C5C); opacity: 1; }
+  [data-mwm] { --head-h:84px; --pad-x:32px; --sec-y:96px; --h1:40px; --logo-full:block; --logo-icon:none; }
+  @media (max-width: 700px) { [data-mwm] { --head-h:64px; --pad-x:16px; --sec-y:56px; --h1:32px; --logo-full:none; --logo-icon:block; } }
+</style>
+</helmet>
+<div data-mwm style="--surface:#FFFFFF; --card:#FFFFFF; --tint:#F9E8EE; --border:#F1CBD8; --ink:#171717; --muted:#5C5C5C; --action:#C2185B; --action-hover:#A3144C; --link:#C2185B; --link-hover:#A3144C; --band:#171717; --on-band:#FFFFFF; --on-band-muted:rgba(255,255,255,0.72); --band-border:rgba(255,255,255,0.16); --danger:#ED5050; --shadow:rgba(23,23,23,0.14)">
+  <div style="{{ themeVars }}">
+    <div data-screen-label="Admin" style="background:var(--surface); color:var(--ink); min-height:100vh; display:flex; flex-direction:column">
+
+      <header style="position:sticky; top:0; z-index:50; border-bottom:1px solid var(--border); background:var(--surface)">
+        <div style="max-width:1264px; margin:0 auto; padding:12px var(--pad-x); min-height:var(--head-h, 84px); box-sizing:border-box; display:flex; align-items:center; justify-content:space-between; gap:16px 24px; flex-wrap:wrap">
+          <div style="display:flex; align-items:center; gap:16px 24px; flex-wrap:wrap">
+            <a href="Home.dc.html" aria-label="Maths with Melissa home" style="display:flex; align-items:center; gap:10px; flex-shrink:0">
+              <sc-if value="{{ isLight }}" hint-placeholder-val="{{ true }}"><img src="assets/logo-charcoal.svg" alt="Maths with Melissa" style="display:var(--logo-full, block); height:44px; width:auto"><img src="assets/icon-charcoal.svg" alt="Maths with Melissa" style="display:var(--logo-icon, none); height:36px; width:auto"></sc-if>
+              <sc-if value="{{ isDark }}" hint-placeholder-val="{{ false }}"><img src="assets/logo-white.svg" alt="Maths with Melissa" style="display:var(--logo-full, block); height:44px; width:auto"><img src="assets/icon-white.svg" alt="Maths with Melissa" style="display:var(--logo-icon, none); height:36px; width:auto"></sc-if>
+              <span style="display:inline-flex; align-items:center; height:24px; padding:0 10px; border-radius:100px; font-size:12px; font-weight:600; background:var(--tint); color:var(--link)">Admin</span>
+            </a>
+            <nav aria-label="Admin sections" style="display:flex; align-items:center; gap:4px 16px; flex-wrap:wrap">
+              <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="4">
+                <button onClick="{{ n.go }}" aria-current="{{ n.current }}" style="{{ n.style }}" style-hover="color:var(--link)">{{ n.name }}</button>
+              </sc-for>
+            </nav>
+          </div>
+          <div style="display:flex; align-items:center; gap:14px">
+            <a href="Home.dc.html" style="display:inline-flex; align-items:center; gap:6px; min-height:44px; font-size:14px; font-weight:500; white-space:nowrap">View the site<span aria-hidden="true">→</span></a>
+            <button onClick="{{ toggleTheme }}" aria-label="Switch between light and dark mode" style="width:44px; height:44px; flex-shrink:0; border:1px solid var(--border); border-radius:12px; background:var(--card); color:var(--muted); cursor:pointer; display:inline-flex; align-items:center; justify-content:center" style-hover="background:var(--tint)">
+              <sc-if value="{{ isLight }}" hint-placeholder-val="{{ true }}"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M14.5 10.8A6 6 0 0 1 7.2 3.5a6 6 0 1 0 7.3 7.3z"></path></svg></sc-if>
+              <sc-if value="{{ isDark }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="9" r="3.6"></circle><line x1="9" y1="1.5" x2="9" y2="3.5"></line><line x1="9" y1="14.5" x2="9" y2="16.5"></line><line x1="1.5" y1="9" x2="3.5" y2="9"></line><line x1="14.5" y1="9" x2="16.5" y2="9"></line><line x1="3.7" y1="3.7" x2="5.1" y2="5.1"></line><line x1="12.9" y1="12.9" x2="14.3" y2="14.3"></line><line x1="3.7" y1="14.3" x2="5.1" y2="12.9"></line><line x1="12.9" y1="5.1" x2="14.3" y2="3.7"></line></svg></sc-if>
+            </button>
+            <span style="display:inline-flex; align-items:center; gap:10px; height:44px; padding:0 16px 0 6px; border-radius:100px; border:1px solid var(--border); background:var(--card); font-size:14px; font-weight:600; white-space:nowrap"><span style="width:32px; height:32px; border-radius:50%; background:var(--action); color:#FFFFFF; display:inline-flex; align-items:center; justify-content:center; font-size:13px; font-weight:600">K</span>Kym</span>
+          </div>
+        </div>
+      </header>
+
+      <div style="flex:1; max-width:960px; margin:0 auto; padding:48px var(--pad-x) var(--sec-y); box-sizing:border-box; width:100%">
+
+        <sc-if value="{{ viewDash }}" hint-placeholder-val="{{ true }}">
+          <h1 style="margin:0; font-size:var(--h1); line-height:1.3; font-weight:600">Hi Kym</h1>
+          <p style="margin:12px 0 0; max-width:560px; font-size:16px; line-height:1.5; color:var(--muted)">Everything here goes straight onto the website, step by step. You can&#8217;t break anything — every change can be undone.</p>
+
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:20px; margin-top:36px">
+            <div style="border:1px solid var(--border); border-radius:12px; background:var(--card); padding:28px; display:flex; flex-direction:column; gap:10px">
+              <span style="width:44px; height:44px; border-radius:50%; background:var(--tint); display:inline-flex; align-items:center; justify-content:center; color:var(--link)"><svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor"><path d="M7 4.5l9 5.5-9 5.5z"></path></svg></span>
+              <h2 style="margin:6px 0 0; font-size:20px; line-height:1.4; font-weight:600">Add a new lesson</h2>
+              <p style="margin:0; font-size:14px; line-height:1.5; color:var(--muted)">Paste a YouTube link and we&#8217;ll do the rest — about two minutes.</p>
+              <button onClick="{{ goLesson }}" style="cursor:pointer; align-self:flex-start; margin-top:8px; height:44px; padding:0 22px; border:none; border-radius:12px; background:var(--action); color:#FFFFFF; font-family:inherit; font-size:14px; font-weight:600" style-hover="background:var(--action-hover)">Start</button>
+            </div>
+            <div style="border:1px solid var(--border); border-radius:12px; background:var(--card); padding:28px; display:flex; flex-direction:column; gap:10px">
+              <span style="width:44px; height:44px; border-radius:50%; background:var(--tint); display:inline-flex; align-items:center; justify-content:center; color:var(--link)"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8M4.5 6.5L8 10l3.5-3.5"></path><line x1="3" y1="13" x2="13" y2="13"></line></svg></span>
+              <h2 style="margin:6px 0 0; font-size:20px; line-height:1.4; font-weight:600">Upload past papers</h2>
+              <p style="margin:0; font-size:14px; line-height:1.5; color:var(--muted)">Add a paper and its mark scheme as PDFs.</p>
+              <button onClick="{{ goPapers }}" style="cursor:pointer; align-self:flex-start; margin-top:8px; height:44px; padding:0 22px; border:1px solid var(--link); border-radius:12px; background:var(--card); color:var(--link); font-family:inherit; font-size:14px; font-weight:600" style-hover="background:var(--tint)">Start</button>
+            </div>
+            <div style="border:1px solid var(--border); border-radius:12px; background:var(--card); padding:28px; display:flex; flex-direction:column; gap:10px">
+              <span style="width:44px; height:44px; border-radius:50%; background:var(--tint); display:inline-flex; align-items:center; justify-content:center; color:var(--link)"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="3" width="12" height="11" rx="2"></rect><line x1="2" y1="6.5" x2="14" y2="6.5"></line><line x1="5.5" y1="1.5" x2="5.5" y2="4"></line><line x1="10.5" y1="1.5" x2="10.5" y2="4"></line></svg></span>
+              <h2 style="margin:6px 0 0; font-size:20px; line-height:1.4; font-weight:600">Update exam dates</h2>
+              <p style="margin:0; font-size:14px; line-height:1.5; color:var(--muted)">Verified dates appear on the exam calendar.</p>
+              <button onClick="{{ goDates }}" style="cursor:pointer; align-self:flex-start; margin-top:8px; height:44px; padding:0 22px; border:1px solid var(--link); border-radius:12px; background:var(--card); color:var(--link); font-family:inherit; font-size:14px; font-weight:600" style-hover="background:var(--tint)">Start</button>
+            </div>
+          </div>
+
+          <div style="margin-top:36px; border:1px solid var(--border); border-radius:12px; background:var(--tint); padding:28px">
+            <div style="display:flex; align-items:baseline; justify-content:space-between; gap:16px; flex-wrap:wrap">
+              <h2 style="margin:0; font-size:20px; line-height:1.4; font-weight:600">Quick Maths &amp; Gaming look after themselves</h2>
+              <span style="font-size:14px; line-height:1.5; color:var(--muted)">{{ syncStatus }}</span>
+            </div>
+            <p style="margin:10px 0 0; max-width:620px; font-size:14px; line-height:1.5; color:var(--muted)">Anything you add to these YouTube playlists appears on the site overnight, automatically. There&#8217;s nothing for you to do here.</p>
+            <div style="display:flex; flex-direction:column; margin-top:16px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:4px 24px">
+              <sc-for list="{{ playlists }}" as="pl" hint-placeholder-count="4">
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:14px 0; border-bottom:1px solid var(--border)">
+                  <span style="font-size:15px; line-height:1.5; font-weight:500">{{ pl.name }}</span>
+                  <span style="font-size:14px; line-height:1.5; color:var(--muted); white-space:nowrap">{{ pl.meta }}</span>
+                </div>
+              </sc-for>
+              <div style="padding:14px 0">
+                <button onClick="{{ syncNow }}" style="cursor:pointer; border:none; background:transparent; padding:0; font-family:inherit; font-size:14px; font-weight:500; color:var(--link); min-height:32px" style-hover="color:var(--link-hover)">{{ syncLabel }}</button>
+              </div>
+            </div>
+          </div>
+
+          <h2 style="margin:36px 0 0; font-size:20px; line-height:1.4; font-weight:600">Recently added</h2>
+          <div style="margin-top:12px; border:1px solid var(--border); border-radius:12px; background:var(--card); padding:4px 24px">
+            <sc-for list="{{ recent }}" as="r" hint-placeholder-count="3">
+              <div style="display:flex; align-items:center; gap:16px; padding:14px 0; border-bottom:1px solid var(--border)">
+                <span style="flex:1; font-size:15px; line-height:1.5; font-weight:500">{{ r.title }}</span>
+                <span style="font-size:13px; line-height:1.5; color:var(--muted); white-space:nowrap">{{ r.meta }}</span>
+                <span style="display:inline-flex; align-items:center; height:22px; padding:0 10px; border-radius:100px; font-size:12px; font-weight:600; background:var(--tint); color:var(--link)">Live</span>
+              </div>
+            </sc-for>
+          </div>
+          <button onClick="{{ goContent }}" style="cursor:pointer; margin-top:16px; border:none; background:transparent; padding:8px 0; font-family:inherit; font-size:16px; font-weight:500; color:var(--link); display:inline-flex; gap:6px" style-hover="color:var(--link-hover)">See and edit everything you&#8217;ve added<span aria-hidden="true">→</span></button>
+        </sc-if>
+
+        <sc-if value="{{ viewLesson }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ goDash }}" style="cursor:pointer; border:none; background:transparent; padding:8px 0; font-family:inherit; font-size:14px; font-weight:500; color:var(--muted); display:inline-flex; gap:6px" style-hover="color:var(--link)"><span aria-hidden="true">←</span>Back to your dashboard</button>
+          <h1 style="margin:12px 0 0; font-size:var(--h1); line-height:1.3; font-weight:600">{{ lessonHeading }}</h1>
+          <sc-if value="{{ isEditing }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:16px; padding:14px 20px; background:var(--tint); border-radius:12px; font-size:14px; line-height:1.5">You&#8217;re editing <strong>{{ editingTitle }}</strong> — change what you need, then publish again. Nothing changes on the site until you do.</div>
+          </sc-if>
+          <div style="display:flex; gap:8px; margin-top:24px; flex-wrap:wrap">
+            <sc-for list="{{ steps }}" as="s" hint-placeholder-count="4">
+              <span style="{{ s.style }}">{{ s.label }}</span>
+            </sc-for>
+          </div>
+
+          <sc-if value="{{ step1 }}" hint-placeholder-val="{{ true }}">
+            <div style="margin-top:28px; border:1px solid var(--border); border-radius:12px; background:var(--card); padding:32px">
+              <h2 style="margin:0; font-size:20px; line-height:1.4; font-weight:600">Paste the YouTube link</h2>
+              <p style="margin:8px 0 0; font-size:14px; line-height:1.5; color:var(--muted)">Copy the link from YouTube (the Share button), paste it here, and we&#8217;ll fill in the title, length and thumbnail for you.</p>
+              <div style="display:flex; gap:12px; margin-top:20px; flex-wrap:wrap">
+                <input type="text" value="{{ yt }}" onChange="{{ setYt }}" placeholder="https://youtu.be/…" style="flex:1; min-width:min(320px, 100%); height:48px; box-sizing:border-box; padding:0 16px; border:1px solid var(--border); border-radius:12px; font-family:inherit; font-size:16px; color:var(--ink); background:var(--card)">
+                <button onClick="{{ findVideo }}" style="cursor:pointer; height:48px; padding:0 24px; border:none; border-radius:12px; background:var(--action); color:#FFFFFF; font-family:inherit; font-size:14px; font-weight:600; white-space:nowrap" style-hover="background:var(--action-hover)">Find my video</button>
+              </div>
+              <sc-if value="{{ ytLoaded }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex; gap:16px; align-items:center; margin-top:20px; padding:16px; border:1px solid var(--border); border-radius:12px">
+                  <span style="width:128px; aspect-ratio:16/9; flex-shrink:0; border-radius:8px; border:1px solid var(--border); background-image:url(assets/thumb2-quadsimeq.jpg); background-size:cover; background-position:center"></span>
+                  <div>
+                    <div style="font-size:16px; line-height:1.5; font-weight:600">Quadratic simultaneous equations</div>
+                    <div style="font-size:14px; line-height:1.5; color:var(--muted)">11:24 · uploaded 3 Sept 2026</div>
+                    <div style="font-size:14px; line-height:1.5; color:var(--link); font-weight:500; margin-top:4px">✓ Found it — that&#8217;s the one?</div>
+                  </div>
+                </div>
+              </sc-if>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ step2 }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:28px; border:1px solid var(--border); border-radius:12px; background:var(--card); padding:32px">
+              <h2 style="margin:0; font-size:20px; line-height:1.4; font-weight:600">Where does it belong?</h2>
+              <p style="margin:8px 0 0; font-size:14px; line-height:1.5; color:var(--muted)">Not sure? Pick the closest — you can change it any time.</p>
+              <div style="margin-top:20px; font-size:14px; font-weight:600">Level</div>
+              <div style="display:flex; gap:8px; margin-top:8px; flex-wrap:wrap">
+                <sc-for list="{{ levelChips }}" as="c" hint-placeholder-count="3">
+                  <button onClick="{{ c.pick }}" aria-pressed="{{ c.on }}" style="{{ c.style }}" style-hover="background:var(--tint)">{{ c.name }}</button>
+                </sc-for>
+              </div>
+              <div style="margin-top:24px; font-size:14px; font-weight:600">Topic</div>
+              <div style="display:flex; gap:8px; margin-top:8px; flex-wrap:wrap">
+                <sc-for list="{{ topicChips }}" as="c" hint-placeholder-count="6">
+                  <button onClick="{{ c.pick }}" aria-pressed="{{ c.on }}" style="{{ c.style }}" style-hover="background:var(--tint)">{{ c.name }}</button>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ step3 }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:28px; border:1px solid var(--border); border-radius:12px; background:var(--card); padding:32px">
+              <h2 style="margin:0; font-size:20px; line-height:1.4; font-weight:600">Add the practice bits (optional)</h2>
+              <p style="margin:8px 0 0; font-size:14px; line-height:1.5; color:var(--muted)">Skip anything that isn&#8217;t ready — the site never shows an empty button, just a friendly &#8220;not yet&#8221; note.</p>
+              <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:24px; padding:16px 0; border-top:1px solid var(--border); flex-wrap:wrap">
+                <div>
+                  <div style="font-size:16px; line-height:1.5; font-weight:500">Worksheet PDF</div>
+                  <div style="font-size:14px; line-height:1.5; color:var(--muted)">{{ wsStatus }}</div>
+                </div>
+                <label style="cursor:pointer; display:inline-flex; align-items:center; height:44px; padding:0 20px; border:1px solid var(--link); border-radius:12px; background:var(--card); color:var(--link); font-size:14px; font-weight:600" style-hover="background:var(--tint)"><input type="file" accept="application/pdf" onChange="{{ pickWs }}" style="display:none">Choose PDF</label>
+              </div>
+              <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:16px 0; border-top:1px solid var(--border); flex-wrap:wrap">
+                <div>
+                  <div style="font-size:16px; line-height:1.5; font-weight:500">Worked answers PDF</div>
+                  <div style="font-size:14px; line-height:1.5; color:var(--muted)">{{ ansStatus }}</div>
+                </div>
+                <label style="cursor:pointer; display:inline-flex; align-items:center; height:44px; padding:0 20px; border:1px solid var(--link); border-radius:12px; background:var(--card); color:var(--link); font-size:14px; font-weight:600" style-hover="background:var(--tint)"><input type="file" accept="application/pdf" onChange="{{ pickAns }}" style="display:none">Choose PDF</label>
+              </div>
+              <div style="padding:16px 0 0; border-top:1px solid var(--border)">
+                <div style="font-size:16px; line-height:1.5; font-weight:500">Quiz <span style="font-weight:400; color:var(--muted)">(optional)</span></div>
+                <div style="font-size:14px; line-height:1.5; color:var(--muted); margin-top:4px">Ask ChatGPT to write one for you: copy the instructions below, swap in your topic, then paste back what it gives you.</div>
+                <div style="margin-top:14px; border:1px solid var(--border); border-radius:12px; background:var(--tint); padding:16px 20px">
+                  <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap">
+                    <span style="font-size:14px; line-height:1.5; font-weight:600">Instructions for ChatGPT</span>
+                    <button onClick="{{ copyPrompt }}" style="cursor:pointer; height:36px; padding:0 16px; border:1px solid var(--link); border-radius:10px; background:var(--card); color:var(--link); font-family:inherit; font-size:13px; font-weight:600; white-space:nowrap" style-hover="background:var(--card); color:var(--link-hover)">{{ copyLabel }}</button>
+                  </div>
+                  <div style="margin-top:10px; font-family:ui-monospace, 'SF Mono', monospace; font-size:12px; line-height:1.6; white-space:pre-wrap; color:var(--muted); max-height:170px; overflow:auto">{{ promptText }}</div>
+                </div>
+                <textarea value="{{ quizText }}" onChange="{{ setQuizText }}" rows="5" placeholder="Paste ChatGPT&#8217;s answer here — it starts with { and ends with }" style="width:100%; box-sizing:border-box; margin-top:14px; padding:14px 16px; border:1px solid var(--border); border-radius:12px; font-family:ui-monospace, 'SF Mono', monospace; font-size:13px; line-height:1.6; color:var(--ink); background:var(--card); resize:vertical"></textarea>
+                <div style="display:flex; align-items:center; gap:16px; margin-top:12px; flex-wrap:wrap">
+                  <button onClick="{{ checkQuiz }}" style="cursor:pointer; height:44px; padding:0 22px; border:none; border-radius:12px; background:var(--action); color:#FFFFFF; font-family:inherit; font-size:14px; font-weight:600" style-hover="background:var(--action-hover)">Check my quiz</button>
+                  <label style="cursor:pointer; display:inline-flex; align-items:center; min-height:44px; font-size:14px; font-weight:500; color:var(--link)" style-hover="color:var(--link-hover)"><input type="file" accept=".json,application/json" onChange="{{ pickQuizFile }}" style="display:none">…or upload the .json file</label>
+                </div>
+                <sc-if value="{{ quizOk }}" hint-placeholder-val="{{ false }}">
+                  <div style="margin-top:14px; border:1px solid var(--link); border-radius:12px; padding:16px 20px">
+                    <div style="font-size:14px; line-height:1.5; font-weight:600; color:var(--link)">✓ Quiz added — {{ quizSummary }}</div>
+                    <div style="display:flex; flex-direction:column; gap:6px; margin-top:10px">
+                      <sc-for list="{{ quizQuestions }}" as="qq" hint-placeholder-count="0">
+                        <div style="padding:4px 0">
+                          <div style="display:flex; justify-content:space-between; gap:12px; font-size:14px; line-height:1.5">
+                            <span style="flex:1">{{ qq.label }}</span>
+                            <span style="color:var(--muted); white-space:nowrap">{{ qq.kind }}</span>
+                          </div>
+                          <sc-if value="{{ qq.needsImage }}" hint-placeholder-val="{{ false }}">
+                            <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:8px; padding:12px 16px; background:var(--tint); border-radius:10px; flex-wrap:wrap">
+                              <div style="flex:1; min-width:200px">
+                                <div style="font-size:13px; line-height:1.5; color:var(--muted)">{{ qq.imgIdea }}</div>
+                                <div style="font-size:13px; line-height:1.5; color:var(--muted); margin-top:2px">{{ qq.imgStatus }}</div>
+                              </div>
+                              <label style="cursor:pointer; display:inline-flex; align-items:center; height:40px; padding:0 16px; border:1px solid var(--link); border-radius:10px; background:var(--card); color:var(--link); font-size:13px; font-weight:600; white-space:nowrap" style-hover="background:var(--card); color:var(--link-hover)"><input type="file" accept="image/*" onChange="{{ qq.pickImg }}" style="display:none">Choose image</label>
+                            </div>
+                          </sc-if>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ quizErr }}" hint-placeholder-val="{{ false }}">
+                  <p style="margin:12px 0 0; font-size:14px; line-height:1.5; color:var(--danger)">{{ quizError }}</p>
+                </sc-if>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ step4 }}" hint-placeholder-val="{{ false }}">
+            <sc-if value="{{ notPublished }}" hint-placeholder-val="{{ true }}">
+              <div style="margin-top:28px; border:1px solid var(--border); border-radius:12px; background:var(--card); padding:32px">
+                <h2 style="margin:0; font-size:20px; line-height:1.4; font-weight:600">Check it, then publish</h2>
+                <p style="margin:8px 0 0; font-size:14px; line-height:1.5; color:var(--muted)">This is exactly how students will see it.</p>
+                <div style="max-width:384px; margin-top:20px; border:1px solid var(--border); border-radius:12px; overflow:hidden">
+                  <span style="display:block; width:100%; aspect-ratio:16/9; border-bottom:1px solid var(--border); background-image:url(assets/thumb2-quadsimeq.jpg); background-size:cover; background-position:center"></span>
+                  <div style="padding:20px">
+                    <div style="display:flex; gap:8px; flex-wrap:wrap">
+                      <span style="display:inline-flex; align-items:center; height:24px; padding:0 10px; border-radius:100px; font-size:12px; font-weight:500; border:1px solid var(--link); color:var(--link)">{{ pickedLevel }}</span>
+                      <span style="display:inline-flex; align-items:center; height:24px; padding:0 10px; border-radius:100px; font-size:12px; font-weight:500; border:1px solid var(--border); color:var(--muted)">{{ pickedTopic }}</span>
+                    </div>
+                    <div style="font-size:18px; line-height:1.4; font-weight:600; margin-top:12px">Quadratic simultaneous equations</div>
+                    <div style="font-size:14px; line-height:1.5; color:var(--muted); margin-top:10px">11 min{{ extrasLine }}</div>
+                  </div>
+                </div>
+                <button onClick="{{ publish }}" style="cursor:pointer; margin-top:24px; height:52px; padding:0 32px; border:none; border-radius:16px; background:var(--action); color:#FFFFFF; font-family:inherit; font-size:16px; font-weight:600" style-hover="background:var(--action-hover)">Publish lesson</button>
+                <p style="margin:10px 0 0; font-size:14px; line-height:1.5; color:var(--muted)">It goes live straight away — and you can take it down again just as quickly.</p>
+              </div>
+            </sc-if>
+            <sc-if value="{{ published }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:28px; border:1px solid var(--border); border-radius:12px; background:var(--card); padding:48px; text-align:center">
+                <span style="width:56px; height:56px; border-radius:50%; background:var(--action); display:inline-flex; align-items:center; justify-content:center"><svg width="24" height="24" viewBox="0 0 16 16" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.5l3 3 6-7"></path></svg></span>
+                <h2 style="margin:16px 0 0; font-size:24px; line-height:1.4; font-weight:600">It&#8217;s live!</h2>
+                <p style="margin:8px auto 0; max-width:380px; font-size:14px; line-height:1.5; color:var(--muted)">Your lesson is on the site now — in Browse, and in the pathway if the topic belongs to one.</p>
+                <div style="display:flex; justify-content:center; gap:16px; margin-top:24px; flex-wrap:wrap">
+                  <a href="Lesson.dc.html" style="display:inline-flex; align-items:center; justify-content:center; height:48px; padding:0 28px; border-radius:16px; background:var(--action); color:#FFFFFF; font-size:14px; font-weight:600" style-hover="background:var(--action-hover); color:#FFFFFF">See the lesson</a>
+                  <button onClick="{{ resetLesson }}" style="cursor:pointer; display:inline-flex; align-items:center; white-space:nowrap; height:48px; padding:0 28px; border:1px solid var(--link); border-radius:16px; background:var(--card); color:var(--link); font-family:inherit; font-size:14px; font-weight:600" style-hover="background:var(--tint)">Add another</button>
+                </div>
+              </div>
+            </sc-if>
+          </sc-if>
+
+          <sc-if value="{{ showWizardNav }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex; justify-content:space-between; margin-top:20px">
+              <sc-if value="{{ canBack }}" hint-placeholder-val="{{ false }}">
+                <button onClick="{{ back }}" style="cursor:pointer; height:44px; padding:0 20px; border:1px solid var(--border); border-radius:12px; background:var(--card); color:var(--muted); font-family:inherit; font-size:14px; font-weight:500" style-hover="background:var(--tint); color:var(--ink)">Back</button>
+              </sc-if>
+              <sc-if value="{{ noBack }}" hint-placeholder-val="{{ true }}"><span></span></sc-if>
+              <sc-if value="{{ canNext }}" hint-placeholder-val="{{ true }}">
+                <button onClick="{{ nextStep }}" style="cursor:pointer; height:44px; padding:0 28px; border:none; border-radius:12px; background:var(--action); color:#FFFFFF; font-family:inherit; font-size:14px; font-weight:600" style-hover="background:var(--action-hover)">{{ nextHint }}</button>
+              </sc-if>
+            </div>
+          </sc-if>
+        </sc-if>
+
+        <sc-if value="{{ viewContent }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ goDash }}" style="cursor:pointer; border:none; background:transparent; padding:8px 0; font-family:inherit; font-size:14px; font-weight:500; color:var(--muted); display:inline-flex; gap:6px" style-hover="color:var(--link)"><span aria-hidden="true">←</span>Back to your dashboard</button>
+          <h1 style="margin:12px 0 0; font-size:var(--h1); line-height:1.3; font-weight:600">Your content</h1>
+          <p style="margin:12px 0 0; max-width:560px; font-size:16px; line-height:1.5; color:var(--muted)">Everything that&#8217;s on the site. Edit anything, or remove it — there&#8217;s an undo if you change your mind.</p>
+          <div style="display:flex; gap:8px; margin-top:24px; flex-wrap:wrap">
+            <sc-for list="{{ kindChips }}" as="c" hint-placeholder-count="5">
+              <button onClick="{{ c.pick }}" aria-pressed="{{ c.on }}" style="{{ c.style }}" style-hover="background:var(--tint)">{{ c.name }}</button>
+            </sc-for>
+          </div>
+          <sc-if value="{{ hasUndo }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:20px; padding:14px 20px; background:var(--tint); border-radius:12px; flex-wrap:wrap">
+              <span style="font-size:14px; line-height:1.5">&#8220;{{ undoTitle }}&#8221; has been removed from the site.</span>
+              <button onClick="{{ undoRemove }}" style="cursor:pointer; border:none; background:transparent; padding:8px 0; font-family:inherit; font-size:14px; font-weight:600; color:var(--link)" style-hover="color:var(--link-hover)">Undo</button>
+            </div>
+          </sc-if>
+          <div style="margin-top:20px; border:1px solid var(--border); border-radius:12px; background:var(--card); padding:4px 24px">
+            <sc-for list="{{ contentRows }}" as="r" hint-placeholder-count="6">
+              <div style="display:flex; align-items:center; gap:16px; padding:16px 0; border-bottom:1px solid var(--border); flex-wrap:wrap">
+                <div style="flex:1; min-width:220px">
+                  <div style="font-size:15px; line-height:1.5; font-weight:500">{{ r.title }}</div>
+                  <div style="font-size:13px; line-height:1.5; color:var(--muted); margin-top:2px">{{ r.meta }}</div>
+                </div>
+                <span style="display:inline-flex; align-items:center; height:22px; padding:0 10px; border-radius:100px; font-size:12px; font-weight:500; border:1px solid var(--border); color:var(--muted)">{{ r.kind }}</span>
+                <sc-if value="{{ r.normal }}" hint-placeholder-val="{{ true }}">
+                  <button onClick="{{ r.edit }}" style="cursor:pointer; min-height:40px; padding:0 14px; border:1px solid var(--link); border-radius:10px; background:var(--card); color:var(--link); font-family:inherit; font-size:13px; font-weight:600" style-hover="background:var(--tint)">Edit</button>
+                  <button onClick="{{ r.askRemove }}" style="cursor:pointer; min-height:40px; padding:0 14px; border:1px solid var(--border); border-radius:10px; background:var(--card); color:var(--muted); font-family:inherit; font-size:13px; font-weight:500" style-hover="color:var(--danger); border-color:var(--danger)">Remove</button>
+                </sc-if>
+                <sc-if value="{{ r.confirming }}" hint-placeholder-val="{{ false }}">
+                  <span style="font-size:13px; line-height:1.5; color:var(--muted)">Remove from the site?</span>
+                  <button onClick="{{ r.doRemove }}" style="cursor:pointer; min-height:40px; padding:0 14px; border:none; border-radius:10px; background:var(--danger); color:#FFFFFF; font-family:inherit; font-size:13px; font-weight:600">Yes, remove</button>
+                  <button onClick="{{ r.keep }}" style="cursor:pointer; min-height:40px; padding:0 14px; border:1px solid var(--border); border-radius:10px; background:var(--card); color:var(--ink); font-family:inherit; font-size:13px; font-weight:500" style-hover="background:var(--tint)">Keep it</button>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+          <p style="margin:16px 0 0; font-size:14px; line-height:1.5; color:var(--muted)">Removing a lesson never deletes your video — it stays safe on YouTube.</p>
+        </sc-if>
+
+        <sc-if value="{{ viewPapers }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ goDash }}" style="cursor:pointer; border:none; background:transparent; padding:8px 0; font-family:inherit; font-size:14px; font-weight:500; color:var(--muted); display:inline-flex; gap:6px" style-hover="color:var(--link)"><span aria-hidden="true">←</span>Back to your dashboard</button>
+          <h1 style="margin:12px 0 0; font-size:var(--h1); line-height:1.3; font-weight:600">Upload a past paper</h1>
+          <sc-if value="{{ ppNotDone }}" hint-placeholder-val="{{ true }}">
+            <div style="margin-top:28px; border:1px solid var(--border); border-radius:12px; background:var(--card); padding:32px">
+              <div style="font-size:14px; font-weight:600">1 · Which exam is it from?</div>
+              <div style="display:flex; gap:8px; margin-top:8px; flex-wrap:wrap">
+                <sc-for list="{{ ppSeriesChips }}" as="c" hint-placeholder-count="3">
+                  <button onClick="{{ c.pick }}" aria-pressed="{{ c.on }}" style="{{ c.style }}" style-hover="background:var(--tint)">{{ c.name }}</button>
+                </sc-for>
+              </div>
+              <div style="display:flex; gap:24px; margin-top:20px; flex-wrap:wrap">
+                <div>
+                  <div style="font-size:14px; font-weight:600">Tier</div>
+                  <div style="display:flex; gap:8px; margin-top:8px">
+                    <sc-for list="{{ ppTierChips }}" as="c" hint-placeholder-count="2">
+                      <button onClick="{{ c.pick }}" aria-pressed="{{ c.on }}" style="{{ c.style }}" style-hover="background:var(--tint)">{{ c.name }}</button>
+                    </sc-for>
+                  </div>
+                </div>
+                <div>
+                  <div style="font-size:14px; font-weight:600">Paper</div>
+                  <div style="display:flex; gap:8px; margin-top:8px">
+                    <sc-for list="{{ ppPaperChips }}" as="c" hint-placeholder-count="3">
+                      <button onClick="{{ c.pick }}" aria-pressed="{{ c.on }}" style="{{ c.style }}" style-hover="background:var(--tint)">{{ c.name }}</button>
+                    </sc-for>
+                  </div>
+                </div>
+              </div>
+              <div style="font-size:14px; font-weight:600; margin-top:28px">2 · Add the PDFs</div>
+              <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:8px; padding:16px 0; border-top:1px solid var(--border); flex-wrap:wrap">
+                <div>
+                  <div style="font-size:16px; line-height:1.5; font-weight:500">Question paper</div>
+                  <div style="font-size:14px; line-height:1.5; color:var(--muted)">{{ ppQpStatus }}</div>
+                </div>
+                <label style="cursor:pointer; display:inline-flex; align-items:center; height:44px; padding:0 20px; border:1px solid var(--link); border-radius:12px; background:var(--card); color:var(--link); font-size:14px; font-weight:600" style-hover="background:var(--tint)"><input type="file" accept="application/pdf" onChange="{{ pickQp }}" style="display:none">Choose PDF</label>
+              </div>
+              <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:16px 0; border-top:1px solid var(--border); flex-wrap:wrap">
+                <div>
+                  <div style="font-size:16px; line-height:1.5; font-weight:500">Mark scheme <span style="font-weight:400; color:var(--muted)">(can come later)</span></div>
+                  <div style="font-size:14px; line-height:1.5; color:var(--muted)">{{ ppMsStatus }}</div>
+                </div>
+                <label style="cursor:pointer; display:inline-flex; align-items:center; height:44px; padding:0 20px; border:1px solid var(--link); border-radius:12px; background:var(--card); color:var(--link); font-size:14px; font-weight:600" style-hover="background:var(--tint)"><input type="file" accept="application/pdf" onChange="{{ pickMs }}" style="display:none">Choose PDF</label>
+              </div>
+              <div style="font-size:14px; font-weight:600; margin-top:28px">3 · Publish</div>
+              <sc-if value="{{ ppReady }}" hint-placeholder-val="{{ false }}">
+                <button onClick="{{ publishPp }}" style="cursor:pointer; margin-top:12px; height:52px; padding:0 32px; border:none; border-radius:16px; background:var(--action); color:#FFFFFF; font-family:inherit; font-size:16px; font-weight:600" style-hover="background:var(--action-hover)">Publish this paper</button>
+              </sc-if>
+              <sc-if value="{{ ppNotReady }}" hint-placeholder-val="{{ true }}">
+                <p style="margin:12px 0 0; font-size:14px; line-height:1.5; color:var(--muted)">Add the question paper PDF above and the publish button appears here.</p>
+              </sc-if>
+            </div>
+          </sc-if>
+          <sc-if value="{{ ppDone }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:28px; border:1px solid var(--border); border-radius:12px; background:var(--card); padding:48px; text-align:center">
+              <span style="width:56px; height:56px; border-radius:50%; background:var(--action); display:inline-flex; align-items:center; justify-content:center"><svg width="24" height="24" viewBox="0 0 16 16" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.5l3 3 6-7"></path></svg></span>
+              <h2 style="margin:16px 0 0; font-size:24px; line-height:1.4; font-weight:600">Published!</h2>
+              <p style="margin:8px auto 0; max-width:380px; font-size:14px; line-height:1.5; color:var(--muted)">{{ ppSummary }}</p>
+              <div style="display:flex; justify-content:center; gap:16px; margin-top:24px; flex-wrap:wrap">
+                <a href="PastPapers.dc.html" style="display:inline-flex; align-items:center; justify-content:center; height:48px; padding:0 28px; border-radius:16px; background:var(--action); color:#FFFFFF; font-size:14px; font-weight:600" style-hover="background:var(--action-hover); color:#FFFFFF">See the past papers page</a>
+                <button onClick="{{ resetPp }}" style="cursor:pointer; display:inline-flex; align-items:center; white-space:nowrap; height:48px; padding:0 28px; border:1px solid var(--link); border-radius:16px; background:var(--card); color:var(--link); font-family:inherit; font-size:14px; font-weight:600" style-hover="background:var(--tint)">Upload another</button>
+              </div>
+            </div>
+          </sc-if>
+        </sc-if>
+
+        <sc-if value="{{ viewDates }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ goDash }}" style="cursor:pointer; border:none; background:transparent; padding:8px 0; font-family:inherit; font-size:14px; font-weight:500; color:var(--muted); display:inline-flex; gap:6px" style-hover="color:var(--link)"><span aria-hidden="true">←</span>Back to your dashboard</button>
+          <h1 style="margin:12px 0 0; font-size:var(--h1); line-height:1.3; font-weight:600">Exam dates</h1>
+          <p style="margin:12px 0 0; max-width:560px; font-size:16px; line-height:1.5; color:var(--muted)">Only dates you&#8217;ve checked against the official timetable go on the site — students see them on the exam calendar.</p>
+          <div style="margin-top:24px; border:1px solid var(--border); border-radius:12px; background:var(--card); padding:32px">
+            <div style="display:flex; gap:20px; flex-wrap:wrap; align-items:flex-end">
+              <label style="display:flex; flex-direction:column; gap:6px; font-size:14px; font-weight:600">Paper
+                <select value="{{ edPaper }}" onChange="{{ setEdPaper }}" style="height:44px; padding:0 12px; border-radius:12px; border:1px solid var(--border); background:var(--card); color:var(--ink); font-family:inherit; font-size:14px; cursor:pointer">
+                  <option value="Paper 1 (non-calculator)">Paper 1 (non-calculator)</option>
+                  <option value="Paper 2 (calculator)">Paper 2 (calculator)</option>
+                  <option value="Paper 3 (calculator)">Paper 3 (calculator)</option>
+                </select>
+              </label>
+              <label style="display:flex; flex-direction:column; gap:6px; font-size:14px; font-weight:600">Date
+                <input type="date" value="{{ edDate }}" onChange="{{ setEdDate }}" style="height:44px; box-sizing:border-box; padding:0 12px; border-radius:12px; border:1px solid var(--border); background:var(--card); color:var(--ink); font-family:inherit; font-size:14px">
+              </label>
+              <div style="display:flex; flex-direction:column; gap:6px; font-size:14px; font-weight:600">Session
+                <div style="display:flex; gap:8px">
+                  <sc-for list="{{ edSessionChips }}" as="c" hint-placeholder-count="2">
+                    <button onClick="{{ c.pick }}" aria-pressed="{{ c.on }}" style="{{ c.style }}" style-hover="background:var(--tint)">{{ c.name }}</button>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+            <label style="display:flex; align-items:center; gap:10px; margin-top:24px; font-size:14px; line-height:1.5; cursor:pointer">
+              <input type="checkbox" checked="{{ edChecked }}" onChange="{{ toggleEdChecked }}" style="width:18px; height:18px; accent-color:#C2185B">
+              I&#8217;ve checked this against the official Edexcel timetable
+            </label>
+            <sc-if value="{{ edReady }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ saveDate }}" style="cursor:pointer; margin-top:20px; height:48px; padding:0 28px; border:none; border-radius:16px; background:var(--action); color:#FFFFFF; font-family:inherit; font-size:14px; font-weight:600" style-hover="background:var(--action-hover)">Save this date</button>
+            </sc-if>
+            <sc-if value="{{ edNotReady }}" hint-placeholder-val="{{ true }}">
+              <p style="margin:16px 0 0; font-size:14px; line-height:1.5; color:var(--muted)">Pick a date and tick the box above, then you can save.</p>
+            </sc-if>
+          </div>
+          <h2 style="margin:32px 0 0; font-size:20px; line-height:1.4; font-weight:600">On the site now</h2>
+          <div style="margin-top:12px; border:1px solid var(--border); border-radius:12px; background:var(--card); padding:4px 24px">
+            <sc-for list="{{ savedDates }}" as="d" hint-placeholder-count="3">
+              <div style="display:flex; align-items:center; gap:16px; padding:14px 0; border-bottom:1px solid var(--border); flex-wrap:wrap">
+                <span style="flex:1; min-width:200px; font-size:15px; line-height:1.5; font-weight:500">{{ d.title }}</span>
+                <span style="font-size:13px; line-height:1.5; color:var(--muted); white-space:nowrap">{{ d.meta }}</span>
+                <span style="display:inline-flex; align-items:center; height:22px; padding:0 10px; border-radius:100px; font-size:12px; font-weight:600; background:var(--tint); color:var(--link)">On the calendar</span>
+                <button onClick="{{ d.remove }}" style="{{ d.removeStyle }}" style-hover="color:var(--danger); border-color:var(--danger)">{{ d.removeLabel }}</button>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+      </div>
+
+      <footer style="border-top:1px solid var(--border)">
+        <div style="max-width:960px; margin:0 auto; padding:24px var(--pad-x); display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap">
+          <span style="font-size:14px; line-height:1.5; color:var(--muted)">Maths with Melissa admin</span>
+          <span style="font-size:14px; line-height:1.5; color:var(--muted)">Every change can be undone</span>
+        </div>
+      </footer>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    dark: typeof localStorage !== 'undefined' && localStorage.getItem('mwm-theme') === 'dark',
+    view: 'dash',
+    step: 1, yt: '', ytLoaded: false, level: 'GCSE Higher', topic: 'Algebra', ws: '', ans: '', publishedLesson: false,
+    quizText: '', quizResult: null, copied: false, quizImages: {},
+    editingTitle: '',
+    kindFilter: 'All', confirmId: null, lastDeleted: null, dateConfirm: null,
+    content: [
+      { id: 1, kind: 'Lesson', title: 'Quadratic simultaneous equations', meta: 'GCSE Higher · Algebra · worksheet + quiz' },
+      { id: 2, kind: 'Lesson', title: 'Potion ratio maths', meta: 'GCSE Foundation · Ratio & Proportion' },
+      { id: 3, kind: 'Lesson', title: 'Circumference of a circle', meta: 'GCSE Foundation · Geometry & Measures · worksheet' },
+      { id: 4, kind: 'Lesson', title: 'Finding the mode in complex data', meta: 'GCSE Higher · Statistics · worksheet' },
+      { id: 5, kind: 'Past paper', title: 'June 2025 · Paper 3 (calculator) · Higher', meta: 'Question paper + mark scheme' },
+      { id: 6, kind: 'Past paper', title: 'November 2024 · Paper 1 (non-calculator) · Higher', meta: 'Question paper · mark scheme still to come' },
+      { id: 7, kind: 'Exam date', title: 'Paper 1 (non-calculator) · GCSE Higher', meta: 'Thu 13 May 2027 · Morning' },
+      { id: 8, kind: 'Quiz', title: 'Quadratic simultaneous equations — quiz', meta: '5 questions · on the lesson page' },
+    ],
+    ppSeries: 'June 2026', ppTier: 'Higher', ppPaper: '1', ppQp: '', ppMs: '', ppPublished: false,
+    edPaper: 'Paper 1 (non-calculator)', edDate: '', edSession: 'Morning', edChecked: false,
+    savedDates: [
+      { title: 'Paper 1 (non-calculator) · GCSE Higher', meta: 'Thu 13 May 2027 · Morning · verified 1 Sept 2026' },
+      { title: 'Paper 2 (calculator) · GCSE Higher', meta: 'Wed 9 June 2027 · Morning · verified 1 Sept 2026' },
+      { title: 'Paper 3 (calculator) · GCSE Higher', meta: 'Mon 14 June 2027 · Morning · verified 1 Sept 2026' },
+    ],
+    synced: false,
+  };
+  DARK = {
+    '--surface': '#171717', '--card': '#211D1F', '--tint': '#271D22', '--border': '#4A353D',
+    '--ink': '#FFFFFF', '--muted': '#BBAFB5', '--action': '#C2185B', '--action-hover': '#E0447F',
+    '--link': '#F088B0', '--link-hover': '#F7ABC8', '--band': '#0D0D0D',
+    '--shadow': 'rgba(0,0,0,0.5)',
+  };
+  TOPICS = ['Number', 'Algebra', 'Ratio & Proportion', 'Geometry & Measures', 'Probability', 'Statistics', 'Pure', 'Mechanics'];
+  PROMPT = 'Write a 5-question GCSE maths quiz about [YOUR TOPIC] for [GCSE Foundation or GCSE Higher] students.\n\nReply with ONLY this JSON, no other text:\n\n{\n  "questions": [\n    { "type": "choice", "q": "Question text", "options": ["A", "B", "C", "D"], "correct": 0, "explain": "One-sentence reason." },\n    { "type": "choice-image", "q": "Question about the picture", "image": "One sentence describing the picture to show", "options": ["A", "B", "C", "D"], "correct": 1, "explain": "One-sentence reason." },\n    { "type": "order", "q": "Put the steps in order.", "options": ["Step one", "Step two", "Step three", "Step four"], "correctOrder": [0, 1, 2, 3], "explain": "One-sentence reason." }\n  ]\n}\n\nRules:\n- 4 options per question. "correct" counts from 0.\n- Use "order" for one question at most, and "choice-image" for one at most.\n- For "choice-image", describe the picture in "image" \u2014 I will attach the real picture myself.\n- UK English. Keep every explanation to one sentence.';
+  validateQuiz(text) {
+    let data;
+    try { data = JSON.parse(text); } catch (e) {
+      return { error: 'That doesn\u2019t look like quiz code yet \u2014 make sure you copy everything ChatGPT gives you, starting with { and ending with }.' };
+    }
+    const qs = data && data.questions;
+    if (!Array.isArray(qs) || qs.length === 0) return { error: 'I can\u2019t find any questions in there. Ask ChatGPT to use the exact format from the instructions box.' };
+    if (qs.length > 10) return { error: 'That\u2019s ' + qs.length + ' questions \u2014 quizzes work best at 5. Ask ChatGPT for fewer.' };
+    for (let i = 0; i < qs.length; i++) {
+      const q = qs[i];
+      const n = 'Question ' + (i + 1);
+      if (!q || typeof q.q !== 'string' || !q.q.trim()) return { error: n + ' is missing its question text.' };
+      if (q.type !== 'choice' && q.type !== 'order' && q.type !== 'choice-image') return { error: n + ' has a type I don\u2019t recognise \u2014 it should be "choice", "choice-image" or "order".' };
+      if (!Array.isArray(q.options) || q.options.length < 3 || q.options.length > 5) return { error: n + ' needs 3 to 5 options.' };
+      if ((q.type === 'choice' || q.type === 'choice-image') && !(Number.isInteger(q.correct) && q.correct >= 0 && q.correct < q.options.length)) return { error: n + ': "correct" must point at one of the options, counting from 0.' };
+      if (q.type === 'order') {
+        const co = q.correctOrder;
+        const valid = Array.isArray(co) && co.length === q.options.length && [...co].sort().every((v, j) => v === j);
+        if (!valid) return { error: n + ': "correctOrder" must list every option position exactly once.' };
+      }
+    }
+    return { questions: qs };
+  }
+  setTheme(dark) {
+    localStorage.setItem('mwm-theme', dark ? 'dark' : 'light');
+    this.setState({ dark });
+  }
+  chip(name, on, pick) {
+    const base = 'cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; height:40px; padding:0 16px; border-radius:100px; font-size:14px; white-space:nowrap;';
+    return { name, on, pick, style: base + (on ? ' border:1px solid var(--link); color:var(--link); font-weight:600; background:var(--tint)' : ' border:1px solid var(--border); color:var(--ink); font-weight:500; background:var(--card)') };
+  }
+  renderVals() {
+    const s = this.state;
+    const stepNames = ['Video', 'Where it goes', 'Practice', 'Check & publish'];
+    const fileName = (e) => (e.target.files && e.target.files[0] ? e.target.files[0].name : '');
+    return {
+      isDark: s.dark, isLight: !s.dark,
+      themeVars: s.dark ? this.DARK : {},
+      toggleTheme: () => this.setTheme(!s.dark),
+      // navigation
+      navItems: [
+        { name: 'Dashboard', view: 'dash' }, { name: 'Add a lesson', view: 'lesson' },
+        { name: 'Your content', view: 'content' },
+        { name: 'Past papers', view: 'papers' }, { name: 'Exam dates', view: 'dates' },
+      ].map(n => ({
+        name: n.name, current: s.view === n.view,
+        go: () => this.setState({ view: n.view }),
+        style: 'cursor:pointer; border:none; background:transparent; font-family:inherit; font-size:16px; line-height:1.5; padding:8px 0; white-space:nowrap; ' + (s.view === n.view ? 'color:var(--link); font-weight:600; border-bottom:2px solid var(--link)' : 'color:var(--ink); font-weight:500'),
+      })),
+      viewDash: s.view === 'dash', viewLesson: s.view === 'lesson', viewPapers: s.view === 'papers', viewDates: s.view === 'dates',
+      viewContent: s.view === 'content',
+      goContent: () => this.setState({ view: 'content' }),
+      lessonHeading: s.editingTitle ? 'Edit a lesson' : 'Add a new lesson',
+      isEditing: !!s.editingTitle, editingTitle: s.editingTitle,
+      kindChips: ['All', 'Lessons', 'Past papers', 'Exam dates', 'Quizzes'].map(name => this.chip(name, s.kindFilter === name, () => this.setState({ kindFilter: name, confirmId: null }))),
+      hasUndo: !!s.lastDeleted,
+      undoTitle: s.lastDeleted ? s.lastDeleted.item.title : '',
+      undoRemove: () => this.setState(st => {
+        if (!st.lastDeleted) return {};
+        const content = [...st.content];
+        content.splice(Math.min(st.lastDeleted.index, content.length), 0, st.lastDeleted.item);
+        return { content, lastDeleted: null };
+      }),
+      contentRows: s.content
+        .filter(it => s.kindFilter === 'All' || ({ 'Lessons': 'Lesson', 'Past papers': 'Past paper', 'Exam dates': 'Exam date', 'Quizzes': 'Quiz' })[s.kindFilter] === it.kind)
+        .map(it => ({
+          title: it.title, meta: it.meta, kind: it.kind,
+          normal: s.confirmId !== it.id, confirming: s.confirmId === it.id,
+          edit: () => {
+            if (it.kind === 'Lesson' || it.kind === 'Quiz') this.setState({ view: 'lesson', step: it.kind === 'Quiz' ? 3 : 2, ytLoaded: true, publishedLesson: false, editingTitle: it.title });
+            else if (it.kind === 'Past paper') this.setState({ view: 'papers', ppPublished: false, editingTitle: it.title });
+            else this.setState({ view: 'dates' });
+          },
+          askRemove: () => this.setState({ confirmId: it.id }),
+          keep: () => this.setState({ confirmId: null }),
+          doRemove: () => this.setState(st => {
+            const index = st.content.findIndex(x => x.id === it.id);
+            return { content: st.content.filter(x => x.id !== it.id), confirmId: null, lastDeleted: { item: it, index } };
+          }),
+        })),
+      goDash: () => this.setState({ view: 'dash' }),
+      goLesson: () => this.setState({ view: 'lesson' }),
+      goPapers: () => this.setState({ view: 'papers' }),
+      goDates: () => this.setState({ view: 'dates' }),
+      // dashboard
+      playlists: [
+        { name: 'Quick Maths (Shorts playlist)', meta: '42 shorts on the site' },
+        { name: 'Roblox lessons playlist', meta: '12 videos on the site' },
+        { name: 'Minecraft lessons playlist', meta: '8 videos on the site' },
+        { name: 'Story maths playlist', meta: '9 videos on the site' },
+      ],
+      syncStatus: s.synced ? 'Checked just now' : 'Last checked today at 3:00 am',
+      syncLabel: s.synced ? '✓ All up to date' : 'Check for new videos now',
+      syncNow: () => this.setState({ synced: true }),
+      recent: [
+        { title: 'Potion ratio maths', meta: 'Lesson · added 2 days ago' },
+        { title: 'June 2025 · Paper 3 (calculator)', meta: 'Past paper · added 5 days ago' },
+        { title: 'Quadratic simultaneous equations', meta: 'Lesson · added 1 week ago' },
+      ],
+      // lesson wizard
+      steps: stepNames.map((label, i) => ({
+        label: (i + 1) + ' · ' + label,
+        style: 'display:inline-flex; align-items:center; height:32px; padding:0 14px; border-radius:100px; font-size:13px; ' + (s.step === i + 1 ? 'background:var(--action); color:#FFFFFF; font-weight:600' : s.step > i + 1 ? 'background:var(--tint); color:var(--link); font-weight:500' : 'border:1px solid var(--border); color:var(--muted); font-weight:500'),
+      })),
+      step1: s.step === 1, step2: s.step === 2, step3: s.step === 3, step4: s.step === 4,
+      yt: s.yt,
+      setYt: (e) => this.setState({ yt: e.target.value }),
+      findVideo: () => this.setState({ ytLoaded: true, yt: s.yt || 'https://youtu.be/zbIbFPlCPWk' }),
+      ytLoaded: s.ytLoaded,
+      levelChips: ['GCSE Foundation', 'GCSE Higher', 'A-level'].map(name => this.chip(name, s.level === name, () => this.setState({ level: name }))),
+      topicChips: this.TOPICS.map(name => this.chip(name, s.topic === name, () => this.setState({ topic: name }))),
+      wsStatus: s.ws ? '✓ ' + s.ws + ' added' : 'No worksheet yet — students will see a friendly note instead of a button.',
+      ansStatus: s.ans ? '✓ ' + s.ans + ' added' : 'Optional — appears behind “Reveal answers”.',
+      pickWs: (e) => this.setState({ ws: fileName(e) }),
+      pickAns: (e) => this.setState({ ans: fileName(e) }),
+      pickedLevel: s.level, pickedTopic: s.topic,
+      extrasLine: (s.ws ? ' · Worksheet' : '') + (s.ans ? ' · Answers' : '') + (s.quizResult && s.quizResult.questions ? ' · Quiz (' + s.quizResult.questions.length + ' questions)' : ''),
+      promptText: this.PROMPT,
+      copyLabel: s.copied ? '✓ Copied' : 'Copy',
+      copyPrompt: () => { try { navigator.clipboard.writeText(this.PROMPT); } catch (e) {} this.setState({ copied: true }); },
+      quizText: s.quizText,
+      setQuizText: (e) => this.setState({ quizText: e.target.value, quizResult: null }),
+      checkQuiz: () => this.setState({ quizResult: this.validateQuiz(s.quizText) }),
+      pickQuizFile: (e) => {
+        const f = e.target.files && e.target.files[0];
+        if (!f) return;
+        const reader = new FileReader();
+        reader.onload = () => this.setState({ quizText: String(reader.result), quizResult: this.validateQuiz(String(reader.result)) });
+        reader.readAsText(f);
+      },
+      quizOk: !!(s.quizResult && s.quizResult.questions),
+      quizErr: !!(s.quizResult && s.quizResult.error),
+      quizError: (s.quizResult && s.quizResult.error) || '',
+      quizSummary: s.quizResult && s.quizResult.questions ? s.quizResult.questions.length + ' questions, ready to go' : '',
+      quizQuestions: s.quizResult && s.quizResult.questions ? s.quizResult.questions.map((q, i) => ({
+        label: (i + 1) + '. ' + q.q,
+        kind: q.type === 'order' ? 'Put in order' : q.type === 'choice-image' ? 'Picture question' : 'Multiple choice',
+        needsImage: q.type === 'choice-image',
+        imgIdea: q.image ? 'ChatGPT suggests: \u201C' + q.image + '\u201D' : '',
+        imgStatus: s.quizImages[i] ? '\u2713 ' + s.quizImages[i] + ' attached' : 'Attach the picture \u2014 save ChatGPT\u2019s image if it\u2019s right, or use a screenshot from your video. Double-check any picture ChatGPT draws.',
+        pickImg: (e) => {
+          const f = e.target.files && e.target.files[0];
+          if (f) this.setState(st => ({ quizImages: { ...st.quizImages, [i]: f.name } }));
+        },
+      })) : [],
+      publish: () => this.setState({ publishedLesson: true }),
+      published: s.publishedLesson, notPublished: !s.publishedLesson,
+      resetLesson: () => this.setState({ step: 1, yt: '', ytLoaded: false, ws: '', ans: '', publishedLesson: false, editingTitle: '', quizText: '', quizResult: null, quizImages: {} }),
+      showWizardNav: !(s.step === 4 && s.publishedLesson),
+      canBack: s.step > 1, noBack: s.step === 1,
+      back: () => this.setState({ step: Math.max(1, s.step - 1) }),
+      canNext: s.step < 4 && (s.step !== 1 || s.ytLoaded),
+      nextStep: () => this.setState({ step: Math.min(4, s.step + 1) }),
+      nextHint: s.step === 3 ? 'Check it over' : 'Next',
+      // past papers
+      ppSeriesChips: ['June 2026', 'November 2025', 'June 2025'].map(name => this.chip(name, s.ppSeries === name, () => this.setState({ ppSeries: name }))),
+      ppTierChips: ['Foundation', 'Higher'].map(name => this.chip(name, s.ppTier === name, () => this.setState({ ppTier: name }))),
+      ppPaperChips: ['1', '2', '3'].map(name => this.chip('Paper ' + name, s.ppPaper === name, () => this.setState({ ppPaper: name }))),
+      ppQpStatus: s.ppQp ? '✓ ' + s.ppQp + ' added' : 'The paper itself, as students sat it.',
+      ppMsStatus: s.ppMs ? '✓ ' + s.ppMs + ' added' : 'Until it\u2019s added, the site shows \u201CMark scheme coming soon\u201D.',
+      pickQp: (e) => this.setState({ ppQp: fileName(e) }),
+      pickMs: (e) => this.setState({ ppMs: fileName(e) }),
+      ppReady: !!s.ppQp, ppNotReady: !s.ppQp,
+      publishPp: () => this.setState({ ppPublished: true }),
+      ppDone: s.ppPublished, ppNotDone: !s.ppPublished,
+      ppSummary: s.ppSeries + ' · ' + s.ppTier + ' · Paper ' + s.ppPaper + (s.ppMs ? ' with its mark scheme' : ' — mark scheme still to come, the site says so for you'),
+      resetPp: () => this.setState({ ppQp: '', ppMs: '', ppPublished: false }),
+      // exam dates
+      edPaper: s.edPaper, setEdPaper: (e) => this.setState({ edPaper: e.target.value }),
+      edDate: s.edDate, setEdDate: (e) => this.setState({ edDate: e.target.value }),
+      edSessionChips: ['Morning', 'Afternoon'].map(name => this.chip(name, s.edSession === name, () => this.setState({ edSession: name }))),
+      edChecked: s.edChecked,
+      toggleEdChecked: () => this.setState({ edChecked: !s.edChecked }),
+      edReady: !!(s.edDate && s.edChecked), edNotReady: !(s.edDate && s.edChecked),
+      saveDate: () => {
+        const d = new Date(s.edDate + 'T12:00:00');
+        const label = d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' });
+        this.setState(st => ({
+          savedDates: [...st.savedDates, { title: st.edPaper + ' · GCSE Higher', meta: label + ' · ' + st.edSession + ' · verified today' }],
+          edDate: '', edChecked: false,
+        }));
+      },
+      savedDates: s.savedDates.map((d, i) => ({
+        ...d,
+        removeLabel: s.dateConfirm === i ? 'Really remove?' : 'Remove',
+        removeStyle: 'cursor:pointer; min-height:36px; padding:0 12px; border:1px solid ' + (s.dateConfirm === i ? 'var(--danger)' : 'var(--border)') + '; border-radius:10px; background:var(--card); color:' + (s.dateConfirm === i ? 'var(--danger)' : 'var(--muted)') + '; font-family:inherit; font-size:13px; font-weight:500',
+        remove: () => {
+          if (s.dateConfirm === i) this.setState(st => ({ savedDates: st.savedDates.filter((x, j) => j !== i), dateConfirm: null }));
+          else this.setState({ dateConfirm: i });
+        },
+      })),
+    };
+  }
+}
+</script>
+</body>
+</html>

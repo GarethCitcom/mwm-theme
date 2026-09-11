@@ -1,0 +1,13 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "acf/cta-strip",
+	"title": "Call-to-action strip",
+	"category": "mwm",
+	"icon": "megaphone",
+	"description": "Tinted strip with a line of text and a button.",
+	"keywords": [ "mwm" ],
+	"textdomain": "mwm-theme",
+	"acf": { "mode": "preview", "renderTemplate": "render.php" },
+	"supports": { "html": false, "anchor": false, "align": false, "mode": false, "jsx": false, "multiple": true, "customClassName": false }
+}

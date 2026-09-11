@@ -1,0 +1,83 @@
+/* Branded WordPress login screen (reached from My Learning → Sign in). */
+@font-face {
+	font-family: "Inter";
+	src: url("../fonts/inter-latin.woff2") format("woff2");
+	font-weight: 100 900;
+	font-display: swap;
+}
+body.login {
+	background: #F9E8EE;
+	font-family: Inter, -apple-system, "Segoe UI", sans-serif;
+	color: #171717;
+}
+.login h1 a {
+	background-image: url("../img/logo-charcoal.svg");
+	background-size: contain;
+	width: 160px;
+	height: 64px;
+}
+.login form {
+	border: 1px solid #F1CBD8;
+	border-radius: 12px;
+	box-shadow: none;
+	padding: 28px;
+}
+.login label {
+	font-size: 14px;
+	font-weight: 500;
+	color: #171717;
+}
+.login form .input,
+.login input[type="text"],
+.login input[type="password"] {
+	border: 1px solid #F1CBD8;
+	border-radius: 12px;
+	font-family: inherit;
+	font-size: 16px;
+	padding: 0 14px;
+	min-height: 48px;
+	box-shadow: none;
+}
+.login form .input:focus,
+.login input[type="text"]:focus,
+.login input[type="password"]:focus {
+	border-color: #C2185B;
+	box-shadow: none;
+	outline: 2px solid #C2185B;
+	outline-offset: 2px;
+}
+.wp-core-ui .button-primary {
+	background: #C2185B;
+	border: none;
+	border-radius: 12px;
+	font-weight: 600;
+	min-height: 44px;
+	padding: 0 20px;
+	text-shadow: none;
+	box-shadow: none;
+}
+.wp-core-ui .button-primary:hover,
+.wp-core-ui .button-primary:focus {
+	background: #A3144C;
+	box-shadow: none;
+}
+.wp-core-ui .button-primary:focus-visible {
+	outline: 2px solid #C2185B;
+	outline-offset: 2px;
+}
+.login #nav a,
+.login #backtoblog a {
+	color: #5C5C5C;
+}
+.login #nav a:hover,
+.login #backtoblog a:hover {
+	color: #C2185B;
+}
+.login .message,
+.login #login_error {
+	border-left-color: #C2185B;
+	border-radius: 12px;
+}
+.login .privacy-policy-page-link a {
+	color: #5C5C5C;
+}

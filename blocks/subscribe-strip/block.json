@@ -1,0 +1,13 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "acf/subscribe-strip",
+	"title": "Subscribe strip",
+	"category": "mwm",
+	"icon": "youtube",
+	"description": "‘New lessons every week on YouTube.’",
+	"keywords": [ "mwm" ],
+	"textdomain": "mwm-theme",
+	"acf": { "mode": "preview", "renderTemplate": "render.php" },
+	"supports": { "html": false, "anchor": false, "align": false, "mode": false, "jsx": false, "multiple": true, "customClassName": false }
+}

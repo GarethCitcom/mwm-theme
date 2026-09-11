@@ -1,0 +1,13 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "acf/exam-calendar",
+	"title": "Exam calendar",
+	"category": "mwm",
+	"icon": "calendar",
+	"description": "Monthly calendars with exam days circled and the week-by-week plan.",
+	"keywords": [ "mwm" ],
+	"textdomain": "mwm-theme",
+	"acf": { "mode": "preview", "renderTemplate": "render.php" },
+	"supports": { "html": false, "anchor": false, "align": false, "mode": false, "jsx": false, "multiple": false, "customClassName": false }
+}

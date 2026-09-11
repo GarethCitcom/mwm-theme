@@ -1,0 +1,13 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "acf/page-header",
+	"title": "Page header",
+	"category": "mwm",
+	"icon": "heading",
+	"description": "Breadcrumb, heading and intro for simple pages.",
+	"keywords": [ "mwm" ],
+	"textdomain": "mwm-theme",
+	"acf": { "mode": "preview", "renderTemplate": "render.php" },
+	"supports": { "html": false, "anchor": false, "align": false, "mode": false, "jsx": false, "multiple": true, "customClassName": false }
+}

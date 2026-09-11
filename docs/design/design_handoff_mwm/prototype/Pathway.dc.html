@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; font-family: Inter, -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: var(--link, #C2185B); text-decoration: none; }
+  a:hover { color: var(--link-hover, #A3144C); }
+  a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--link, #C2185B); outline-offset: 2px; border-radius: 4px; }
+  input::placeholder { color: var(--muted, #5C5C5C); opacity: 1; }
+  [data-mwm] { --head-h:84px; --pad-x:32px; --sec-y:96px; --hero-pad:80px 32px; --h1:56px; --h2:32px; --grid3:repeat(3, minmax(0,1fr)); --grid-levels:repeat(3, minmax(0,1fr)); --gaming-display:grid; --gcard-w:auto; --nav-disp:flex; --desk-disp:block; --desk-btn:inline-flex; --mob-disp:none; --logo-full:block; --logo-icon:none; --arrow-disp:inline; --examdate-disp:block; --mob-date:none; --strip-pad:40px 32px 96px max(32px, calc((100% - 1136px) / 2)); }
+  @media (max-width: 700px) { [data-mwm] { --head-h:64px; --pad-x:16px; --sec-y:56px; --hero-pad:56px 16px; --h1:40px; --h2:28px; --grid3:repeat(2, minmax(0,1fr)); --grid-levels:1fr; --gaming-display:flex; --gcard-w:240px; --nav-disp:none; --desk-disp:none; --desk-btn:none; --mob-disp:inline-flex; --logo-full:none; --logo-icon:block; --arrow-disp:none; --examdate-disp:none; --mob-date:block; --strip-pad:32px 16px 56px; } }
+</style>
+</helmet>
+<div data-mwm="" style="--surface:#FFFFFF; --card:#FFFFFF; --tint:#F9E8EE; --border:#F1CBD8; --ink:#171717; --muted:#5C5C5C; --action:#C2185B; --action-hover:#A3144C; --link:#C2185B; --link-hover:#A3144C; --band:#171717; --on-band:#FFFFFF; --on-band-muted:rgba(255,255,255,0.72); --band-border:rgba(255,255,255,0.16); --shadow:rgba(23,23,23,0.14)">
+  <div style="{{ themeVars }}">
+    <div data-screen-label="Revision pathway" style="background:var(--surface); color:var(--ink); min-height:100vh">
+
+      <header style="position:sticky; top:0; z-index:50; border-bottom:1px solid var(--border); background:var(--surface)">
+        <div style="max-width:1264px; margin:0 auto; padding:12px var(--pad-x); min-height:var(--head-h, 84px); box-sizing:border-box; display:flex; align-items:center; justify-content:space-between; gap:16px 24px; flex-wrap:wrap">
+          <div style="display:flex; align-items:center; gap:16px 32px; flex-wrap:wrap">
+            <a href="Home.dc.html" aria-label="Maths with Melissa home" style="display:flex; align-items:center; flex-shrink:0">
+              <sc-if value="{{ isLight }}" hint-placeholder-val="{{ true }}"><img src="assets/logo-charcoal.svg" alt="Maths with Melissa" style="display:var(--logo-full, block); height:44px; width:auto"><img src="assets/icon-charcoal.svg" alt="Maths with Melissa" style="display:var(--logo-icon, none); height:36px; width:auto"></sc-if>
+              <sc-if value="{{ isDark }}" hint-placeholder-val="{{ false }}"><img src="assets/logo-white.svg" alt="Maths with Melissa" style="display:var(--logo-full, block); height:44px; width:auto"><img src="assets/icon-white.svg" alt="Maths with Melissa" style="display:var(--logo-icon, none); height:36px; width:auto"></sc-if>
+            </a>
+            <nav aria-label="Primary" style="display:var(--nav-disp, flex); align-items:center; gap:8px 24px; flex-wrap:wrap">
+              <a href="Browse.dc.html" style="color:var(--ink); font-size:16px; font-weight:500; line-height:1.5; padding:8px 0; white-space:nowrap" style-hover="color:var(--link)">Learn Maths</a>
+              <a href="Pathway.dc.html" aria-current="page" style="color:var(--link); font-size:16px; font-weight:500; line-height:1.5; padding:8px 0; white-space:nowrap; border-bottom:2px solid var(--link)">Revision</a>
+              <a href="QuickMaths.dc.html" style="color:var(--ink); font-size:16px; font-weight:500; line-height:1.5; padding:8px 0; white-space:nowrap" style-hover="color:var(--link)">Quick Maths</a>
+              <a href="Gaming.dc.html" style="color:var(--ink); font-size:16px; font-weight:500; line-height:1.5; padding:8px 0; white-space:nowrap" style-hover="color:var(--link)">Gaming &amp; Story Maths</a>
+            </nav>
+          </div>
+          <div style="display:flex; align-items:center; gap:14px">
+            <div style="position:relative; display:var(--desk-disp, block)">
+              <span style="position:absolute; left:14px; top:14px; color:var(--muted)"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="4.6"></circle><line x1="10.4" y1="10.4" x2="13.6" y2="13.6"></line></svg></span>
+              <input type="search" aria-label="Search lessons" placeholder="Search a topic" style="width:210px; height:44px; box-sizing:border-box; padding:0 14px 0 38px; border:1px solid var(--border); border-radius:12px; font-family:inherit; font-size:14px; color:var(--ink); background:var(--card)">
+            </div>
+            <button aria-label="Search" style="display:var(--mob-disp, none); width:44px; height:44px; border:none; background:transparent; color:var(--muted); cursor:pointer; align-items:center; justify-content:center; border-radius:12px" style-hover="background:var(--tint)"><svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="4.6"></circle><line x1="10.4" y1="10.4" x2="13.6" y2="13.6"></line></svg></button>
+            <button onClick="{{ toggleTheme }}" aria-label="Switch between light and dark mode" style="width:44px; height:44px; flex-shrink:0; border:1px solid var(--border); border-radius:12px; background:var(--card); color:var(--muted); cursor:pointer; display:inline-flex; align-items:center; justify-content:center" style-hover="background:var(--tint)">
+              <sc-if value="{{ isLight }}" hint-placeholder-val="{{ true }}"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M14.5 10.8A6 6 0 0 1 7.2 3.5a6 6 0 1 0 7.3 7.3z"></path></svg></sc-if>
+              <sc-if value="{{ isDark }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="9" r="3.6"></circle><line x1="9" y1="1.5" x2="9" y2="3.5"></line><line x1="9" y1="14.5" x2="9" y2="16.5"></line><line x1="1.5" y1="9" x2="3.5" y2="9"></line><line x1="14.5" y1="9" x2="16.5" y2="9"></line><line x1="3.7" y1="3.7" x2="5.1" y2="5.1"></line><line x1="12.9" y1="12.9" x2="14.3" y2="14.3"></line><line x1="3.7" y1="14.3" x2="5.1" y2="12.9"></line><line x1="12.9" y1="5.1" x2="14.3" y2="3.7"></line></svg></sc-if>
+            </button>
+            <sc-if value="{{ signedOut }}" hint-placeholder-val="{{ true }}"><a href="MyLearning.dc.html" style="display:var(--desk-btn, inline-flex); align-items:center; justify-content:center; height:44px; padding:0 20px; border-radius:12px; background:var(--action); color:#FFFFFF; font-size:14px; font-weight:600; white-space:nowrap" style-hover="background:var(--action-hover); color:#FFFFFF">My Learning</a></sc-if>
+            <sc-if value="{{ signedIn }}" hint-placeholder-val="{{ false }}"><a href="MyLearning.dc.html" aria-label="My Learning, signed in as Alex" style="display:var(--desk-btn, inline-flex); align-items:center; gap:10px; height:44px; padding:0 16px 0 6px; border-radius:100px; border:1px solid var(--border); background:var(--card); color:var(--ink); font-size:14px; font-weight:600; white-space:nowrap" style-hover="background:var(--tint); color:var(--ink)"><span style="width:32px; height:32px; border-radius:50%; background:var(--action); color:#FFFFFF; display:inline-flex; align-items:center; justify-content:center; font-size:13px; font-weight:600">A</span>Alex</a></sc-if>
+            <button onClick="{{ toggleMenu }}" aria-label="Menu" aria-expanded="{{ menuOpen }}" style="display:var(--mob-disp, none); width:44px; height:44px; border:none; background:transparent; color:var(--ink); cursor:pointer; align-items:center; justify-content:center; border-radius:12px" style-hover="background:var(--tint)"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="3" y1="5.5" x2="17" y2="5.5"></line><line x1="3" y1="10" x2="17" y2="10"></line><line x1="3" y1="14.5" x2="17" y2="14.5"></line></svg></button>
+          </div>
+        </div>
+        <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+          <nav aria-label="Mobile" style="display:flex; flex-direction:column; padding:8px 16px 16px; border-top:1px solid var(--border)">
+            <a href="Browse.dc.html" style="color:var(--ink); font-size:16px; font-weight:500; padding:12px 0">Learn Maths</a>
+            <a href="Pathway.dc.html" style="color:var(--ink); font-size:16px; font-weight:500; padding:12px 0">Revision</a>
+            <a href="QuickMaths.dc.html" style="color:var(--ink); font-size:16px; font-weight:500; padding:12px 0">Quick Maths</a>
+            <a href="Gaming.dc.html" style="color:var(--ink); font-size:16px; font-weight:500; padding:12px 0">Gaming &amp; Story Maths</a>
+            <a href="MyLearning.dc.html" style="color:var(--link); font-size:16px; font-weight:600; padding:12px 0">My Learning</a>
+          </nav>
+        </sc-if>
+      </header>
+
+      <div style="max-width:1200px; margin:0 auto; padding:48px var(--pad-x) var(--sec-y)">
+        <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap">
+          <label style="display:inline-flex; align-items:center; gap:8px; font-size:14px; color:var(--muted)">Level
+            <select value="{{ level }}" onChange="{{ setLevel }}" style="height:44px; padding:0 12px; border-radius:12px; border:1px solid var(--border); background:var(--card); color:var(--ink); font-family:inherit; font-size:14px; font-weight:600; cursor:pointer">
+              <option value="GCSE Foundation">GCSE Foundation</option>
+              <option value="GCSE Higher">GCSE Higher</option>
+              <option value="A-level">A-level</option>
+            </select>
+          </label>
+          <label style="display:inline-flex; align-items:center; gap:8px; font-size:14px; color:var(--muted)">Exam board
+            <select value="{{ board }}" onChange="{{ setBoard }}" style="height:44px; padding:0 12px; border-radius:12px; border:1px solid var(--border); background:var(--card); color:var(--ink); font-family:inherit; font-size:14px; font-weight:600; cursor:pointer">
+              <option value="Edexcel">Edexcel</option>
+              <option value="AQA">AQA</option>
+              <option value="OCR">OCR</option>
+            </select>
+          </label>
+          
+        </div>
+
+        <h1 style="margin:32px 0 0; font-size:40px; line-height:1.3; font-weight:600">{{ pathwayTitle }}</h1>
+        <p style="margin:8px 0 0; font-size:16px; line-height:1.5; color:var(--muted)">{{ topicsLine }}</p>
+        <div style="display:flex; align-items:center; gap:40px; margin-top:20px; flex-wrap:wrap">
+          <div style="flex:1; min-width:320px; max-width:520px">
+            <div style="display:flex; justify-content:space-between; font-size:14px; line-height:1.5; color:var(--muted)"><span>{{ progressLabel }}</span><span>{{ progressPct }}</span></div>
+            <div style="margin-top:8px; height:8px; border-radius:100px; background:var(--tint); overflow:hidden">
+              <div style="{{ progressBarStyle }}"></div>
+            </div>
+            <p style="margin:8px 0 0; font-size:14px; line-height:1.5; color:var(--muted)">Ticks are yours to set; quiz scores are shown separately.</p>
+          </div>
+          <div style="border:1px solid var(--border); border-radius:12px; padding:16px 24px; background:var(--card)">
+            <span style="display:block; font-size:14px; line-height:1.5; color:var(--muted)">Quiz average</span>
+            <span style="display:block; font-size:24px; line-height:1.4; font-weight:600">70%</span>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:48px; margin-top:48px; align-items:flex-start; flex-wrap:wrap">
+          <div style="flex:2; min-width:min(480px, 100%)">
+            <sc-if value="{{ pathwayAvailable }}" hint-placeholder-val="{{ true }}">
+            <sc-for list="{{ groups }}" as="g" hint-placeholder-count="3">
+              <div style="margin-bottom:40px">
+                <h2 style="margin:0 0 8px; font-size:var(--h2); line-height:1.3; font-weight:600">{{ g.name }}</h2>
+                <sc-for list="{{ g.rows }}" as="r" hint-placeholder-count="4">
+                  <div style="display:flex; align-items:center; gap:20px; padding:18px 0; border-bottom:1px solid var(--border)">
+                    <span style="width:36px; flex-shrink:0; font-size:20px; line-height:1.4; font-weight:600; color:var(--link)">{{ r.step }}</span>
+                    <div style="flex:1; min-width:0">
+                      <sc-if value="{{ r.tickable }}" hint-placeholder-val="{{ true }}"><a href="Lesson.dc.html" style="{{ r.titleStyle }}" style-hover="color:var(--link)">{{ r.topic }}</a></sc-if>
+                      <sc-if value="{{ r.comingSoon }}" hint-placeholder-val="{{ false }}"><span style="{{ r.titleStyle }}">{{ r.topic }}</span></sc-if>
+                      <sc-if value="{{ r.hasNote }}" hint-placeholder-val="{{ false }}">
+                        <span style="display:block; font-size:14px; line-height:1.5; color:var(--muted); margin-top:2px">{{ r.note }}</span>
+                      </sc-if>
+                    </div>
+                    <span style="display:inline-flex; gap:14px; flex-shrink:0">{{ r.icons }}</span>
+                    <sc-if value="{{ r.tickable }}" hint-placeholder-val="{{ true }}">
+                      <button onClick="{{ r.toggle }}" aria-pressed="{{ r.ticked }}" aria-label="{{ r.tickLabel }}" style="{{ r.tickStyle }}" style-hover="border-color:var(--link)">
+                        <sc-if value="{{ r.ticked }}" hint-placeholder-val="{{ false }}"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.5l3 3 6-7"></path></svg></sc-if>
+                      </button>
+                    </sc-if>
+                    <sc-if value="{{ r.comingSoon }}" hint-placeholder-val="{{ false }}">
+                      <span style="flex-shrink:0; font-size:14px; line-height:1.5; color:var(--muted)">Coming soon</span>
+                    </sc-if>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-for>
+            </sc-if>
+            <sc-if value="{{ pathwayUnavailable }}" hint-placeholder-val="{{ false }}">
+              <div style="border:1px solid var(--border); border-radius:12px; padding:48px; text-align:center; background:var(--card)">
+                <p style="margin:0; font-size:20px; line-height:1.4; font-weight:600">The A-level pathway is coming soon</p>
+                <p style="margin:10px 0 0; font-size:16px; line-height:1.5; color:var(--muted)">Pure, Statistics and Mechanics are being recorded now. The GCSE pathways are ready to use.</p>
+              </div>
+            </sc-if>
+          </div>
+
+          <aside style="flex:1; min-width:min(300px, 100%); position:sticky; top:108px">
+            <div style="border:1px solid var(--border); border-radius:12px; padding:28px; background:var(--card)">
+              <span style="font-size:14px; line-height:1.5; color:var(--muted)">Next exam for this pathway ({{ board }})</span>
+              <sc-if value="{{ boardVerified }}" hint-placeholder-val="{{ true }}">
+                <div style="font-size:24px; line-height:1.4; font-weight:600; margin-top:8px">Thu 13 May 2027</div>
+                <div style="font-size:14px; line-height:1.5; color:var(--muted)">Morning · Paper 1 (non-calculator)</div>
+                <div style="font-size:14px; line-height:1.5; color:var(--muted); margin-top:12px">Verified 1 Sept 2026 · Check your own timetable with your school</div>
+                <a href="Calendar.dc.html" style="display:inline-flex; align-items:center; gap:6px; margin-top:16px; font-size:16px; font-weight:500">See the exam calendar<span aria-hidden="true">→</span></a>
+              </sc-if>
+              <sc-if value="{{ boardUnverified }}" hint-placeholder-val="{{ false }}">
+                <div style="font-size:16px; line-height:1.5; margin-top:8px">Exam dates will be added when confirmed.</div>
+                <div style="font-size:14px; line-height:1.5; color:var(--muted); margin-top:8px">We haven’t verified the {{ board }} mapping yet — check your own timetable with your school.</div>
+                <a href="Calendar.dc.html" style="display:inline-flex; align-items:center; gap:6px; margin-top:16px; font-size:16px; font-weight:500">See the exam calendar<span aria-hidden="true">→</span></a>
+              </sc-if>
+            </div>
+            <div style="border:1px solid var(--border); border-radius:12px; padding:28px; background:var(--card); margin-top:24px">
+              <h2 style="margin:0; font-size:20px; line-height:1.4; font-weight:600">Past papers · {{ pastPapersTitle }}</h2>
+              <p style="margin:8px 0 0; font-size:14px; line-height:1.5; color:var(--muted)">Every paper and mark scheme as free PDFs, with matching worksheets.</p>
+              <a href="PastPapers.dc.html" style="display:inline-flex; align-items:center; gap:6px; margin-top:12px; font-size:16px; font-weight:500">Browse past papers<span aria-hidden="true">→</span></a>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <footer style="background:var(--band)">
+        <div style="max-width:1200px; margin:0 auto; padding:56px var(--pad-x) 0">
+          <div style="display:flex; justify-content:space-between; gap:64px; align-items:flex-start; flex-wrap:wrap">
+            <img src="assets/logo-white.svg" alt="Maths with Melissa" style="display:block; height:48px; width:auto">
+            <div style="display:flex; gap:32px; flex-wrap:wrap">
+              <a href="Browse.dc.html" style="color:var(--on-band); font-size:16px; line-height:1.5" style-hover="color:#F9E8EE" style-focus="outline:2px solid #F9E8EE; outline-offset:2px">Learn Maths</a>
+              <a href="Pathway.dc.html" style="color:var(--on-band); font-size:16px; line-height:1.5" style-hover="color:#F9E8EE" style-focus="outline:2px solid #F9E8EE; outline-offset:2px">Revision</a>
+              <a href="QuickMaths.dc.html" style="color:var(--on-band); font-size:16px; line-height:1.5" style-hover="color:#F9E8EE" style-focus="outline:2px solid #F9E8EE; outline-offset:2px">Quick Maths</a>
+              <a href="Gaming.dc.html" style="color:var(--on-band); font-size:16px; line-height:1.5" style-hover="color:#F9E8EE" style-focus="outline:2px solid #F9E8EE; outline-offset:2px">Gaming &amp; Story Maths</a>
+              <a href="https://www.youtube.com/@mathswithmelissa" target="_blank" rel="noopener" style="color:var(--on-band); font-size:16px; line-height:1.5" style-hover="color:#F9E8EE" style-focus="outline:2px solid #F9E8EE; outline-offset:2px">Subscribe on YouTube</a>
+            </div>
+          </div>
+          <div style="border-top:1px solid var(--band-border); margin-top:40px; padding:24px 0 32px; display:flex; justify-content:space-between; align-items:center">
+            <span style="font-size:14px; line-height:1.5; color:var(--on-band-muted)">© 2026 Maths with Melissa</span>
+            <a href="#privacy" style="color:var(--on-band-muted); font-size:14px; line-height:1.5" style-hover="color:#FFFFFF" style-focus="outline:2px solid #F9E8EE; outline-offset:2px">Privacy</a>
+          </div>
+        </div>
+      </footer>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    dark: typeof localStorage !== 'undefined' && localStorage.getItem('mwm-theme') === 'dark',
+    menuOpen: false,
+    ticked: { 1: true, 2: true, 6: true, 8: true },
+    level: 'GCSE Higher',
+    board: 'Edexcel',
+  };
+  DARK = {
+    '--surface': '#171717', '--card': '#211D1F', '--tint': '#271D22', '--border': '#4A353D',
+    '--ink': '#FFFFFF', '--muted': '#BBAFB5', '--action': '#C2185B', '--action-hover': '#E0447F',
+    '--link': '#F088B0', '--link-hover': '#F7ABC8', '--band': '#0D0D0D',
+    '--shadow': 'rgba(0,0,0,0.5)',
+  };
+  GROUPS = [
+    { name: 'Number', rows: [
+      { id: 1, topic: 'Fractions, decimals and percentages', video: true, worksheet: true, quiz: true },
+      { id: 2, topic: 'Percentage change and reverse percentages', video: true, worksheet: true, quiz: false },
+      { id: 3, topic: 'Standard form', video: true, worksheet: false, quiz: false },
+      { id: 4, topic: 'Surds', video: true, worksheet: true, quiz: true, note: 'Needs: Simplifying expressions' },
+      { id: 5, topic: 'Bounds and error intervals', video: true, worksheet: true, quiz: false },
+    ]},
+    { name: 'Algebra', rows: [
+      { id: 6, topic: 'Expanding and factorising', video: true, worksheet: true, quiz: true },
+      { id: 7, topic: 'Solving linear equations', video: true, worksheet: true, quiz: false },
+      { id: 8, topic: 'Linear simultaneous equations', video: true, worksheet: true, quiz: false },
+      { id: 9, topic: 'Quadratic simultaneous equations', video: true, worksheet: true, quiz: true, note: 'Needs: Linear simultaneous equations' },
+      { id: 10, topic: 'Completing the square', video: true, worksheet: false, quiz: false },
+      { id: 11, topic: 'Inequalities', video: true, worksheet: true, quiz: false },
+      { id: 12, topic: 'Sequences and the nth term', video: true, worksheet: true, quiz: true },
+      { id: 13, topic: 'Algebraic proof', comingSoon: true },
+    ]},
+    { name: 'Ratio & Proportion', rows: [
+      { id: 14, topic: 'Ratio and sharing in a ratio', video: true, worksheet: true, quiz: true },
+      { id: 15, topic: 'Direct and inverse proportion', video: true, worksheet: true, quiz: false },
+      { id: 16, topic: 'Compound measures', video: true, worksheet: false, quiz: false },
+      { id: 17, topic: 'Converting units', video: true, worksheet: true, quiz: false },
+      { id: 18, topic: 'Best buy problems', video: true, worksheet: false, quiz: false },
+    ]},
+    { name: 'Geometry & Measures', rows: [
+      { id: 19, topic: 'Angles and parallel lines', video: true, worksheet: true, quiz: false },
+      { id: 20, topic: 'Circumference and area of circles', video: true, worksheet: true, quiz: false },
+      { id: 21, topic: 'Volume of prisms and cuboids', video: true, worksheet: false, quiz: true },
+      { id: 22, topic: 'Pythagoras\u2019 theorem', video: true, worksheet: true, quiz: true },
+      { id: 23, topic: 'Trigonometry in right-angled triangles', video: true, worksheet: true, quiz: true, note: 'Needs: Pythagoras\u2019 theorem' },
+      { id: 24, topic: 'Sine and cosine rules', video: true, worksheet: false, quiz: false },
+      { id: 25, topic: 'Vectors', video: true, worksheet: true, quiz: false },
+      { id: 26, topic: 'Circle theorems', video: true, worksheet: true, quiz: false },
+    ]},
+    { name: 'Probability', rows: [
+      { id: 27, topic: 'Probability basics and sample spaces', video: true, worksheet: true, quiz: false },
+      { id: 28, topic: 'Tree diagrams', video: true, worksheet: true, quiz: true },
+      { id: 29, topic: 'Venn diagrams', video: true, worksheet: false, quiz: false },
+    ]},
+    { name: 'Statistics', rows: [
+      { id: 30, topic: 'Averages and spread', video: true, worksheet: true, quiz: true },
+      { id: 31, topic: 'Cumulative frequency and box plots', video: true, worksheet: true, quiz: false },
+      { id: 32, topic: 'Histograms', video: true, worksheet: false, quiz: false },
+    ]},
+  ];
+  FOUNDATION_GROUPS = [
+    { name: 'Number', rows: [
+      { id: 101, topic: 'Place value and rounding', video: true, worksheet: true, quiz: false },
+      { id: 102, topic: 'Fractions of amounts', video: true, worksheet: true, quiz: true },
+      { id: 103, topic: 'Percentages of amounts', video: true, worksheet: true, quiz: false },
+      { id: 104, topic: 'Rounding decimals', video: true, worksheet: false, quiz: false },
+    ]},
+    { name: 'Ratio & Proportion', rows: [
+      { id: 105, topic: 'Sharing in a ratio', video: true, worksheet: true, quiz: false },
+      { id: 106, topic: 'Converting miles and kilometres', video: true, worksheet: true, quiz: false },
+    ]},
+    { name: 'Geometry & Measures', rows: [
+      { id: 107, topic: 'Perimeter and area', video: true, worksheet: true, quiz: true },
+      { id: 108, topic: 'Circumference of a circle', video: true, worksheet: true, quiz: false },
+      { id: 109, topic: 'Volume of a cuboid', video: true, worksheet: false, quiz: true },
+    ]},
+    { name: 'Statistics', rows: [
+      { id: 110, topic: 'Averages from a list', video: true, worksheet: true, quiz: false },
+    ]},
+  ];
+  BOARD_URLS = { Edexcel: 'https://mathswithmelissa.co.uk/revision/edexcel/', AQA: 'https://mathswithmelissa.co.uk/revision/', OCR: 'https://mathswithmelissa.co.uk/revision/' };
+  QUALS = {
+    'GCSE Foundation': { Edexcel: 'GCSE Mathematics 1MA1', AQA: 'GCSE Mathematics 8300', OCR: 'GCSE Mathematics J560' },
+    'GCSE Higher': { Edexcel: 'GCSE Mathematics 1MA1', AQA: 'GCSE Mathematics 8300', OCR: 'GCSE Mathematics J560' },
+    'A-level': { Edexcel: 'A-level Mathematics 9MA0', AQA: 'A-level Mathematics 7357', OCR: 'A-level Mathematics H240' },
+  };
+  setTheme(dark) {
+    localStorage.setItem('mwm-theme', dark ? 'dark' : 'light');
+    this.setState({ dark });
+  }
+  resIcon(kind, on) {
+    const p = { width: 16, height: 16, viewBox: '0 0 16 16', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5, strokeLinecap: 'round', strokeLinejoin: 'round' };
+    let icon;
+    if (kind === 'video') icon = React.createElement('svg', p, React.createElement('rect', { x: 1.5, y: 3, width: 13, height: 10, rx: 2 }), React.createElement('path', { d: 'M6.5 6l3.5 2-3.5 2z' }));
+    if (kind === 'worksheet') icon = React.createElement('svg', p, React.createElement('rect', { x: 3, y: 2, width: 10, height: 12, rx: 1.5 }), React.createElement('path', { d: 'M5.5 6h5M5.5 9h5' }));
+    if (kind === 'quiz') icon = React.createElement('svg', p, React.createElement('circle', { cx: 8, cy: 8, r: 6 }), React.createElement('path', { d: 'M5.4 8l1.9 1.9 3.4-3.7' }));
+    if (on) return React.createElement('a', {
+      href: 'Lesson.dc.html',
+      'aria-label': 'Open lesson (' + kind + ' available)',
+      title: kind + ' available',
+      style: { display: 'inline-flex', color: 'var(--link)', padding: 4, margin: -4 },
+    }, icon);
+    return React.createElement('span', {
+      title: kind + ' not available yet',
+      style: { display: 'inline-flex', color: 'var(--border)', padding: 4, margin: -4 },
+    }, icon);
+  }
+  renderVals() {
+    const { dark, ticked, level, board } = this.state;
+    const isALevel = level === 'A-level';
+    const GROUPS = level === 'GCSE Higher' ? this.GROUPS : level === 'GCSE Foundation' ? this.FOUNDATION_GROUPS : [];
+    let TOTAL = 0, count = 0;
+    GROUPS.forEach(g => g.rows.forEach(r => { TOTAL++; if (ticked[r.id]) count++; }));
+    const pct = TOTAL ? Math.round((count / TOTAL) * 100) : 0;
+    const tickBase = 'cursor:pointer; width:32px; height:32px; flex-shrink:0; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-family:inherit;';
+    let step = 0;
+    const groups = GROUPS.map(g => ({
+      name: g.name,
+      rows: g.rows.map(r => {
+        step++;
+        const isTicked = !!ticked[r.id];
+        const soon = !!r.comingSoon;
+        return {
+          step: String(step).padStart(2, '0'),
+          topic: r.topic,
+          titleStyle: 'font-size:16px; line-height:1.5; font-weight:600; color:' + (soon ? 'var(--muted)' : 'var(--ink)'),
+          hasNote: !!r.note, note: r.note || '',
+          icons: soon ? null : [this.resIcon('video', r.video), this.resIcon('worksheet', r.worksheet), this.resIcon('quiz', r.quiz)].map((el, i) => React.createElement(React.Fragment, { key: i }, el)),
+          tickable: !soon, comingSoon: soon,
+          ticked: isTicked,
+          tickLabel: (isTicked ? 'Unmark ' : 'Mark ') + r.topic + ' as done',
+          tickStyle: tickBase + (isTicked ? ' border:none; background:var(--action)' : ' border:1.5px solid var(--border); background:var(--card)'),
+          toggle: () => this.setState(s => ({ ticked: { ...s.ticked, [r.id]: !s.ticked[r.id] } })),
+        };
+      }),
+    }));
+    const boardVerified = board === 'Edexcel';
+    return {
+      isDark: dark, isLight: !dark,
+      themeVars: dark ? this.DARK : {},
+      toggleTheme: () => this.setTheme(!dark),
+      signedIn: typeof localStorage !== 'undefined' && localStorage.getItem('mwm-user') === 'demo',
+      signedOut: !(typeof localStorage !== 'undefined' && localStorage.getItem('mwm-user') === 'demo'),
+      menuOpen: this.state.menuOpen,
+      toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
+      groups,
+      level, board,
+      setLevel: (e) => this.setState({ level: e.target.value }),
+      setBoard: (e) => this.setState({ board: e.target.value }),
+      qualLabel: (this.QUALS[level] || {})[board] || '',
+      pathwayTitle: level + ' revision pathway',
+      topicsLine: isALevel ? 'Coming soon' : (level === 'GCSE Higher' ? TOTAL + ' topics in order' : TOTAL + ' topics so far · more being added'),
+      pathwayAvailable: !isALevel, pathwayUnavailable: isALevel,
+      boardVerified, boardUnverified: !boardVerified,
+      boardUrl: this.BOARD_URLS[board],
+      pastPapersTitle: board + ' ' + (isALevel ? 'A-level' : level.replace('GCSE ', '')),
+      progressLabel: count + ' of ' + TOTAL + ' ticked',
+      progressPct: pct + '%',
+      progressBarStyle: { height: '100%', borderRadius: 100, background: 'var(--action)', width: pct + '%', transition: 'width 0.25s ease' },
+    };
+  }
+}
+</script>
+</body>
+</html>

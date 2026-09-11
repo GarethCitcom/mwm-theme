@@ -1,0 +1,13 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "acf/site-footer",
+	"title": "Site footer",
+	"category": "mwm",
+	"icon": "editor-kitchensink",
+	"description": "Ink footer with the white logo. Full layout on the home page, compact elsewhere.",
+	"keywords": [ "mwm" ],
+	"textdomain": "mwm-theme",
+	"acf": { "mode": "preview", "renderTemplate": "render.php" },
+	"supports": { "html": false, "anchor": false, "align": false, "mode": false, "jsx": false, "multiple": false, "customClassName": false }
+}

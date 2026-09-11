@@ -1,0 +1,13 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "acf/exam-panel",
+	"title": "Exam panel",
+	"category": "mwm",
+	"icon": "calendar-alt",
+	"description": "Next verified exam for the visitor’s level and board.",
+	"keywords": [ "mwm" ],
+	"textdomain": "mwm-theme",
+	"acf": { "mode": "preview", "renderTemplate": "render.php" },
+	"supports": { "html": false, "anchor": false, "align": false, "mode": false, "jsx": false, "multiple": true, "customClassName": false }
+}

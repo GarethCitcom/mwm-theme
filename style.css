@@ -1,0 +1,15 @@
+/*
+Theme Name:   Maths with Melissa
+Theme URI:    https://mathswithmelissa.co.uk
+Author:       Maths with Melissa
+Description:  Block theme for mathswithmelissa.co.uk — free GCSE and A-level maths lessons, worksheets and revision pathways. Page sections are ACF Blocks; the data model lives in the MWM Core plugin.
+Version:      1.0.0
+Requires at least: 6.5
+Tested up to: 6.8
+Requires PHP: 8.1
+License:      GNU General Public License v2 or later
+License URI:  http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain:  mwm-theme
+*/
+
+/* All styles live in assets/css/mwm.css */

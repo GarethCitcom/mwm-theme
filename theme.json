@@ -1,0 +1,102 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/theme.json",
+	"version": 3,
+	"settings": {
+		"appearanceTools": false,
+		"useRootPaddingAwareAlignments": false,
+		"color": {
+			"custom": false,
+			"customGradient": false,
+			"defaultGradients": false,
+			"defaultPalette": false,
+			"gradients": [],
+			"palette": [
+				{ "slug": "white", "color": "#FFFFFF", "name": "White" },
+				{ "slug": "ink", "color": "#171717", "name": "Ink" },
+				{ "slug": "muted", "color": "#5C5C5C", "name": "Muted" },
+				{ "slug": "soft-pink", "color": "#F9E8EE", "name": "Soft pink" },
+				{ "slug": "pink", "color": "#F1CBD8", "name": "Pink" },
+				{ "slug": "action", "color": "#C2185B", "name": "Action pink" },
+				{ "slug": "action-hover", "color": "#A3144C", "name": "Action pink (hover)" }
+			]
+		},
+		"typography": {
+			"customFontSize": false,
+			"fontStyle": false,
+			"fontWeight": false,
+			"letterSpacing": false,
+			"lineHeight": false,
+			"textDecoration": false,
+			"textTransform": false,
+			"dropCap": false,
+			"fontFamilies": [
+				{
+					"fontFamily": "Inter, -apple-system, \"Segoe UI\", sans-serif",
+					"name": "Inter",
+					"slug": "inter",
+					"fontFace": [
+						{
+							"fontFamily": "Inter",
+							"fontStyle": "normal",
+							"fontWeight": "100 900",
+							"fontDisplay": "swap",
+							"src": [ "file:./assets/fonts/inter-latin.woff2" ]
+						}
+					]
+				}
+			],
+			"fontSizes": [
+				{ "slug": "tag", "size": "12px", "name": "Tag" },
+				{ "slug": "meta", "size": "14px", "name": "Meta" },
+				{ "slug": "body", "size": "16px", "name": "Body" },
+				{ "slug": "lead", "size": "20px", "name": "Lead" },
+				{ "slug": "h4", "size": "24px", "name": "H4" },
+				{ "slug": "h2", "size": "32px", "name": "H2" },
+				{ "slug": "h1", "size": "40px", "name": "H1" },
+				{ "slug": "hero", "size": "56px", "name": "Hero" }
+			]
+		},
+		"spacing": {
+			"units": [ "px", "rem", "%" ],
+			"customSpacingSize": false,
+			"spacingSizes": [
+				{ "slug": "8", "size": "8px", "name": "8" },
+				{ "slug": "16", "size": "16px", "name": "16" },
+				{ "slug": "24", "size": "24px", "name": "24" },
+				{ "slug": "32", "size": "32px", "name": "32" },
+				{ "slug": "56", "size": "56px", "name": "56" },
+				{ "slug": "96", "size": "96px", "name": "96" }
+			]
+		},
+		"layout": {
+			"contentSize": "1200px",
+			"wideSize": "1264px"
+		},
+		"blocks": {}
+	},
+	"styles": {
+		"color": {
+			"background": "var(--surface)",
+			"text": "var(--ink)"
+		},
+		"typography": {
+			"fontFamily": "var(--wp--preset--font-family--inter)",
+			"fontSize": "16px",
+			"lineHeight": "1.5"
+		},
+		"elements": {
+			"link": {
+				"color": { "text": "var(--link)" },
+				":hover": { "color": { "text": "var(--link-hover)" } }
+			}
+		}
+	},
+	"templateParts": [
+		{ "name": "header", "title": "Header", "area": "header" },
+		{ "name": "footer", "title": "Footer (compact)", "area": "footer" },
+		{ "name": "footer-full", "title": "Footer (full, home)", "area": "footer" }
+	],
+	"customTemplates": [
+		{ "name": "page-plain", "title": "Plain page", "postTypes": [ "page" ] }
+	]
+}

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; font-family: Inter, -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: var(--link, #C2185B); text-decoration: none; }
+  a:hover { color: var(--link-hover, #A3144C); }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--link, #C2185B); outline-offset: 2px; border-radius: 4px; }
+  [data-mwm] { --head-h:84px; --pad-x:32px; --sec-y:96px; --h1:40px; --h2:32px; --nav-disp:flex; --mob-disp:none; --logo-full:block; --logo-icon:none; }
+  @media (max-width: 700px) { [data-mwm] { --head-h:64px; --pad-x:16px; --sec-y:56px; --h1:32px; --h2:24px; --nav-disp:none; --mob-disp:inline-flex; --logo-full:none; --logo-icon:block; } }
+</style>
+</helmet>
+<div data-mwm style="--surface:#FFFFFF; --card:#FFFFFF; --tint:#F9E8EE; --border:#F1CBD8; --ink:#171717; --muted:#5C5C5C; --action:#C2185B; --action-hover:#A3144C; --link:#C2185B; --link-hover:#A3144C; --band:#171717; --on-band:#FFFFFF; --on-band-muted:rgba(255,255,255,0.72); --band-border:rgba(255,255,255,0.16); --shadow:rgba(23,23,23,0.14)">
+  <div style="{{ themeVars }}">
+    <div data-screen-label="Past papers" style="background:var(--surface); color:var(--ink); min-height:100vh; display:flex; flex-direction:column">
+
+      <header style="position:sticky; top:0; z-index:50; border-bottom:1px solid var(--border); background:var(--surface)">
+        <div style="max-width:1264px; margin:0 auto; padding:12px var(--pad-x); min-height:var(--head-h, 84px); box-sizing:border-box; display:flex; align-items:center; justify-content:space-between; gap:16px 24px; flex-wrap:wrap">
+          <div style="display:flex; align-items:center; gap:16px 32px; flex-wrap:wrap">
+            <a href="Home.dc.html" aria-label="Maths with Melissa home" style="display:flex; align-items:center; flex-shrink:0">
+              <sc-if value="{{ isLight }}" hint-placeholder-val="{{ true }}"><img src="assets/logo-charcoal.svg" alt="Maths with Melissa" style="display:var(--logo-full, block); height:44px; width:auto"><img src="assets/icon-charcoal.svg" alt="Maths with Melissa" style="display:var(--logo-icon, none); height:36px; width:auto"></sc-if>
+              <sc-if value="{{ isDark }}" hint-placeholder-val="{{ false }}"><img src="assets/logo-white.svg" alt="Maths with Melissa" style="display:var(--logo-full, block); height:44px; width:auto"><img src="assets/icon-white.svg" alt="Maths with Melissa" style="display:var(--logo-icon, none); height:36px; width:auto"></sc-if>
+            </a>
+            <nav aria-label="Primary" style="display:var(--nav-disp, flex); align-items:center; gap:8px 24px; flex-wrap:wrap">
+              <a href="Browse.dc.html" style="color:var(--ink); font-size:16px; font-weight:500; line-height:1.5; padding:8px 0; white-space:nowrap" style-hover="color:var(--link)">Learn Maths</a>
+              <a href="Pathway.dc.html" aria-current="page" style="color:var(--link); font-size:16px; font-weight:500; line-height:1.5; padding:8px 0; white-space:nowrap; border-bottom:2px solid var(--link)">Revision</a>
+              <a href="QuickMaths.dc.html" style="color:var(--ink); font-size:16px; font-weight:500; line-height:1.5; padding:8px 0; white-space:nowrap" style-hover="color:var(--link)">Quick Maths</a>
+              <a href="Gaming.dc.html" style="color:var(--ink); font-size:16px; font-weight:500; line-height:1.5; padding:8px 0; white-space:nowrap" style-hover="color:var(--link)">Gaming &amp; Story Maths</a>
+            </nav>
+          </div>
+          <div style="display:flex; align-items:center; gap:14px">
+            <button onClick="{{ toggleTheme }}" aria-label="Switch between light and dark mode" style="width:44px; height:44px; flex-shrink:0; border:1px solid var(--border); border-radius:12px; background:var(--card); color:var(--muted); cursor:pointer; display:inline-flex; align-items:center; justify-content:center" style-hover="background:var(--tint)">
+              <sc-if value="{{ isLight }}" hint-placeholder-val="{{ true }}"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M14.5 10.8A6 6 0 0 1 7.2 3.5a6 6 0 1 0 7.3 7.3z"></path></svg></sc-if>
+              <sc-if value="{{ isDark }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="9" r="3.6"></circle><line x1="9" y1="1.5" x2="9" y2="3.5"></line><line x1="9" y1="14.5" x2="9" y2="16.5"></line><line x1="1.5" y1="9" x2="3.5" y2="9"></line><line x1="14.5" y1="9" x2="16.5" y2="9"></line><line x1="3.7" y1="3.7" x2="5.1" y2="5.1"></line><line x1="12.9" y1="12.9" x2="14.3" y2="14.3"></line><line x1="3.7" y1="14.3" x2="5.1" y2="12.9"></line><line x1="12.9" y1="5.1" x2="14.3" y2="3.7"></line></svg></sc-if>
+            </button>
+            <button onClick="{{ toggleMenu }}" aria-label="Menu" aria-expanded="{{ menuOpen }}" style="display:var(--mob-disp, none); width:44px; height:44px; border:none; background:transparent; color:var(--ink); cursor:pointer; align-items:center; justify-content:center; border-radius:12px" style-hover="background:var(--tint)"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="3" y1="5.5" x2="17" y2="5.5"></line><line x1="3" y1="10" x2="17" y2="10"></line><line x1="3" y1="14.5" x2="17" y2="14.5"></line></svg></button>
+          </div>
+        </div>
+        <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+          <nav aria-label="Mobile" style="display:flex; flex-direction:column; padding:8px 16px 16px; border-top:1px solid var(--border)">
+            <a href="Browse.dc.html" style="color:var(--ink); font-size:16px; font-weight:500; padding:12px 0">Learn Maths</a>
+            <a href="Pathway.dc.html" style="color:var(--link); font-size:16px; font-weight:600; padding:12px 0">Revision</a>
+            <a href="QuickMaths.dc.html" style="color:var(--ink); font-size:16px; font-weight:500; padding:12px 0">Quick Maths</a>
+            <a href="Gaming.dc.html" style="color:var(--ink); font-size:16px; font-weight:500; padding:12px 0">Gaming &amp; Story Maths</a>
+          </nav>
+        </sc-if>
+      </header>
+
+      <div style="flex:1; max-width:1264px; margin:0 auto; padding:48px var(--pad-x) var(--sec-y); box-sizing:border-box; width:100%">
+        <nav aria-label="Breadcrumb" style="font-size:14px; line-height:1.5; color:var(--muted)">
+          <a href="Pathway.dc.html" style="color:var(--muted)" style-hover="color:var(--link)">Revision</a>
+          <span aria-hidden="true" style="margin:0 8px">›</span>
+          <span style="color:var(--ink)">Past papers</span>
+        </nav>
+        <h1 style="margin:20px 0 0; font-size:var(--h1); line-height:1.3; font-weight:600">Past papers</h1>
+        <p style="margin:12px 0 0; max-width:640px; font-size:16px; line-height:1.5; color:var(--muted)">Every Edexcel paper, uploaded as free PDFs with mark schemes — plus the practice worksheets that match what came up. AQA and OCR papers will follow once the mapping is verified.</p>
+
+        <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-top:32px; padding:16px 20px; border:1px solid var(--border); border-radius:12px; background:var(--card)">
+          <div role="group" aria-label="Tier" style="display:inline-flex; border:1px solid var(--border); border-radius:10px; overflow:hidden">
+            <sc-for list="{{ tierChips }}" as="c" hint-placeholder-count="2">
+              <button onClick="{{ c.pick }}" aria-pressed="{{ c.on }}" style="{{ c.style }}" style-hover="background:var(--tint)">{{ c.name }}</button>
+            </sc-for>
+          </div>
+          <div role="group" aria-label="Exam series" style="display:inline-flex; border:1px solid var(--border); border-radius:10px; overflow:hidden">
+            <sc-for list="{{ seriesChips }}" as="c" hint-placeholder-count="4">
+              <button onClick="{{ c.pick }}" aria-pressed="{{ c.on }}" style="{{ c.style }}" style-hover="background:var(--tint)">{{ c.name }}</button>
+            </sc-for>
+          </div>
+          <div role="group" aria-label="Paper" style="display:inline-flex; border:1px solid var(--border); border-radius:10px; overflow:hidden">
+            <sc-for list="{{ paperChips }}" as="c" hint-placeholder-count="4">
+              <button onClick="{{ c.pick }}" aria-pressed="{{ c.on }}" style="{{ c.style }}" style-hover="background:var(--tint)">{{ c.name }}</button>
+            </sc-for>
+          </div>
+          <span style="margin-left:auto; font-size:14px; line-height:1.5; color:var(--muted)">{{ countLabel }}</span>
+        </div>
+
+        <sc-for list="{{ groups }}" as="g" hint-placeholder-count="3">
+          <div style="margin-top:40px">
+            <h2 style="margin:0; font-size:var(--h2); line-height:1.3; font-weight:600">{{ g.name }}</h2>
+            <div style="margin-top:16px; border:1px solid var(--border); border-radius:12px; background:var(--card); padding:0 28px">
+              <sc-for list="{{ g.rows }}" as="r" hint-placeholder-count="3">
+                <div style="display:flex; align-items:center; gap:20px; padding:20px 0; border-bottom:1px solid var(--border); flex-wrap:wrap">
+                  <div style="flex:1; min-width:220px">
+                    <div style="font-size:16px; line-height:1.5; font-weight:600">{{ r.title }}</div>
+                    <div style="font-size:14px; line-height:1.5; color:var(--muted); margin-top:2px">{{ r.meta }}</div>
+                    <sc-if value="{{ r.hasWorksheets }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:10px">
+                        <span style="font-size:12px; line-height:1.5; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--muted)">Practise what came up</span>
+                        <sc-for list="{{ r.worksheets }}" as="w" hint-placeholder-count="2">
+                          <a href="Browse.dc.html" style="display:inline-flex; align-items:center; height:28px; padding:0 10px; border-radius:100px; border:1px solid var(--border); font-size:12px; font-weight:500; color:var(--muted); background:var(--card)" style-hover="background:var(--tint); color:var(--link)">{{ w.name }}</a>
+                        </sc-for>
+                      </div>
+                    </sc-if>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap">
+                    <a href="https://mathswithmelissa.co.uk/revision/edexcel/" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:8px; height:40px; padding:0 16px; border-radius:12px; border:1px solid var(--link); color:var(--link); font-size:14px; font-weight:600; background:var(--card); white-space:nowrap" style-hover="background:var(--tint)"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8M4.5 6.5L8 10l3.5-3.5"></path><line x1="3" y1="13" x2="13" y2="13"></line></svg>Question paper<span style="font-weight:400; color:var(--muted)">{{ r.qpSize }}</span></a>
+                    <sc-if value="{{ r.hasMs }}" hint-placeholder-val="{{ true }}">
+                      <a href="https://mathswithmelissa.co.uk/revision/edexcel/" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:8px; height:40px; padding:0 16px; border-radius:12px; border:1px solid var(--border); color:var(--ink); font-size:14px; font-weight:600; background:var(--card); white-space:nowrap" style-hover="background:var(--tint)"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8M4.5 6.5L8 10l3.5-3.5"></path><line x1="3" y1="13" x2="13" y2="13"></line></svg>Mark scheme<span style="font-weight:400; color:var(--muted)">{{ r.msSize }}</span></a>
+                    </sc-if>
+                    <sc-if value="{{ r.noMs }}" hint-placeholder-val="{{ false }}">
+                      <span style="font-size:14px; line-height:1.5; color:var(--muted)">Mark scheme coming soon</span>
+                    </sc-if>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+
+        <div style="margin-top:48px; background:var(--tint); border-radius:12px; padding:28px 32px; display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap">
+          <p style="margin:0; font-size:18px; line-height:1.5; font-weight:600">Not sure where to start? The revision pathway puts topics in order first.</p>
+          <a href="Pathway.dc.html" style="display:inline-flex; align-items:center; justify-content:center; height:48px; padding:0 28px; border-radius:16px; background:var(--action); color:#FFFFFF; font-size:14px; font-weight:600; white-space:nowrap" style-hover="background:var(--action-hover); color:#FFFFFF">Start the pathway</a>
+        </div>
+      </div>
+
+      <footer style="background:var(--band)">
+        <div style="max-width:1200px; margin:0 auto; padding:56px var(--pad-x) 0">
+          <div style="display:flex; justify-content:space-between; gap:64px; align-items:flex-start; flex-wrap:wrap">
+            <img src="assets/logo-white.svg" alt="Maths with Melissa" style="display:block; height:48px; width:auto">
+            <div style="display:flex; gap:32px; flex-wrap:wrap">
+              <a href="Browse.dc.html" style="color:var(--on-band); font-size:16px; line-height:1.5" style-hover="color:#F9E8EE" style-focus="outline:2px solid #F9E8EE; outline-offset:2px">Learn Maths</a>
+              <a href="Pathway.dc.html" style="color:var(--on-band); font-size:16px; line-height:1.5" style-hover="color:#F9E8EE" style-focus="outline:2px solid #F9E8EE; outline-offset:2px">Revision</a>
+              <a href="QuickMaths.dc.html" style="color:var(--on-band); font-size:16px; line-height:1.5" style-hover="color:#F9E8EE" style-focus="outline:2px solid #F9E8EE; outline-offset:2px">Quick Maths</a>
+              <a href="Gaming.dc.html" style="color:var(--on-band); font-size:16px; line-height:1.5" style-hover="color:#F9E8EE" style-focus="outline:2px solid #F9E8EE; outline-offset:2px">Gaming &amp; Story Maths</a>
+              <a href="https://www.youtube.com/@mathswithmelissa" target="_blank" rel="noopener" style="color:var(--on-band); font-size:16px; line-height:1.5" style-hover="color:#F9E8EE" style-focus="outline:2px solid #F9E8EE; outline-offset:2px">Subscribe on YouTube</a>
+            </div>
+          </div>
+          <div style="border-top:1px solid var(--band-border); margin-top:40px; padding:24px 0 32px; display:flex; justify-content:space-between; align-items:center">
+            <span style="font-size:14px; line-height:1.5; color:var(--on-band-muted)">© 2026 Maths with Melissa</span>
+            <a href="mailto:hello@mathswithmelissa.co.uk" style="color:var(--on-band-muted); font-size:14px; line-height:1.5" style-hover="color:#FFFFFF" style-focus="outline:2px solid #F9E8EE; outline-offset:2px">hello@mathswithmelissa.co.uk</a>
+          </div>
+        </div>
+      </footer>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    dark: typeof localStorage !== 'undefined' && localStorage.getItem('mwm-theme') === 'dark',
+    menuOpen: false,
+    tier: 'Higher', series: 'All', paper: 'All',
+  };
+  DARK = {
+    '--surface': '#171717', '--card': '#211D1F', '--tint': '#271D22', '--border': '#4A353D',
+    '--ink': '#FFFFFF', '--muted': '#BBAFB5', '--action': '#C2185B', '--action-hover': '#E0447F',
+    '--link': '#F088B0', '--link-hover': '#F7ABC8', '--band': '#0D0D0D',
+    '--shadow': 'rgba(0,0,0,0.5)',
+  };
+  SERIES = ['June 2025', 'November 2024', 'June 2024'];
+  PAPERS = [
+    { series: 'June 2025', paper: 1, calc: 'non-calculator', qp: '1.1 MB', ms: '640 KB', worksheets: { Higher: ['Simultaneous equations', 'Surds'], Foundation: ['Fractions of amounts', 'Perimeter and area'] } },
+    { series: 'June 2025', paper: 2, calc: 'calculator', qp: '1.3 MB', ms: '710 KB', worksheets: { Higher: ['Percentage change', 'Tree diagrams'], Foundation: ['Percentages of amounts', 'Averages'] } },
+    { series: 'June 2025', paper: 3, calc: 'calculator', qp: '1.2 MB', ms: '580 KB', worksheets: { Higher: ['Vectors', 'Histograms'], Foundation: ['Volume of a cuboid', 'Sharing in a ratio'] } },
+    { series: 'November 2024', paper: 1, calc: 'non-calculator', qp: '1.0 MB', ms: '620 KB', worksheets: { Higher: ['Expanding and factorising', 'Standard form'], Foundation: ['Place value and rounding'] } },
+    { series: 'November 2024', paper: 2, calc: 'calculator', qp: '1.2 MB', ms: '660 KB', worksheets: { Higher: ['Trigonometry', 'Direct proportion'], Foundation: ['Converting units'] } },
+    { series: 'November 2024', paper: 3, calc: 'calculator', qp: '1.1 MB', ms: null, worksheets: { Higher: ['Circle theorems', 'Cumulative frequency'], Foundation: ['Probability basics'] } },
+    { series: 'June 2024', paper: 1, calc: 'non-calculator', qp: '1.1 MB', ms: '600 KB', worksheets: { Higher: ['Inequalities', 'Bounds'], Foundation: ['Rounding decimals'] } },
+    { series: 'June 2024', paper: 2, calc: 'calculator', qp: '1.2 MB', ms: '690 KB', worksheets: { Higher: ['Quadratic simultaneous equations', 'Sine and cosine rules'], Foundation: ['Circumference of a circle'] } },
+    { series: 'June 2024', paper: 3, calc: 'calculator', qp: '1.0 MB', ms: '570 KB', worksheets: { Higher: ['Pythagoras\u2019 theorem', 'Venn diagrams'], Foundation: ['Area of equal shapes'] } },
+  ];
+  setTheme(dark) {
+    localStorage.setItem('mwm-theme', dark ? 'dark' : 'light');
+    this.setState({ dark });
+  }
+  chip(name, on, pick, i) {
+    const base = 'white-space:nowrap; height:40px; padding:0 16px; border:none; font-family:inherit; font-size:14px; cursor:pointer;' + (i > 0 ? ' border-left:1px solid var(--border);' : '');
+    return {
+      name, on, pick,
+      style: base + (on ? ' background:var(--tint); font-weight:600; color:var(--link)' : ' background:var(--card); font-weight:500; color:var(--muted)'),
+    };
+  }
+  renderVals() {
+    const { dark, tier, series, paper } = this.state;
+    const code = tier === 'Higher' ? 'H' : 'F';
+    const filtered = this.PAPERS.filter(p =>
+      (series === 'All' || p.series === series) &&
+      (paper === 'All' || p.paper === Number(paper))
+    );
+    const groups = this.SERIES
+      .filter(s => filtered.some(p => p.series === s))
+      .map(s => ({
+        name: s + ' · ' + tier,
+        rows: filtered.filter(p => p.series === s).map(p => ({
+          title: 'Paper ' + p.paper + ' (' + p.calc + ')',
+          meta: '1MA1/' + p.paper + code + ' · 80 marks · 1 hour 30 minutes',
+          qpSize: 'PDF · ' + p.qp,
+          hasMs: !!p.ms, noMs: !p.ms,
+          msSize: p.ms ? 'PDF · ' + p.ms : '',
+          hasWorksheets: (p.worksheets[tier] || []).length > 0,
+          worksheets: (p.worksheets[tier] || []).map(name => ({ name })),
+        })),
+      }));
+    return {
+      isDark: dark, isLight: !dark,
+      themeVars: dark ? this.DARK : {},
+      toggleTheme: () => this.setTheme(!dark),
+      menuOpen: this.state.menuOpen,
+      toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
+      tierChips: ['Foundation', 'Higher'].map((name, i) => this.chip(name, tier === name, () => this.setState({ tier: name }), i)),
+      seriesChips: ['All', ...this.SERIES].map((name, i) => this.chip(name, series === name, () => this.setState({ series: name }), i)),
+      paperChips: ['All', '1', '2', '3'].map((name, i) => this.chip(name === 'All' ? 'All papers' : 'Paper ' + name, paper === name, () => this.setState({ paper: name }), i)),
+      groups,
+      countLabel: filtered.length === 1 ? '1 paper' : filtered.length + ' papers',
+    };
+  }
+}
+</script>
+</body>
+</html>

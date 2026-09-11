@@ -1,0 +1,13 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "acf/pathway",
+	"title": "Revision pathway",
+	"category": "mwm",
+	"icon": "networking",
+	"description": "Level and board selectors, topic list with ticks, exam and past papers sidebar.",
+	"keywords": [ "mwm" ],
+	"textdomain": "mwm-theme",
+	"acf": { "mode": "preview", "renderTemplate": "render.php" },
+	"supports": { "html": false, "anchor": false, "align": false, "mode": false, "jsx": false, "multiple": false, "customClassName": false }
+}
