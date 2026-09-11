@@ -35,7 +35,7 @@ $strip_id = 'mwm-quick-strip';
 	</div>
 	<div id="<?php echo esc_attr( $strip_id ); ?>" class="mwm-strip">
 		<?php foreach ( $shorts as $s ) : ?>
-			<a href="<?php echo esc_url( $s['youtube_url'] ); ?>" target="_blank" rel="noopener" class="mwm-short mwm-short--band" aria-label="<?php echo esc_attr( 'Watch on YouTube: ' . $s['title'] ); ?>">
+			<a href="<?php echo esc_url( $s['youtube_url'] ); ?>" target="_blank" rel="noopener" class="mwm-short mwm-short--band" aria-label="<?php echo esc_attr( ( $s['youtube_id'] ? 'Play: ' : 'Watch on YouTube: ' ) . $s['title'] ); ?>"<?php echo $s['youtube_id'] ? ' data-short="' . esc_attr( $s['youtube_id'] ) . '" data-short-title="' . esc_attr( $s['title'] ) . '"' : ''; ?>>
 				<span class="mwm-short__thumb" role="img" aria-label="<?php echo esc_attr( $s['alt'] ); ?>"<?php echo $s['thumb'] ? ' style="background-image:url(' . esc_url( $s['thumb'] ) . ')"' : ''; ?>></span>
 				<span class="mwm-short__title"><?php echo esc_html( $s['title'] ); ?></span>
 				<span class="mwm-short__duration"><?php echo esc_html( $s['duration'] ); ?></span>

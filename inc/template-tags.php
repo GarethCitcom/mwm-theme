@@ -125,11 +125,13 @@ function mwm_short_card( array $card, string $variant = 'grid' ): string {
 	if ( $variant === 'band' ) {
 		return '<div class="mwm-short mwm-short--band">' . $thumb . '<span class="mwm-short__title">' . esc_html( $card['title'] ) . '</span><span class="mwm-short__duration">' . esc_html( $card['duration'] ) . '</span></div>';
 	}
-	$url = $card['youtube_url'];
+	$url  = $card['youtube_url'];
+	$play = $card['youtube_id'] ? ' data-short="' . esc_attr( $card['youtube_id'] ) . '" data-short-title="' . esc_attr( $card['title'] ) . '"' : '';
+	$aria = $card['youtube_id'] ? 'Play: ' . $card['title'] : 'Watch on YouTube: ' . $card['title'];
 	if ( $variant === 'row' ) {
-		return '<a href="' . esc_url( $url ) . '" target="_blank" rel="noopener" class="mwm-short mwm-short--row" aria-label="' . esc_attr( 'Watch on YouTube: ' . $card['title'] ) . '">' . $thumb . '<span class="mwm-short__title">' . esc_html( $card['title'] ) . '</span><span class="mwm-short__duration">' . esc_html( $card['duration'] ) . '</span></a>';
+		return '<a href="' . esc_url( $url ) . '" target="_blank" rel="noopener" class="mwm-short mwm-short--row" aria-label="' . esc_attr( $aria ) . '"' . $play . '>' . $thumb . '<span class="mwm-short__title">' . esc_html( $card['title'] ) . '</span><span class="mwm-short__duration">' . esc_html( $card['duration'] ) . '</span></a>';
 	}
-	return '<a href="' . esc_url( $url ) . '" target="_blank" rel="noopener" class="mwm-short mwm-short--grid" aria-label="' . esc_attr( 'Watch on YouTube: ' . $card['title'] ) . '" data-level="' . esc_attr( $card['level_slug'] ) . '">'
+	return '<a href="' . esc_url( $url ) . '" target="_blank" rel="noopener" class="mwm-short mwm-short--grid" aria-label="' . esc_attr( $aria ) . '" data-level="' . esc_attr( $card['level_slug'] ) . '"' . $play . '>'
 		. $thumb
 		. '<span class="mwm-short__title">' . esc_html( $card['title'] ) . '</span>'
 		. '<span class="mwm-short__meta">' . ( $card['topic'] ? mwm_tag( $card['topic'], 'outline', 'mwm-tag--sm' ) : '' ) . '<span class="mwm-short__duration">' . esc_html( $card['duration'] ) . '</span></span>'

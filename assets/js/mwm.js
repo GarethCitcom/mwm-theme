@@ -45,6 +45,46 @@
 		strip.scrollBy({ left: dir * 522, behavior: 'smooth' });
 	});
 
+	/* ---- Shorts lightbox (plays in the page instead of leaving for YouTube) --- */
+	var lightbox = null;
+	function closeIcon() {
+		return '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="5" x2="15" y2="15"></line><line x1="15" y1="5" x2="5" y2="15"></line></svg>';
+	}
+	function openShort(id, title, watchUrl) {
+		if (!lightbox) {
+			lightbox = document.createElement('dialog');
+			lightbox.className = 'mwm-lightbox';
+			lightbox.setAttribute('aria-label', 'Video');
+			lightbox.addEventListener('close', function () { lightbox.querySelector('.mwm-lightbox__frame').innerHTML = ''; });
+			lightbox.addEventListener('click', function (e) {
+				if (e.target === lightbox || e.target.closest('[data-lightbox-close]')) { lightbox.close(); }
+			});
+			document.body.appendChild(lightbox);
+		}
+		var safeTitle = String(title || '').replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; });
+		lightbox.innerHTML = '<div class="mwm-lightbox__box" role="document">' +
+			'<div class="mwm-lightbox__head"><h2 class="mwm-lightbox__title">' + safeTitle + '</h2>' +
+			'<button type="button" class="mwm-iconbtn" aria-label="Close" data-lightbox-close>' + closeIcon() + '</button></div>' +
+			'<div class="mwm-lightbox__frame"></div>' +
+			'<div class="mwm-lightbox__foot"><span class="mwm-meta">Press Esc or the cross to close.</span>' +
+			'<a href="' + watchUrl.replace(/"/g, '&quot;') + '" target="_blank" rel="noopener" class="mwm-arrow">Watch on YouTube<span aria-hidden="true">→</span></a></div></div>';
+		var iframe = document.createElement('iframe');
+		iframe.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(id) + '?autoplay=1&rel=0&playsinline=1';
+		iframe.title = title || 'Video';
+		iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+		iframe.setAttribute('allowfullscreen', '');
+		iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+		lightbox.querySelector('.mwm-lightbox__frame').appendChild(iframe);
+		if (typeof lightbox.showModal === 'function') { lightbox.showModal(); } else { lightbox.setAttribute('open', ''); }
+		lightbox.querySelector('[data-lightbox-close]').focus();
+	}
+	document.addEventListener('click', function (e) {
+		var el = e.target.closest('[data-short]');
+		if (!el) { return; }
+		e.preventDefault();
+		openShort(el.getAttribute('data-short'), el.getAttribute('data-short-title'), el.getAttribute('href') || '#');
+	});
+
 	/* ---- Progress store --------------------------------------------------- */
 	var KEY = 'mwm-progress';
 	var empty = function () { return { ticks: {}, saved: [], completed: [], quizzes: {}, prefs: {} }; };

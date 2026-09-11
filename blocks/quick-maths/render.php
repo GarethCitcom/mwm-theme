@@ -27,7 +27,7 @@ $yt      = mwm_youtube_channel_url();
 </div>
 <div class="mwm-page" data-quick-maths>
 	<?php echo mwm_segmented( [ 'all' => 'All', 'gcse-foundation' => 'GCSE Foundation', 'gcse-higher' => 'GCSE Higher' ], 'all', 'Study level', 'level' ); ?>
-	<div class="mwm-count" data-count><?php echo count( $shorts ); ?> shorts · every one opens on YouTube</div>
+	<div class="mwm-count" data-count><?php echo count( $shorts ); ?> shorts · tap one to play it here</div>
 	<?php if ( $shorts ) : ?>
 		<div class="mwm-shorts-grid" data-grid>
 			<?php foreach ( $shorts as $s ) { echo mwm_short_card( $s, 'grid' ); } ?>

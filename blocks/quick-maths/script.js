@@ -21,7 +21,7 @@
 			var show = level === 'all' || c.getAttribute('data-level') === level;
 			if (show) { n++; c.removeAttribute('hidden'); } else { c.setAttribute('hidden', ''); }
 		});
-		count.textContent = n + ' shorts · every one opens on YouTube';
+		count.textContent = n + ' shorts · tap one to play it here';
 		if (n) { empty.setAttribute('hidden', ''); } else { empty.removeAttribute('hidden'); root.querySelector('[data-empty-title]').textContent = 'No shorts for this level yet'; }
 	});
 })();
