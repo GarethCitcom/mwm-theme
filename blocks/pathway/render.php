@@ -46,7 +46,7 @@ $tier = $level === 'a-level' ? 'A-level' : str_replace( 'GCSE ', '', $level_name
 
 	<h1 class="mwm-h1 mwm-pathway__h1"><?php echo esc_html( $level_name . ' revision pathway' ); ?></h1>
 	<p class="mwm-pathway__line"><?php echo esc_html( $line ); ?></p>
-	<div class="mwm-progress-row">
+	<div class="mwm-progress-row"<?php echo $data ? '' : ' hidden'; ?>>
 		<div class="mwm-progress">
 			<div class="mwm-progress__labels"><span data-progress-label>0 of <?php echo (int) $total; ?> ticked</span><span data-progress-pct>0%</span></div>
 			<div class="mwm-bar"><div class="mwm-bar__fill" data-progress-bar style="width:0%"></div></div>
@@ -105,7 +105,11 @@ $tier = $level === 'a-level' ? 'A-level' : str_replace( 'GCSE ', '', $level_name
 			<?php else : ?>
 				<div class="mwm-empty" style="margin-top:0">
 					<p class="mwm-empty__title">The <?php echo esc_html( $level_name ); ?> pathway is coming soon</p>
-					<p class="mwm-empty__body"><?php echo $level === 'a-level' ? 'Pure, Statistics and Mechanics are being recorded now. The GCSE pathways are ready to use.' : 'Topics are being lined up now. The other pathways are ready to use.'; ?></p>
+					<?php
+					$others = array_filter( array_keys( mwm_levels() ), static fn( $l ) => $l !== $level && mwm_find_pathway( $l ) );
+					$tail   = $others ? ' The ' . implode( ' and ', array_map( 'mwm_level_name', $others ) ) . ( count( $others ) > 1 ? ' pathways are' : ' pathway is' ) . ' ready to use.' : ' Every lesson is already on Learn Maths in the meantime.';
+					?>
+					<p class="mwm-empty__body"><?php echo esc_html( ( $level === 'a-level' ? 'Pure, Statistics and Mechanics are being recorded now.' : 'Topics are being lined up now.' ) . $tail ); ?></p>
 				</div>
 			<?php endif; ?>
 		</div>
