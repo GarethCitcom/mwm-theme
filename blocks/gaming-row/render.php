@@ -13,8 +13,13 @@ $sub     = mwm_field( 'sub', 'Maths inside Roblox, Minecraft and stories, each m
 $link    = mwm_field( 'link_label', 'See all' );
 $count   = (int) mwm_field( 'count', 4 );
 $cards   = mwm_query_lessons( [ 'format' => 'gaming', 'per_page' => $count ] );
+$shorts  = [];
 if ( ! $cards ) {
-	return;
+	// No lesson-length gaming videos yet: show the latest Roblox/Minecraft/Story shorts instead.
+	$shorts = mwm_query_lessons( [ 'format' => 'short', 'theme' => [ 'roblox', 'minecraft', 'story' ], 'per_page' => 6 ] );
+	if ( ! $shorts ) {
+		return;
+	}
 }
 ?>
 <section id="gaming" class="mwm-section" aria-labelledby="mwm-gaming-title">
@@ -25,7 +30,13 @@ if ( ! $cards ) {
 		</div>
 		<?php echo mwm_arrow_link( mwm_page_url( 'gaming' ), $link ); ?>
 	</div>
-	<div class="mwm-gaming-grid">
-		<?php foreach ( $cards as $card ) { echo mwm_gaming_card( $card ); } ?>
-	</div>
+	<?php if ( $cards ) : ?>
+		<div class="mwm-gaming-grid">
+			<?php foreach ( $cards as $card ) { echo mwm_gaming_card( $card ); } ?>
+		</div>
+	<?php else : ?>
+		<div class="mwm-shorts-grid mwm-shorts-grid--row" style="margin-top:40px">
+			<?php foreach ( $shorts as $s ) { echo mwm_short_card( $s, 'grid' ); } ?>
+		</div>
+	<?php endif; ?>
 </section>

@@ -19,7 +19,8 @@
 			var show = theme === 'all' || it.getAttribute('data-theme') === theme;
 			if (show) { n++; it.style.display = 'contents'; } else { it.style.display = 'none'; }
 		});
-		root.querySelector('[data-count]').textContent = n === 1 ? '1 video' : n + ' videos';
+		var noun = root.getAttribute('data-noun') || 'video';
+		root.querySelector('[data-count]').textContent = (n === 1 ? '1 ' + noun : n + ' ' + noun + 's') + (noun === 'short' ? ' · tap one to play it here' : '');
 		var empty = root.querySelector('[data-empty]');
 		if (n) { empty.setAttribute('hidden', ''); } else { empty.removeAttribute('hidden'); root.querySelector('[data-empty-theme]').textContent = chip.textContent.trim(); }
 	});
