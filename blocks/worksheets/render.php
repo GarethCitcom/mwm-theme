@@ -36,6 +36,7 @@ foreach ( $levels as $slug => $l ) {
 	</div>
 	<div class="mwm-count" data-count><?php echo $result['total'] === 1 ? '1 worksheet' : $result['total'] . ' worksheets'; ?></div>
 
+	<h2 class="screen-reader-text">Worksheets</h2>
 	<div class="mwm-grid3 mwm-grid3--28" data-grid<?php echo $result['items'] ? '' : ' hidden'; ?>>
 		<?php foreach ( $result['items'] as $w ) { echo mwm_worksheet_card( $w ); } ?>
 	</div>

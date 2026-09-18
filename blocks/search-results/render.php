@@ -26,6 +26,7 @@ $total = $wp_query ? (int) $wp_query->found_posts : count( $cards );
 	<h1 class="mwm-h1"><?php echo $q ? 'Results for “' . esc_html( $q ) . '”' : 'Search lessons'; ?></h1>
 	<p class="mwm-intro"><?php echo $q ? esc_html( $total === 1 ? '1 lesson' : $total . ' lessons' ) . ' matched. Try a topic name, like “fractions” or “vectors”.' : 'Type a topic, like “fractions” or “vectors”, into the search box above.'; ?></p>
 	<?php if ( $cards ) : ?>
+		<h2 class="screen-reader-text">Results</h2>
 		<div class="mwm-grid3 mwm-grid3--32">
 			<?php foreach ( $cards as $c ) { echo mwm_video_card( $c ); } ?>
 		</div>

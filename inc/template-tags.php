@@ -62,10 +62,53 @@ function mwm_button( string $url, string $text, string $style = 'primary', array
 /**
  * 16:9 thumbnail area. Shows a "thumbnail to follow" placeholder when the lesson has no image yet.
  */
+/**
+ * A responsive thumbnail <img>. YouTube thumbnails get a srcset of the small sizes (320/480/640 wide) instead of the
+ * 1280px "maxres" file, which cut listing pages from ~2.5 MB to a few hundred KB. The first three thumbnails on a
+ * page load eagerly with high priority (they are usually the LCP element); the rest lazy-load.
+ *
+ * @param string $sizes The CSS sizes attribute; defaults to a 3-column card.
+ */
+function mwm_thumb_img( string $src, string $alt, string $sizes = '(max-width: 700px) calc(100vw - 32px), 380px', array $attrs = [] ): string {
+	static $rendered = 0;
+	$rendered++;
+	$eager  = $rendered <= 3 && ! wp_is_json_request() && ! ( defined( 'REST_REQUEST' ) && REST_REQUEST );
+	$a      = [ 'alt' => $alt, 'decoding' => 'async' ] + $attrs;
+	if ( preg_match( '~i\.ytimg\.com/vi/([\w-]{11})/~', $src, $m ) ) {
+		$id            = $m[1];
+		$a['src']      = mwm_youtube_thumb( $id, 'hqdefault' );
+		// Cards stop at 480w: sddefault is 4:3 with letterbox bars, so on phones it mostly downloads pixels that get cropped.
+		$a['srcset']   = mwm_youtube_thumb( $id, 'mqdefault' ) . ' 320w, ' . mwm_youtube_thumb( $id, 'hqdefault' ) . ' 480w' . ( $attrs['maxres'] ?? false ? ', ' . mwm_youtube_thumb( $id, 'sddefault' ) . ' 640w, ' . $src . ' 1280w' : '' );
+		$a['sizes']    = $sizes;
+		$a['width']    = $a['width'] ?? '480';
+		$a['height']   = $a['height'] ?? '270';
+	} else {
+		$a['src'] = $src;
+	}
+	unset( $a['maxres'] );
+	if ( $eager ) {
+		$a['fetchpriority'] = 'high';
+	} else {
+		$a['loading'] = 'lazy';
+	}
+	$html = '<img';
+	foreach ( $a as $k => $v ) {
+		$html .= ' ' . $k . '="' . ( $k === 'src' || $k === 'srcset' ? esc_attr( $v ) : esc_attr( $v ) ) . '"';
+	}
+	return $html . '>';
+}
+
+/**
+ * A small (480px) version of a YouTube thumbnail URL, for tiny background-image thumbs.
+ */
+function mwm_thumb_small( string $url ): string {
+	return preg_replace( '~/(maxresdefault|sddefault)\.jpg$~', '/hqdefault.jpg', $url );
+}
+
 function mwm_thumb( array $card, bool $link = true, string $class = '' ): string {
 	$cls = 'mwm-thumb' . ( $class ? ' ' . esc_attr( $class ) : '' );
 	if ( $card['thumb'] ) {
-		$inner = '<img src="' . esc_url( $card['thumb'] ) . '" alt="' . esc_attr( $card['alt'] ) . '" loading="lazy" decoding="async">';
+		$inner = mwm_thumb_img( $card['thumb'], $card['alt'] );
 		return $link
 			? '<a href="' . esc_url( $card['url'] ) . '" class="' . $cls . '" tabindex="-1" aria-hidden="true">' . $inner . '</a>'
 			: '<div class="' . $cls . '">' . $inner . '</div>';
@@ -79,7 +122,7 @@ function mwm_thumb( array $card, bool $link = true, string $class = '' ): string
  */
 function mwm_video_card( array $card ): string {
 	$media = $card['is_short']
-		? '<a href="' . esc_url( $card['url'] ) . '" class="mwm-thumb mwm-thumb--short-in-wide" tabindex="-1" aria-hidden="true"><img src="' . esc_url( $card['thumb'] ) . '" alt="" loading="lazy" decoding="async"></a>'
+		? '<a href="' . esc_url( $card['url'] ) . '" class="mwm-thumb mwm-thumb--short-in-wide" tabindex="-1" aria-hidden="true">' . mwm_thumb_img( $card['thumb'], '' ) . '</a>'
 		: mwm_thumb( $card );
 	$topic_tag = $card['topic'] ? mwm_tag( $card['topic'], 'outline' ) : '';
 	return '<article class="mwm-card mwm-card--video" data-id="' . (int) $card['id'] . '">'
@@ -110,7 +153,7 @@ function mwm_gaming_card( array $card, string $meta_style = 'duration' ): string
  */
 function mwm_worksheet_card( array $w ): string {
 	$media = $w['thumb']
-		? '<a href="' . esc_url( $w['url'] ) . '" class="mwm-thumb" tabindex="-1" aria-hidden="true"><img src="' . esc_url( $w['thumb'] ) . '" alt="" loading="lazy" decoding="async"></a>'
+		? '<a href="' . esc_url( $w['url'] ) . '" class="mwm-thumb" tabindex="-1" aria-hidden="true">' . mwm_thumb_img( $w['thumb'], '' ) . '</a>'
 		: '<a href="' . esc_url( $w['url'] ) . '" class="mwm-thumb mwm-thumb--doc" tabindex="-1" aria-hidden="true"><span class="mwm-thumb__doc">' . mwm_icon( 'worksheet', 28 ) . '<span>PDF</span></span></a>';
 	return '<article class="mwm-card mwm-card--worksheet" data-id="' . (int) $w['id'] . '" data-level="' . esc_attr( $w['level_slug'] ) . '" data-topic="' . esc_attr( $w['topic_slug'] ) . '">'
 		. $media
@@ -137,7 +180,8 @@ function mwm_related_card( array $card ): string {
  * 9:16 short card. Variants: 'grid' (Quick Maths page, with topic + duration), 'band' (ink strip), 'row' (Gaming page).
  */
 function mwm_short_card( array $card, string $variant = 'grid' ): string {
-	$thumb = '<span class="mwm-short__thumb" role="img" aria-label="' . esc_attr( $card['alt'] ) . '"' . ( $card['thumb'] ? ' style="background-image:url(' . esc_url( $card['thumb'] ) . ')"' : '' ) . '></span>';
+	// The title is visible text on every variant, so the thumbnail is decorative (an accessible name that differs from the visible text confuses voice control).
+	$thumb = '<span class="mwm-short__thumb">' . ( $card['thumb'] ? mwm_thumb_img( $card['thumb'], '', '(max-width: 700px) 45vw, 190px' ) : '<span aria-hidden="true"></span>' ) . '</span>';
 	if ( $variant === 'band' ) {
 		return '<div class="mwm-short mwm-short--band">' . $thumb . '<span class="mwm-short__title">' . esc_html( $card['title'] ) . '</span><span class="mwm-short__duration">' . esc_html( $card['duration'] ) . '</span></div>';
 	}
@@ -145,9 +189,9 @@ function mwm_short_card( array $card, string $variant = 'grid' ): string {
 	$play = $card['youtube_id'] ? ' data-short="' . esc_attr( $card['youtube_id'] ) . '" data-short-title="' . esc_attr( $card['title'] ) . '"' : '';
 	$aria = $card['youtube_id'] ? 'Play: ' . $card['title'] : 'Watch on YouTube: ' . $card['title'];
 	if ( $variant === 'row' ) {
-		return '<a href="' . esc_url( $url ) . '" target="_blank" rel="noopener" class="mwm-short mwm-short--row" aria-label="' . esc_attr( $aria ) . '"' . $play . '>' . $thumb . '<span class="mwm-short__title">' . esc_html( $card['title'] ) . '</span><span class="mwm-short__duration">' . esc_html( $card['duration'] ) . '</span></a>';
+		return '<a href="' . esc_url( $url ) . '" target="_blank" rel="noopener" class="mwm-short mwm-short--row"' . $play . '>' . $thumb . '<span class="mwm-short__title">' . esc_html( $card['title'] ) . '</span><span class="mwm-short__duration">' . esc_html( $card['duration'] ) . '</span></a>';
 	}
-	return '<a href="' . esc_url( $url ) . '" target="_blank" rel="noopener" class="mwm-short mwm-short--grid" aria-label="' . esc_attr( $aria ) . '" data-level="' . esc_attr( $card['level_slug'] ) . '"' . $play . '>'
+	return '<a href="' . esc_url( $url ) . '" target="_blank" rel="noopener" class="mwm-short mwm-short--grid" data-level="' . esc_attr( $card['level_slug'] ) . '"' . $play . '>'
 		. $thumb
 		. '<span class="mwm-short__title">' . esc_html( $card['title'] ) . '</span>'
 		. '<span class="mwm-short__meta">' . ( $card['topic'] ? mwm_tag( $card['topic'], 'outline', 'mwm-tag--sm' ) : '' ) . '<span class="mwm-short__duration">' . esc_html( $card['duration'] ) . '</span></span>'
@@ -182,7 +226,7 @@ function mwm_chip( string $label, bool $on, array $data = [], string $size = 'lg
  * Breadcrumb trail. Items: [ ['label'=>..,'url'=>..], ... ]; the last item is the current page.
  */
 function mwm_breadcrumb( array $items, string $aria = 'Breadcrumb' ): string {
-	$out  = '<nav aria-label="' . esc_attr( $aria ) . '" class="mwm-crumbs">';
+	$out  = '<nav class="mwm-crumbs">';
 	$last = count( $items ) - 1;
 	foreach ( $items as $i => $it ) {
 		if ( $i > 0 ) {

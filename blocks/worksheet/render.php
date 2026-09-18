@@ -95,7 +95,7 @@ $pdf  = $w['pdf'];
 				<h2 class="mwm-panel__h2">Goes with the lesson</h2>
 				<?php if ( $lesson ) : ?>
 					<a href="<?php echo esc_url( $lesson['url'] ); ?>" class="mwm-lesson-mini">
-						<span class="mwm-lesson-mini__thumb"<?php echo $lesson['thumb'] ? ' style="background-image:url(' . esc_url( $lesson['thumb'] ) . ')"' : ''; ?>></span>
+						<span class="mwm-lesson-mini__thumb"<?php echo $lesson['thumb'] ? ' style="background-image:url(' . esc_url( mwm_thumb_small( $lesson['thumb'] ) ) . ')"' : ''; ?>></span>
 						<span class="mwm-lesson-mini__title"><?php echo esc_html( $lesson['title'] ); ?><span class="mwm-lesson-mini__meta"><?php echo esc_html( trim( $lesson['level'] . ' · ' . $lesson['duration'], ' ·' ) ); ?></span></span>
 					</a>
 					<?php echo mwm_arrow_link( $lesson['url'], 'Watch the lesson', 'mwm-arrow--mt16' ); ?>

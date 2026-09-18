@@ -13,6 +13,7 @@ require_once MWM_THEME_DIR . '/inc/icons.php';
 require_once MWM_THEME_DIR . '/inc/template-tags.php';
 require_once MWM_THEME_DIR . '/inc/blocks.php';
 require_once MWM_THEME_DIR . '/inc/block-fields.php';
+require_once MWM_THEME_DIR . '/inc/seo.php';
 
 add_action( 'after_setup_theme', static function () {
 	add_theme_support( 'title-tag' );

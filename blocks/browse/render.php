@@ -137,6 +137,7 @@ $sub_visible = $topic ? array_slice( $topic['subtopics'], 0, 8 ) : [];
 		<button type="button" class="mwm-clear" data-clear<?php echo $any_filter ? '' : ' hidden'; ?>>Clear all</button>
 	</div>
 
+	<h2 class="screen-reader-text">Lessons</h2>
 	<div class="mwm-grid3 mwm-grid3--32" data-grid<?php echo $results ? '' : ' hidden'; ?>>
 		<?php foreach ( $results as $c ) { echo mwm_video_card( $c ); } ?>
 	</div>

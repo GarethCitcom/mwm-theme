@@ -33,7 +33,7 @@ $signed_in    = is_user_logged_in();
 	<div class="mwm-cols__main">
 		<div class="mwm-player<?php echo $card['is_short'] ? ' mwm-player--short' : ''; ?>" data-player data-embed="<?php echo esc_attr( $embed ); ?>">
 			<?php if ( $card['thumb'] ) : ?>
-				<img src="<?php echo esc_url( $card['thumb'] ); ?>" alt="<?php echo esc_attr( $card['alt'] ); ?>" width="1280" height="720" decoding="async">
+				<?php echo mwm_thumb_img( $card['thumb'], $card['alt'], '(max-width: 1000px) 100vw, 800px', [ 'width' => '1280', 'height' => '720', 'maxres' => str_contains( $card['thumb'], 'maxresdefault' ) ] ); ?>
 			<?php else : ?>
 				<span class="mwm-player__poster"></span>
 			<?php endif; ?>

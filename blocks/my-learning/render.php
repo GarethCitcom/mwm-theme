@@ -128,7 +128,7 @@ foreach ( array_reverse( (array) $progress['saved'] ) as $lid ) {
 			<h2 class="mwm-panel__h2">Saved lessons</h2>
 			<?php if ( $saved ) : ?>
 				<?php foreach ( $saved as $c ) : ?>
-					<a href="<?php echo esc_url( $c['url'] ); ?>" class="mwm-ml__saved"><span class="mwm-ml__thumb"<?php echo $c['thumb'] ? ' style="background-image:url(' . esc_url( $c['thumb'] ) . ')"' : ''; ?>></span><span class="mwm-ml__savedtitle"><?php echo esc_html( $c['title'] ); ?></span></a>
+					<a href="<?php echo esc_url( $c['url'] ); ?>" class="mwm-ml__saved"><span class="mwm-ml__thumb"<?php echo $c['thumb'] ? ' style="background-image:url(' . esc_url( mwm_thumb_small( $c['thumb'] ) ) . ')"' : ''; ?>></span><span class="mwm-ml__savedtitle"><?php echo esc_html( $c['title'] ); ?></span></a>
 				<?php endforeach; ?>
 			<?php else : ?>
 				<p class="mwm-ml__empty">Nothing saved yet — press Save on any lesson to keep it here.</p>

@@ -15,7 +15,7 @@ if ( ! mwm_core_active() ) {
 			<div class="mwm-level">
 				<div>
 					<div class="mwm-level__num"><?php echo esc_html( $level['number'] ); ?></div>
-					<h3 class="mwm-level__title"><?php echo esc_html( $level['name'] ); ?></h3>
+					<h2 class="mwm-level__title"><?php echo esc_html( $level['name'] ); ?></h2>
 					<p class="mwm-level__blurb"><?php echo esc_html( $level['blurb'] ); ?></p>
 				</div>
 				<a href="<?php echo esc_url( mwm_browse_url( $slug ) ); ?>" class="mwm-level__go" aria-label="<?php echo esc_attr( 'Browse ' . $level['name'] ); ?>"><span aria-hidden="true">→</span></a>

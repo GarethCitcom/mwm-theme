@@ -3464,3 +3464,37 @@ a.mwm-pw-row__title:hover {
 		transition: none;
 	}
 }
+
+/* Short thumbnails are real <img>s now (responsive srcset) inside the 9:16 frame */
+.mwm-short__thumb {
+	overflow: hidden;
+}
+.mwm-short__thumb img,
+.mwm-short__thumb > span {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+/* Links inside running text stay visibly links */
+.mwm-controls__note a,
+.mwm-lesson__body a,
+.mwm-empty__body a {
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+/* Headings that exist for screen readers and document outline only */
+.screen-reader-text {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	clip-path: inset(50%);
+	white-space: nowrap;
+	border: 0;
+}
