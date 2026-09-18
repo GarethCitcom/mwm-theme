@@ -64,11 +64,14 @@ $icon_dl = mwm_icon( 'download', 14 );
 				<button type="button" class="mwm-group__btn<?php echo $tier === $k ? ' is-on' : ''; ?>" aria-pressed="<?php echo $tier === $k ? 'true' : 'false'; ?>" data-filter="tier" data-value="<?php echo esc_attr( $k ); ?>"><?php echo esc_html( $label ); ?></button>
 			<?php endforeach; ?>
 		</div>
-		<div role="group" aria-label="Exam series" class="mwm-group">
-			<?php foreach ( array_merge( [ 'All' ], $series ) as $s ) : ?>
-				<button type="button" class="mwm-group__btn<?php echo $series_sel === $s ? ' is-on' : ''; ?>" aria-pressed="<?php echo $series_sel === $s ? 'true' : 'false'; ?>" data-filter="series" data-value="<?php echo esc_attr( $s ); ?>"><?php echo esc_html( $s ); ?></button>
-			<?php endforeach; ?>
-		</div>
+		<label class="mwm-select-label">Series
+			<select class="mwm-select" data-filter-select="series">
+				<option value="All"<?php selected( $series_sel, 'All' ); ?>>All series</option>
+				<?php foreach ( $series as $s ) : ?>
+					<option value="<?php echo esc_attr( $s ); ?>"<?php selected( $series_sel, $s ); ?>><?php echo esc_html( $s ); ?></option>
+				<?php endforeach; ?>
+			</select>
+		</label>
 		<div role="group" aria-label="Paper" class="mwm-group">
 			<?php foreach ( [ 'All' => 'All papers', '1' => 'Paper 1', '2' => 'Paper 2', '3' => 'Paper 3' ] as $k => $label ) : ?>
 				<button type="button" class="mwm-group__btn<?php echo $paper_sel === (string) $k ? ' is-on' : ''; ?>" aria-pressed="<?php echo $paper_sel === (string) $k ? 'true' : 'false'; ?>" data-filter="paper" data-value="<?php echo esc_attr( (string) $k ); ?>"><?php echo esc_html( $label ); ?></button>
@@ -83,7 +86,7 @@ $icon_dl = mwm_icon( 'download', 14 );
 		<p class="mwm-cta__text"><?php echo esc_html( $cta ); ?></p>
 		<?php echo mwm_button( trailingslashit( mwm_page_url( 'revision' ) ) . ( $tier === 'foundation' ? 'gcse-foundation' : 'gcse-higher' ) . '/' . $board . '/', $cta_btn ); ?>
 	</div>
-	<?php echo mwm_json_script( 'mwm-past-papers-data', [ 'papers' => $papers_public, 'series' => $series, 'state' => [ 'tier' => $tier, 'series' => $series_sel, 'paper' => $paper_sel ], 'icon' => $icon_dl, 'board' => mwm_board_name( $board ) ] ); ?>
+	<?php echo mwm_json_script( 'mwm-past-papers-data', [ 'papers' => $papers_public, 'series' => $series, 'state' => [ 'tier' => $tier, 'series' => $series_sel, 'paper' => $paper_sel ], 'icon' => $icon_dl, 'board' => mwm_board_name( $board ), 'boardSlug' => $board ] ); ?>
 	<noscript>
 		<?php foreach ( $series as $s ) : ?>
 			<div class="mwm-pp-group">

@@ -38,7 +38,8 @@
 		}
 		root.querySelector('[data-groups]').innerHTML = html;
 		root.querySelector('[data-count]').textContent = list.length === 1 ? '1 paper' : list.length + ' papers';
-		var q = ['tier=' + S.tier];
+		root.querySelectorAll('[data-filter-select]').forEach(function (sel) { sel.value = String(S[sel.getAttribute('data-filter-select')]); });
+		var q = ['board=' + encodeURIComponent(D.boardSlug), 'tier=' + S.tier];
 		if (S.series !== 'All') { q.push('series=' + encodeURIComponent(S.series)); }
 		if (S.paper !== 'All') { q.push('paper=' + S.paper); }
 		try { history.replaceState(null, '', location.pathname + '?' + q.join('&')); } catch (e) {}
@@ -47,6 +48,12 @@
 		var b = e.target.closest('[data-filter]');
 		if (!b) { return; }
 		S[b.getAttribute('data-filter')] = b.getAttribute('data-value');
+		render();
+	});
+	root.addEventListener('change', function (e) {
+		var sel = e.target.closest('[data-filter-select]');
+		if (!sel) { return; }
+		S[sel.getAttribute('data-filter-select')] = sel.value;
 		render();
 	});
 	render();
