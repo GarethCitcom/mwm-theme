@@ -81,6 +81,11 @@ add_filter( 'body_class', static function ( array $classes ): array {
 } );
 
 /**
+ * No WordPress toolbar on the site itself for editors (Kym works in the Studio). Administrators keep it.
+ */
+add_filter( 'show_admin_bar', static fn( $show ) => current_user_can( 'manage_options' ) ? $show : false );
+
+/**
  * Search only lessons.
  */
 add_action( 'pre_get_posts', static function ( WP_Query $q ) {
