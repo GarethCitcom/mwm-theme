@@ -11,7 +11,8 @@ $url    = static fn( string $key ) => $core ? mwm_page_url( $key ) : home_url( '
 $is     = static fn( string $key ) => ! empty( $pages[ $key ] ) && is_page( (int) $pages[ $key ] );
 
 $current = '';
-if ( $is( 'browse' ) || is_singular( 'mwm_lesson' ) || is_search() ) {
+$is_ws   = is_singular( 'mwm_worksheet' ) || is_post_type_archive( 'mwm_worksheet' );
+if ( $is( 'browse' ) || is_singular( 'mwm_lesson' ) || is_search() || $is_ws ) {
 	$current = 'browse';
 } elseif ( $is( 'revision' ) || $is( 'calendar' ) || $is( 'past-papers' ) ) {
 	$current = 'revision';
@@ -43,7 +44,17 @@ $login     = wp_login_url( $url( 'my-learning' ) );
 			</a>
 			<nav aria-label="Primary" class="mwm-nav">
 				<?php foreach ( $nav as $key => $label ) : ?>
-					<a href="<?php echo esc_url( $url( $key ) ); ?>" class="mwm-nav__link<?php echo $current === $key ? ' is-current' : ''; ?>"<?php echo $current === $key ? ' aria-current="page"' : ''; ?>><?php echo esc_html( $label ); ?></a>
+					<?php if ( $key === 'browse' ) : ?>
+						<div class="mwm-nav__group" data-mwm-dropdown>
+							<button type="button" class="mwm-nav__link mwm-nav__toggle<?php echo $current === $key ? ' is-current' : ''; ?>" aria-expanded="false" aria-controls="mwm-learn-menu"<?php echo $current === $key ? ' aria-current="page"' : ''; ?>><?php echo esc_html( $label ); ?><span class="mwm-nav__chevron" aria-hidden="true"><?php echo mwm_icon( 'chevron-right', 12 ); ?></span></button>
+							<div id="mwm-learn-menu" class="mwm-nav__menu">
+								<a href="<?php echo esc_url( $url( 'browse' ) ); ?>" class="mwm-nav__item<?php echo ! $is_ws && $current === 'browse' ? ' is-current' : ''; ?>"><span class="mwm-nav__item-title">Lessons</span><span class="mwm-nav__item-sub">Videos by level and topic</span></a>
+								<a href="<?php echo esc_url( $url( 'worksheets' ) ); ?>" class="mwm-nav__item<?php echo $is_ws ? ' is-current' : ''; ?>"><span class="mwm-nav__item-title">Worksheets</span><span class="mwm-nav__item-sub">Free PDFs, with answers</span></a>
+							</div>
+						</div>
+					<?php else : ?>
+						<a href="<?php echo esc_url( $url( $key ) ); ?>" class="mwm-nav__link<?php echo $current === $key ? ' is-current' : ''; ?>"<?php echo $current === $key ? ' aria-current="page"' : ''; ?>><?php echo esc_html( $label ); ?></a>
+					<?php endif; ?>
 				<?php endforeach; ?>
 			</nav>
 		</div>
@@ -78,7 +89,13 @@ $login     = wp_login_url( $url( 'my-learning' ) );
 	</div>
 	<nav id="mwm-mobile-nav" aria-label="Mobile" class="mwm-mobile-nav" hidden>
 		<?php foreach ( $nav as $key => $label ) : ?>
-			<a href="<?php echo esc_url( $url( $key ) ); ?>"><?php echo esc_html( $label ); ?></a>
+			<?php if ( $key === 'browse' ) : ?>
+				<span class="mwm-mobile-nav__heading"><?php echo esc_html( $label ); ?></span>
+				<a href="<?php echo esc_url( $url( 'browse' ) ); ?>" class="is-sub">Lessons</a>
+				<a href="<?php echo esc_url( $url( 'worksheets' ) ); ?>" class="is-sub">Worksheets</a>
+			<?php else : ?>
+				<a href="<?php echo esc_url( $url( $key ) ); ?>"><?php echo esc_html( $label ); ?></a>
+			<?php endif; ?>
 		<?php endforeach; ?>
 		<a href="<?php echo esc_url( $url( 'my-learning' ) ); ?>" class="is-cta">My Learning</a>
 		<?php if ( $studio ) : ?><a href="<?php echo esc_url( $studio ); ?>" class="is-cta">Studio</a><?php endif; ?>

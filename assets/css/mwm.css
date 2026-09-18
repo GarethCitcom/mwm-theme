@@ -937,6 +937,91 @@ html[data-theme="dark"] .mwm-logo .mwm-logo__icon.is-dark {
 	color: var(--link);
 	border-bottom: 2px solid var(--link);
 }
+/* Learn Maths dropdown (Lessons / Worksheets) */
+.mwm-nav__group {
+	position: relative;
+}
+.mwm-nav__toggle {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+.mwm-nav__chevron {
+	display: inline-flex;
+	transform: rotate(90deg);
+	transition: transform 0.15s ease;
+	color: var(--muted);
+}
+.mwm-nav__toggle.is-current .mwm-nav__chevron {
+	color: var(--link);
+}
+.mwm-nav__group.is-open .mwm-nav__chevron {
+	transform: rotate(-90deg);
+}
+.mwm-nav__menu {
+	position: absolute;
+	top: calc(100% + 10px);
+	left: -12px;
+	min-width: 240px;
+	padding: 8px;
+	background: var(--card);
+	border: 1px solid var(--border);
+	border-radius: 12px;
+	box-shadow: 0 12px 28px -8px var(--shadow);
+	display: none;
+	flex-direction: column;
+	z-index: 60;
+}
+.mwm-nav__group.is-open .mwm-nav__menu {
+	display: flex;
+}
+@media (hover: hover) {
+	.mwm-nav__group:hover .mwm-nav__menu,
+	.mwm-nav__group:focus-within .mwm-nav__menu {
+		display: flex;
+	}
+}
+.mwm-nav__item {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	padding: 10px 12px;
+	border-radius: 8px;
+	color: var(--ink);
+	min-height: 44px;
+	box-sizing: border-box;
+	justify-content: center;
+}
+.mwm-nav__item:hover,
+.mwm-nav__item:focus-visible {
+	background: var(--tint);
+	color: var(--ink);
+}
+.mwm-nav__item.is-current .mwm-nav__item-title {
+	color: var(--link);
+}
+.mwm-nav__item-title {
+	font-size: 16px;
+	font-weight: 500;
+	line-height: 1.4;
+}
+.mwm-nav__item-sub {
+	font-size: 13px;
+	line-height: 1.4;
+	color: var(--muted);
+}
+.mwm-mobile-nav__heading {
+	color: var(--muted);
+	font-size: 14px;
+	font-weight: 600;
+	padding: 12px 0 4px;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+.mwm-mobile-nav a.is-sub {
+	padding-left: 16px;
+}
+
 .mwm-nav--admin {
 	display: flex;
 	gap: 4px 16px;
