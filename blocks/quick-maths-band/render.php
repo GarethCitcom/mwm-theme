@@ -11,7 +11,11 @@ if ( ! mwm_core_active() ) {
 $heading = mwm_field( 'heading', 'Quick Maths' );
 $sub     = mwm_field( 'sub', 'Under a minute, straight to the point.' );
 $count   = (int) mwm_field( 'count', 8 );
-$shorts  = mwm_query_lessons( [ 'format' => 'short', 'per_page' => $count ] );
+// Prefer the plain Quick Maths shorts here; the Gaming row above covers the Roblox/Minecraft ones.
+$shorts = mwm_query_lessons( [ 'format' => 'short', 'theme' => 'none', 'per_page' => $count ] );
+if ( count( $shorts ) < $count ) {
+	$shorts = array_merge( $shorts, mwm_query_lessons( [ 'format' => 'short', 'exclude' => array_column( $shorts, 'id' ), 'per_page' => $count - count( $shorts ) ] ) );
+}
 if ( ! $shorts ) {
 	return;
 }
