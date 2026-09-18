@@ -91,7 +91,12 @@ foreach ( array_reverse( (array) $progress['saved'] ) as $lid ) {
 				<p class="mwm-ml__sub"><?php echo esc_html( mwm_level_name( $level ) . ' · ' . mwm_board_name( $board ) ); ?></p>
 			</div>
 		</div>
-		<a href="<?php echo esc_url( wp_logout_url( home_url( '/' ) ) ); ?>" class="mwm-btn mwm-btn--quiet">Sign out</a>
+		<div class="mwm-actions" style="margin-top:0">
+			<?php if ( class_exists( 'MWM_Studio' ) && current_user_can( MWM_Activator::CAP ) ) : ?>
+				<a href="<?php echo esc_url( MWM_Studio::url() ); ?>" class="mwm-btn mwm-btn--primary mwm-btn--sm">Open the Studio</a>
+			<?php endif; ?>
+			<a href="<?php echo esc_url( wp_logout_url( home_url( '/' ) ) ); ?>" class="mwm-btn mwm-btn--quiet">Sign out</a>
+		</div>
 	</div>
 	<div class="mwm-ml-grid">
 		<div class="mwm-panel">

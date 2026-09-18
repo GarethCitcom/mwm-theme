@@ -29,6 +29,7 @@ $nav = [
 ];
 $signed_in = is_user_logged_in();
 $user      = $signed_in ? mwm_current_user_label() : null;
+$studio    = $signed_in && class_exists( 'MWM_Studio' ) && current_user_can( MWM_Activator::CAP ) ? MWM_Studio::url() : '';
 $login     = wp_login_url( $url( 'my-learning' ) );
 ?>
 <div class="mwm-header">
@@ -57,6 +58,9 @@ $login     = wp_login_url( $url( 'my-learning' ) );
 				<span class="mwm-theme-toggle__moon"><?php echo mwm_icon( 'moon', 18 ); ?></span>
 				<span class="mwm-theme-toggle__sun"><?php echo mwm_icon( 'sun', 18 ); ?></span>
 			</button>
+			<?php if ( $studio ) : ?>
+				<a href="<?php echo esc_url( $studio ); ?>" class="mwm-header__viewsite mwm-header__studio">Studio<span aria-hidden="true">→</span></a>
+			<?php endif; ?>
 			<?php if ( $signed_in ) : ?>
 				<a href="<?php echo esc_url( $url( 'my-learning' ) ); ?>" class="mwm-userpill" aria-label="<?php echo esc_attr( 'My Learning, signed in as ' . $user['name'] ); ?>"><span class="mwm-avatar" aria-hidden="true"><?php echo esc_html( $user['initial'] ); ?></span><?php echo esc_html( $user['name'] ); ?></a>
 			<?php else : ?>
@@ -77,6 +81,7 @@ $login     = wp_login_url( $url( 'my-learning' ) );
 			<a href="<?php echo esc_url( $url( $key ) ); ?>"><?php echo esc_html( $label ); ?></a>
 		<?php endforeach; ?>
 		<a href="<?php echo esc_url( $url( 'my-learning' ) ); ?>" class="is-cta">My Learning</a>
+		<?php if ( $studio ) : ?><a href="<?php echo esc_url( $studio ); ?>" class="is-cta">Studio</a><?php endif; ?>
 	</nav>
 </div>
 <?php if ( $signed_in && $core ) : ?>

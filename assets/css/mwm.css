@@ -1129,6 +1129,9 @@ a.mwm-userpill:hover {
 	font-weight: 500;
 	white-space: nowrap;
 }
+.mwm-header__studio {
+	display: var(--desk-btn);
+}
 
 /* ---- Footer ------------------------------------------------------------ */
 .mwm-footer {
