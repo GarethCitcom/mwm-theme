@@ -10,11 +10,6 @@ if ( ! mwm_core_active() ) {
 }
 mwm_block_script( 'past-papers' );
 
-$heading = mwm_field( 'heading', 'Past papers' );
-$intro   = mwm_field( 'intro', 'Every Edexcel paper, uploaded as free PDFs with mark schemes — plus the practice worksheets that match what came up. AQA and OCR papers will follow once the mapping is verified.' );
-$cta     = mwm_field( 'cta_text', 'Not sure where to start? The revision pathway puts topics in order first.' );
-$cta_btn = mwm_field( 'cta_button', 'Start the pathway' );
-
 $prefs = mwm_user_prefs();
 $board = sanitize_key( (string) ( $_GET['board'] ?? $prefs['board'] ) );
 if ( ! isset( mwm_boards()[ $board ] ) ) {
@@ -23,6 +18,17 @@ if ( ! isset( mwm_boards()[ $board ] ) ) {
 $tier = sanitize_key( (string) ( $_GET['tier'] ?? ( $prefs['level'] === 'gcse-foundation' ? 'foundation' : 'higher' ) ) );
 if ( ! in_array( $tier, [ 'foundation', 'higher' ], true ) ) {
 	$tier = 'higher';
+}
+
+$heading = mwm_field( 'heading', 'Past papers' );
+// "{board}" in the intro is swapped for the selected exam board, so one line of copy works for all three.
+$intro   = str_replace( '{board}', mwm_board_name( $board ), mwm_field( 'intro', 'Every {board} GCSE paper as a free PDF with its mark scheme — plus the practice worksheets that match what came up. Switch board to see AQA, Edexcel or OCR.' ) );
+$cta     = mwm_field( 'cta_text', 'Not sure where to start? The revision pathway puts topics in order first.' );
+$cta_btn = mwm_field( 'cta_button', 'Start the pathway' );
+
+$board_urls = [];
+foreach ( mwm_boards() as $slug => $name ) {
+	$board_urls[ $slug ] = add_query_arg( [ 'board' => $slug, 'tier' => $tier ], mwm_page_url( 'past-papers' ) );
 }
 $series_sel = sanitize_text_field( (string) ( $_GET['series'] ?? 'All' ) );
 $paper_sel  = sanitize_text_field( (string) ( $_GET['paper'] ?? 'All' ) );
@@ -49,6 +55,8 @@ $icon_dl = mwm_icon( 'download', 14 );
 	<?php echo mwm_breadcrumb( [ [ 'label' => 'Revision', 'url' => mwm_page_url( 'revision' ) ], [ 'label' => $heading ] ] ); ?>
 	<h1 class="mwm-h1"><?php echo esc_html( $heading ); ?></h1>
 	<p class="mwm-intro"><?php echo esc_html( $intro ); ?></p>
+
+	<?php echo mwm_segmented( mwm_boards(), $board, 'Exam board', 'board', $board_urls ); ?>
 
 	<div class="mwm-filterbar">
 		<div role="group" aria-label="Tier" class="mwm-group">
