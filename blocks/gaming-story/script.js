@@ -1,27 +1,29 @@
-/* Gaming & Story: filter by theme chip. */
+/* Gaming & Story: theme filter queries the REST API; more load on scroll. */
 (function () {
 	'use strict';
 	var root = document.querySelector('[data-gaming]');
-	if (!root) { return; }
-	var chips = root.querySelectorAll('[data-theme].mwm-chip');
-	var items = root.querySelectorAll('[data-grid] > [data-theme]');
+	if (!root || !window.MWMPaged) { return; }
+	var format = root.getAttribute('data-format') || 'short';
+	var noun = root.getAttribute('data-noun') || 'short';
+	var theme = root.getAttribute('data-theme') || 'all';
+	var chips = root.querySelectorAll('.mwm-chip[data-theme]');
+	var names = { all: 'gaming', roblox: 'Roblox', minecraft: 'Minecraft', story: 'Story' };
+
+	var paged = window.MWMPaged({
+		root: root, endpoint: 'lessons', render: format === 'gaming' ? 'gaming' : 'short', perPage: 24,
+		grid: root.querySelector('[data-grid]'), count: root.querySelector('[data-count]'), empty: root.querySelector('[data-empty]'),
+		labels: { one: noun, many: noun + 's', suffix: format === 'short' ? ' · tap one to play it here' : '' },
+		params: function () {
+			return { format: format, theme: theme === 'all' ? (format === 'short' ? 'roblox,minecraft,story' : '') : theme };
+		},
+		onEmpty: function () { root.querySelector('[data-empty-theme]').textContent = names[theme] || theme; }
+	});
 	root.addEventListener('click', function (e) {
 		var chip = e.target.closest('.mwm-chip[data-theme]');
 		if (!chip) { return; }
-		var theme = chip.getAttribute('data-theme');
-		chips.forEach(function (c) {
-			var on = c === chip;
-			c.classList.toggle('is-on', on);
-			c.setAttribute('aria-pressed', on ? 'true' : 'false');
-		});
-		var n = 0;
-		items.forEach(function (it) {
-			var show = theme === 'all' || it.getAttribute('data-theme') === theme;
-			if (show) { n++; it.style.display = 'contents'; } else { it.style.display = 'none'; }
-		});
-		var noun = root.getAttribute('data-noun') || 'video';
-		root.querySelector('[data-count]').textContent = (n === 1 ? '1 ' + noun : n + ' ' + noun + 's') + (noun === 'short' ? ' · tap one to play it here' : '');
-		var empty = root.querySelector('[data-empty]');
-		if (n) { empty.setAttribute('hidden', ''); } else { empty.removeAttribute('hidden'); root.querySelector('[data-empty-theme]').textContent = chip.textContent.trim(); }
+		theme = chip.getAttribute('data-theme');
+		chips.forEach(function (c) { var on = c === chip; c.classList.toggle('is-on', on); c.setAttribute('aria-pressed', on ? 'true' : 'false'); });
+		try { history.replaceState(null, '', location.pathname + (theme === 'all' ? '' : '?theme=' + theme)); } catch (err) {}
+		paged.reload();
 	});
 })();

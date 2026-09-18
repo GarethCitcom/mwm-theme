@@ -111,6 +111,66 @@
 		openShort(el.getAttribute('data-short'), el.getAttribute('data-short-title'), el.getAttribute('href') || '#');
 	});
 
+	/* ---- Paged grids (server-side filtering, load on scroll) --------------- */
+	// opts: { root, endpoint, render, grid, count, empty, params(), labels:{one,many,suffix}, perPage, onEmpty(), onLoaded(result) }
+	window.MWMPaged = function (opts) {
+		var page = Number(opts.root.getAttribute('data-page') || 1);
+		var pages = Number(opts.root.getAttribute('data-pages') || 1);
+		var total = Number(opts.root.getAttribute('data-total') || 0);
+		var seq = 0, loading = false;
+		var more = opts.root.querySelector('[data-more]');
+		var status = more ? more.querySelector('[data-more-status]') : null;
+		var sentinel = opts.root.querySelector('[data-sentinel]');
+		var restBase = (window.MWM && window.MWM.rest) || '/wp-json/mwm/v1/';
+
+		function label(n) {
+			return (n === 1 ? '1 ' + opts.labels.one : n + ' ' + opts.labels.many) + (opts.labels.suffix || '');
+		}
+		function paint() {
+			if (opts.count) { opts.count.textContent = label(total); }
+			var has = total > 0;
+			if (opts.empty) { if (has) { opts.empty.setAttribute('hidden', ''); } else { opts.empty.removeAttribute('hidden'); } }
+			if (opts.grid) { if (has) { opts.grid.removeAttribute('hidden'); } else { opts.grid.setAttribute('hidden', ''); } }
+			if (more) { if (page < pages) { more.removeAttribute('hidden'); } else { more.setAttribute('hidden', ''); } }
+			if (status) { status.textContent = has && pages > 1 ? 'Showing ' + Math.min(total, page * (opts.perPage || 24)) + ' of ' + total : ''; }
+			if (!has && opts.onEmpty) { opts.onEmpty(); }
+		}
+		function fetchPage(p, replace) {
+			var mine = ++seq;
+			loading = true;
+			opts.root.setAttribute('aria-busy', 'true');
+			if (more) { more.querySelector('button').disabled = true; }
+			var params = Object.assign({}, opts.params(), { page: p, per_page: opts.perPage || 24, render: opts.render });
+			var qs = Object.keys(params).filter(function (k) { return params[k] !== '' && params[k] !== false && params[k] != null; })
+				.map(function (k) { return encodeURIComponent(k) + '=' + encodeURIComponent(params[k] === true ? 1 : params[k]); }).join('&');
+			return fetch(restBase + opts.endpoint + '?' + qs, { credentials: 'same-origin' })
+				.then(function (r) { return r.json(); })
+				.then(function (res) {
+					if (mine !== seq) { return; }
+					page = res.page; pages = res.pages; total = res.total;
+					var html = (res.html || []).join('');
+					if (replace) { opts.grid.innerHTML = html; } else { opts.grid.insertAdjacentHTML('beforeend', html); }
+					paint();
+					if (opts.onLoaded) { opts.onLoaded(res, replace); }
+				})
+				.catch(function () { if (status) { status.textContent = 'Couldn’t load more just now — try again.'; } })
+				.then(function () { loading = false; opts.root.removeAttribute('aria-busy'); if (more) { more.querySelector('button').disabled = false; } });
+		}
+		if (more) {
+			more.querySelector('button').addEventListener('click', function () { if (!loading && page < pages) { fetchPage(page + 1, false); } });
+		}
+		if (sentinel && 'IntersectionObserver' in window) {
+			new IntersectionObserver(function (entries) {
+				if (entries[0].isIntersecting && !loading && page < pages) { fetchPage(page + 1, false); }
+			}, { rootMargin: '600px 0px' }).observe(sentinel);
+		}
+		paint();
+		return {
+			reload: function () { return fetchPage(1, true); },
+			total: function () { return total; }
+		};
+	};
+
 	/* ---- Progress store --------------------------------------------------- */
 	var KEY = 'mwm-progress';
 	var empty = function () { return { ticks: {}, saved: [], completed: [], quizzes: {}, prefs: {} }; };

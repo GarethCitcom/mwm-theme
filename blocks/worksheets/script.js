@@ -1,24 +1,20 @@
-/* Worksheets: filter the grid by level and topic, keeping the URL in step. */
+/* Worksheets: level/topic filters query the REST API; more load on scroll. */
 (function () {
 	'use strict';
 	var root = document.querySelector('[data-worksheets]');
-	if (!root) { return; }
+	if (!root || !window.MWMPaged) { return; }
 	var seg = root.querySelector('.mwm-seg');
-	var chips = root.querySelectorAll('.mwm-chip[data-topic]');
-	var items = root.querySelectorAll('[data-grid] > [data-level]');
-	var level = (seg.querySelector('.is-on') || {}).getAttribute ? seg.querySelector('.is-on').getAttribute('data-value') : 'all';
-	var topic = (root.querySelector('.mwm-chip.is-on') || { getAttribute: function () { return ''; } }).getAttribute('data-topic') || '';
+	var level = root.getAttribute('data-level') || 'all';
+	var topic = root.getAttribute('data-topic') || '';
 
-	function apply() {
-		var n = 0;
-		items.forEach(function (it) {
-			var show = (level === 'all' || it.getAttribute('data-level') === level) && (!topic || it.getAttribute('data-topic') === topic);
-			it.style.display = show ? 'contents' : 'none';
-			if (show) { n++; }
-		});
-		root.querySelector('[data-count]').textContent = n === 1 ? '1 worksheet' : n + ' worksheets';
-		var empty = root.querySelector('[data-empty]');
-		if (n) { empty.setAttribute('hidden', ''); } else { empty.removeAttribute('hidden'); }
+	var paged = window.MWMPaged({
+		root: root, endpoint: 'worksheets', render: '1', perPage: 24,
+		grid: root.querySelector('[data-grid]'), count: root.querySelector('[data-count]'), empty: root.querySelector('[data-empty]'),
+		labels: { one: 'worksheet', many: 'worksheets' },
+		params: function () { return { level: level === 'all' ? '' : level, topic: topic }; }
+	});
+
+	function syncUrl() {
 		var q = [];
 		if (level !== 'all') { q.push('level=' + level); }
 		if (topic) { q.push('topic=' + encodeURIComponent(topic)); }
@@ -29,13 +25,13 @@
 		if (!tab) { return; }
 		level = tab.getAttribute('data-value');
 		seg.querySelectorAll('.mwm-seg__tab').forEach(function (t) { var on = t === tab; t.classList.toggle('is-on', on); t.setAttribute('aria-selected', on ? 'true' : 'false'); });
-		apply();
+		syncUrl(); paged.reload();
 	});
 	root.addEventListener('click', function (e) {
 		var chip = e.target.closest('.mwm-chip[data-topic]');
 		if (!chip) { return; }
 		topic = chip.getAttribute('data-topic');
-		chips.forEach(function (c) { var on = c === chip; c.classList.toggle('is-on', on); c.setAttribute('aria-pressed', on ? 'true' : 'false'); });
-		apply();
+		root.querySelectorAll('.mwm-chip[data-topic]').forEach(function (c) { var on = c === chip; c.classList.toggle('is-on', on); c.setAttribute('aria-pressed', on ? 'true' : 'false'); });
+		syncUrl(); paged.reload();
 	});
 })();

@@ -1,7 +1,8 @@
 <?php
 /**
- * Learn Maths: level switcher, topic chips, subtopics, filter bar, live-filtered results.
- * The server renders the state from the URL; script.js takes over for instant filtering.
+ * Learn Maths: level switcher, topic chips, subtopics, filter bar, results.
+ * The server renders the first page from the URL; script.js re-queries the REST API on each filter change
+ * and loads further pages on scroll.
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -11,46 +12,34 @@ if ( ! mwm_core_active() ) {
 }
 mwm_block_script( 'browse' );
 
+$per_page   = 24;
 $state      = MWM_Rewrites::browse_state();
 $level      = $state['level'];
 $level_name = mwm_level_name( $level );
 $levels     = mwm_levels();
 $topics     = mwm_topics( $level );
 $topic      = null;
-foreach ( $topics as $t ) {
-	if ( $t['slug'] === $state['topic'] ) {
-		$topic = $t;
-		$topic['subtopics'] = mwm_subtopics( $t['id'] );
-		$topic['intro']     = (string) get_term_meta( $t['id'], 'intro', true );
-		break;
-	}
-}
-$state['topic'] = $topic ? $topic['slug'] : '';
 foreach ( $topics as &$t ) {
 	$t['subtopics'] = mwm_subtopics( $t['id'] );
 	$t['intro']     = (string) get_term_meta( $t['id'], 'intro', true );
+	if ( $t['slug'] === $state['topic'] ) {
+		$topic = $t;
+	}
 }
 unset( $t );
+$state['topic'] = $topic ? $topic['slug'] : '';
 
-$all_cards = mwm_query_lessons( [ 'level' => $level ] );
-$results   = array_values( array_filter( $all_cards, static function ( $c ) use ( $state ) {
-	if ( $state['topic'] && $c['topic_slug'] !== $state['topic'] ) {
-		return false;
-	}
-	if ( $state['subtopic'] && $c['subtopic_slug'] !== $state['subtopic'] ) {
-		return false;
-	}
-	if ( $state['type'] !== 'all' && $c['format'] !== $state['type'] ) {
-		return false;
-	}
-	if ( $state['worksheet'] && ! $c['has_worksheet'] ) {
-		return false;
-	}
-	if ( $state['quiz'] && ! $c['has_quiz'] ) {
-		return false;
-	}
-	return true;
-} ) );
+$result = mwm_query_lessons_paged( [
+	'level'     => $level,
+	'topic'     => $state['topic'],
+	'subtopic'  => $state['subtopic'],
+	'format'    => $state['type'] !== 'all' ? $state['type'] : '',
+	'worksheet' => $state['worksheet'],
+	'quiz'      => $state['quiz'],
+	'per_page'  => $per_page,
+	'page'      => 1,
+] );
+$results = $result['items'];
 
 $page_title = $topic ? $topic['name'] : $level_name;
 $page_intro = $topic
@@ -66,19 +55,16 @@ foreach ( $levels as $slug => $l ) {
 	$level_urls[ $slug ] = mwm_browse_url( $slug );
 }
 $island = [
-	'state'      => $state,
-	'level'      => $level,
-	'levelName'  => $level_name,
-	'levels'     => array_map( static fn( $l ) => $l['name'], $levels ),
-	'topics'     => $topics,
-	'lessons'    => array_map( [ 'MWM_REST', 'public_card' ], $all_cards ),
-	'urls'       => [ 'base' => mwm_browse_url( $level ), 'revision' => trailingslashit( mwm_page_url( 'revision' ) ) . $level . '/', 'browse' => mwm_page_url( 'browse' ) ],
-	'icons'      => [ 'worksheet' => mwm_icon( 'worksheet', 16 ), 'quiz' => mwm_icon( 'quiz', 16 ) ],
-	'suggested'  => $topic ? array_slice( array_map( static fn( $s ) => [ 'slug' => $s['slug'], 'name' => $s['name'] ], $topic['subtopics'] ), 0, 3 ) : [],
+	'state'     => $state,
+	'level'     => $level,
+	'levelName' => $level_name,
+	'topics'    => $topics,
+	'urls'      => [ 'browse' => mwm_page_url( 'browse' ) ],
+	'perPage'   => $per_page,
 ];
 $sub_visible = $topic ? array_slice( $topic['subtopics'], 0, 8 ) : [];
 ?>
-<div class="mwm-page" data-browse>
+<div class="mwm-page" data-browse data-total="<?php echo (int) $result['total']; ?>" data-pages="<?php echo (int) $result['pages']; ?>" data-page="1">
 	<?php
 	$crumbs = [ [ 'label' => 'Home', 'url' => home_url( '/' ) ], [ 'label' => 'Learn Maths', 'url' => mwm_page_url( 'browse' ) ] ];
 	if ( $topic ) {
@@ -147,11 +133,11 @@ $sub_visible = $topic ? array_slice( $topic['subtopics'], 0, 8 ) : [];
 			echo '<button type="button" class="mwm-chip mwm-chip--sm" aria-label="' . esc_attr( 'Remove filter: ' . lcfirst( $a['label'] ) ) . '" data-remove="' . esc_attr( $a['key'] ) . '">' . esc_html( $a['label'] ) . '<span aria-hidden="true">✕</span></button>';
 		}
 		?>
-		<span class="mwm-meta" data-browse-count><?php echo count( $results ) === 1 ? '1 lesson' : count( $results ) . ' lessons'; ?></span>
+		<span class="mwm-meta" data-browse-count><?php echo $result['total'] === 1 ? '1 lesson' : $result['total'] . ' lessons'; ?></span>
 		<button type="button" class="mwm-clear" data-clear<?php echo $any_filter ? '' : ' hidden'; ?>>Clear all</button>
 	</div>
 
-	<div class="mwm-grid3 mwm-grid3--32" data-browse-results<?php echo $results ? '' : ' hidden'; ?>>
+	<div class="mwm-grid3 mwm-grid3--32" data-grid<?php echo $results ? '' : ' hidden'; ?>>
 		<?php foreach ( $results as $c ) { echo mwm_video_card( $c ); } ?>
 	</div>
 	<div class="mwm-empty" data-browse-empty<?php echo $results ? ' hidden' : ''; ?>>
@@ -160,6 +146,11 @@ $sub_visible = $topic ? array_slice( $topic['subtopics'], 0, 8 ) : [];
 		<div class="mwm-empty__chips" data-empty-chips hidden></div>
 		<button type="button" class="mwm-empty__btn" data-clear<?php echo $any_filter ? '' : ' hidden'; ?>>Clear all filters</button>
 	</div>
+	<div class="mwm-more" data-more<?php echo $result['pages'] > 1 ? '' : ' hidden'; ?>>
+		<button type="button" class="mwm-btn mwm-btn--secondary">Show more lessons</button>
+		<span class="mwm-more__status" data-more-status aria-live="polite"></span>
+	</div>
+	<div class="mwm-sentinel" data-sentinel aria-hidden="true"></div>
 
 	<div class="mwm-cta mwm-cta--practise">
 		<div>
@@ -167,7 +158,7 @@ $sub_visible = $topic ? array_slice( $topic['subtopics'], 0, 8 ) : [];
 			<p>Worksheets and a revision pathway matched to this level.</p>
 		</div>
 		<div class="mwm-cta__links">
-			<a href="<?php echo esc_url( add_query_arg( 'worksheet', '1', mwm_browse_url( $level, $state['topic'] ) ) ); ?>" class="mwm-arrow" data-practise-ws><span data-practise-label><?php echo esc_html( $practise ); ?></span>&nbsp;worksheets<span aria-hidden="true">→</span></a>
+			<a href="<?php echo esc_url( add_query_arg( array_filter( [ 'level' => $level, 'topic' => $state['topic'] ] ), mwm_page_url( 'worksheets' ) ) ); ?>" class="mwm-arrow" data-practise-ws><span data-practise-label><?php echo esc_html( $practise ); ?></span>&nbsp;worksheets<span aria-hidden="true">→</span></a>
 			<?php echo mwm_arrow_link( trailingslashit( mwm_page_url( 'revision' ) ) . $level . '/', $level_name . ' revision pathway' ); ?>
 		</div>
 	</div>

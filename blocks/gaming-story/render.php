@@ -1,6 +1,6 @@
 <?php
 /**
- * Gaming & Story Maths: theme filter, video grid, gaming shorts row.
+ * Gaming & Story Maths: theme filter, grid, gaming shorts row. First page server-rendered; more on scroll.
  * Until there are lesson-length gaming videos, the grid shows the Roblox/Minecraft/Story shorts instead.
  */
 
@@ -11,43 +11,43 @@ if ( ! mwm_core_active() ) {
 }
 mwm_block_script( 'gaming-story' );
 
+$per_page = 24;
 $heading  = mwm_field( 'heading', 'Gaming & Story Maths' );
 $sub      = mwm_field( 'sub', 'Real maths inside Roblox, Minecraft and stories — every video mapped to a GCSE topic, so the fun counts towards your revision.' );
 $cta      = mwm_field( 'cta_text', 'More gaming lessons are on the way — subscribe to catch them first.' );
 $shorts_h = mwm_field( 'shorts_heading', 'Gaming shorts in Quick Maths' );
 $themes   = [ 'all' => 'All', 'roblox' => 'Roblox', 'minecraft' => 'Minecraft', 'story' => 'Story' ];
-$videos   = mwm_query_lessons( [ 'format' => 'gaming' ] );
-$themed   = mwm_query_lessons( [ 'format' => 'short', 'theme' => array_keys( array_slice( $themes, 1 ) ) ] );
-$fallback = ! $videos && $themed; // no long-form gaming lessons yet: show the themed shorts in the main grid
-$items    = $fallback ? $themed : $videos;
-$noun     = $fallback ? 'short' : 'video';
-$shorts   = $fallback ? [] : array_slice( $themed ?: mwm_query_lessons( [ 'format' => 'short', 'per_page' => 4 ] ), 0, 4 );
+$theme    = sanitize_key( (string) ( $_GET['theme'] ?? 'all' ) );
+if ( ! isset( $themes[ $theme ] ) ) {
+	$theme = 'all';
+}
+$theme_q  = $theme === 'all' ? array_keys( array_slice( $themes, 1 ) ) : [ $theme ];
+$has_long = (bool) mwm_query_lessons( [ 'format' => 'gaming', 'per_page' => 1 ] );
+$format   = $has_long ? 'gaming' : 'short';
+$noun     = $has_long ? 'video' : 'short';
+$result   = mwm_query_lessons_paged( [ 'format' => $format, 'theme' => $has_long ? ( $theme === 'all' ? '' : $theme ) : $theme_q, 'per_page' => $per_page, 'page' => 1 ] );
+$shorts   = $has_long ? array_slice( mwm_query_lessons( [ 'format' => 'short', 'theme' => array_keys( array_slice( $themes, 1 ) ), 'per_page' => 4 ] ), 0, 4 ) : [];
 $yt       = mwm_youtube_channel_url();
 ?>
-<div class="mwm-page" data-gaming data-noun="<?php echo esc_attr( $noun ); ?>">
+<div class="mwm-page" data-gaming data-total="<?php echo (int) $result['total']; ?>" data-pages="<?php echo (int) $result['pages']; ?>" data-page="1" data-format="<?php echo esc_attr( $format ); ?>" data-theme="<?php echo esc_attr( $theme ); ?>" data-noun="<?php echo esc_attr( $noun ); ?>">
 	<h1 class="mwm-h1 mwm-h1--flush"><?php echo esc_html( $heading ); ?></h1>
 	<p class="mwm-intro"><?php echo esc_html( $sub ); ?></p>
 	<div class="mwm-chips mwm-chips--32">
-		<?php foreach ( $themes as $k => $label ) { echo mwm_chip( $label, $k === 'all', [ 'theme' => $k ] ); } ?>
+		<?php foreach ( $themes as $k => $label ) { echo mwm_chip( $label, $k === $theme, [ 'theme' => $k ] ); } ?>
 	</div>
-	<div class="mwm-count" data-count><?php echo count( $items ) === 1 ? "1 $noun" : count( $items ) . " {$noun}s"; ?><?php echo $fallback ? ' · tap one to play it here' : ''; ?></div>
-	<?php if ( $fallback ) : ?>
-		<div class="mwm-shorts-grid" data-grid>
-			<?php foreach ( $items as $s ) : ?>
-				<div data-theme="<?php echo esc_attr( $s['theme_slug'] ); ?>" style="display:contents"><?php echo mwm_short_card( $s, 'grid' ); ?></div>
-			<?php endforeach; ?>
-		</div>
-	<?php else : ?>
-		<div class="mwm-grid3 mwm-grid3--28" data-grid>
-			<?php foreach ( $items as $v ) : ?>
-				<div data-theme="<?php echo esc_attr( $v['theme_slug'] ); ?>" style="display:contents"><?php echo mwm_gaming_card( $v, 'level' ); ?></div>
-			<?php endforeach; ?>
-		</div>
-	<?php endif; ?>
-	<div class="mwm-empty mwm-empty--28" data-empty<?php echo $items ? ' hidden' : ''; ?>>
-		<p class="mwm-empty__title">No <span data-empty-theme><?php echo $items ? 'Roblox' : 'gaming'; ?></span> <?php echo esc_html( $noun === 'short' ? 'shorts' : 'lessons' ); ?> yet</p>
+	<div class="mwm-count" data-count><?php echo $result['total'] === 1 ? "1 $noun" : $result['total'] . " {$noun}s"; ?><?php echo $has_long ? '' : ' · tap one to play it here'; ?></div>
+	<div class="<?php echo $has_long ? 'mwm-grid3 mwm-grid3--28' : 'mwm-shorts-grid'; ?>" data-grid<?php echo $result['items'] ? '' : ' hidden'; ?>>
+		<?php foreach ( $result['items'] as $v ) { echo $has_long ? mwm_gaming_card( $v, 'level' ) : mwm_short_card( $v, 'grid' ); } ?>
+	</div>
+	<div class="mwm-empty mwm-empty--28" data-empty<?php echo $result['items'] ? ' hidden' : ''; ?>>
+		<p class="mwm-empty__title">No <span data-empty-theme><?php echo esc_html( $theme === 'all' ? 'gaming' : $themes[ $theme ] ); ?></span> <?php echo esc_html( $has_long ? 'lessons' : 'shorts' ); ?> yet</p>
 		<p class="mwm-empty__body">They’re being recorded now — new videos land on YouTube first.</p>
 	</div>
+	<div class="mwm-more" data-more<?php echo $result['pages'] > 1 ? '' : ' hidden'; ?>>
+		<button type="button" class="mwm-btn mwm-btn--secondary">Show more</button>
+		<span class="mwm-more__status" data-more-status aria-live="polite"></span>
+	</div>
+	<div class="mwm-sentinel" data-sentinel aria-hidden="true"></div>
 	<div class="mwm-cta">
 		<p class="mwm-cta__text"><?php echo esc_html( $cta ); ?></p>
 		<?php echo mwm_button( $yt, 'Subscribe on YouTube', 'primary', [ 'target' => '_blank', 'rel' => 'noopener' ] ); ?>
