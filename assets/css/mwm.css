@@ -972,6 +972,15 @@ html[data-theme="dark"] .mwm-logo .mwm-logo__icon.is-dark {
 	flex-direction: column;
 	z-index: 60;
 }
+/* Invisible bridge across the gap so the pointer can travel from the link to the panel. */
+.mwm-nav__menu::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: -14px;
+	height: 14px;
+}
 .mwm-nav__group.is-open .mwm-nav__menu {
 	display: flex;
 }
