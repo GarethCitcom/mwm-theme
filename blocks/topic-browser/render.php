@@ -16,27 +16,33 @@ $sub     = mwm_field( 'sub', 'Pick your level, then choose a topic to see every 
 $prefs   = mwm_user_prefs();
 $default = $prefs['level'];
 
-$data = [];
-foreach ( mwm_levels() as $slug => $level ) {
-	$topics = [];
-	foreach ( mwm_topics( $slug ) as $t ) {
-		$lessons = mwm_query_lessons( [ 'level' => $slug, 'topic' => $t['slug'], 'format' => 'lesson' ] );
-		$topics[] = [
-			'slug'   => $t['slug'],
-			'name'   => $t['name'],
-			'icon'   => $t['icon'],
-			'level'  => $t['level_label'],
-			'count'  => count( $lessons ),
-			'url'    => mwm_browse_url( $slug, $t['slug'] ),
-			'lessons'=> array_map( static fn( $c ) => [
-				'title' => $c['title'],
-				'url'   => $c['url'],
-				'thumb' => $c['thumb'],
-				'meta'  => trim( $c['level'] . ' · ' . $c['duration'], ' ·' ),
-			], array_slice( $lessons, 0, 3 ) ),
-		];
+// Counts and three sample lessons per topic and level. Cached for a few hours; cleared whenever a lesson changes.
+$data = get_transient( 'mwm_topic_browser' );
+if ( ! is_array( $data ) ) {
+	$data = [];
+	foreach ( mwm_levels() as $slug => $level ) {
+		$topics = [];
+		foreach ( mwm_topics( $slug ) as $t ) {
+			$args    = [ 'level' => $slug, 'topic' => $t['slug'], 'format' => 'lesson' ];
+			$lessons = mwm_query_lessons( $args + [ 'per_page' => 3 ] );
+			$topics[] = [
+				'slug'   => $t['slug'],
+				'name'   => $t['name'],
+				'icon'   => $t['icon'],
+				'level'  => $t['level_label'],
+				'count'  => count( $lessons ) < 3 ? count( $lessons ) : mwm_count_lessons( $args ),
+				'url'    => mwm_browse_url( $slug, $t['slug'] ),
+				'lessons'=> array_map( static fn( $c ) => [
+					'title' => $c['title'],
+					'url'   => $c['url'],
+					'thumb' => $c['thumb'],
+					'meta'  => trim( $c['level'] . ' · ' . $c['duration'], ' ·' ),
+				], $lessons ),
+			];
+		}
+		$data[ $slug ] = [ 'name' => $level['name'], 'topics' => $topics ];
 	}
-	$data[ $slug ] = [ 'name' => $level['name'], 'topics' => $topics ];
+	set_transient( 'mwm_topic_browser', $data, 6 * HOUR_IN_SECONDS );
 }
 $icons = [];
 foreach ( [ 'number', 'algebra', 'ratio', 'geometry', 'probability', 'statistics', 'pure', 'mechanics' ] as $k ) {
