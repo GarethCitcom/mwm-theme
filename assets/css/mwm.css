@@ -2306,6 +2306,90 @@ a.mwm-short:hover {
 	background: var(--card);
 }
 
+/* ---- Worksheets -------------------------------------------------------- */
+.mwm-panel__links {
+	display: flex;
+	gap: 20px;
+	flex-wrap: wrap;
+}
+.mwm-pdf {
+	border: 1px solid var(--border);
+	border-radius: 12px;
+	overflow: hidden;
+	background: var(--tint);
+}
+.mwm-pdf object,
+.mwm-pdf iframe {
+	display: block;
+	width: 100%;
+	height: min(78vh, 900px);
+	border: 0;
+	background: #FFFFFF;
+}
+.mwm-pdf__fallback {
+	padding: 48px 32px;
+	text-align: center;
+}
+.mwm-pdf__fallback p {
+	margin: 0 0 16px;
+	font-size: 16px;
+	line-height: 1.5;
+	color: var(--muted);
+}
+.mwm-thumb--doc {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.mwm-thumb__doc {
+	display: inline-flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 6px;
+	color: var(--link);
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+}
+.mwm-lesson-mini {
+	display: flex;
+	gap: 14px;
+	align-items: center;
+	margin-top: 16px;
+	color: var(--ink);
+}
+.mwm-lesson-mini:hover {
+	color: var(--link);
+}
+.mwm-lesson-mini__thumb {
+	width: 104px;
+	aspect-ratio: 16 / 9;
+	flex-shrink: 0;
+	border-radius: 8px;
+	border: 1px solid var(--border);
+	background-color: var(--tint);
+	background-size: cover;
+	background-position: center;
+}
+.mwm-lesson-mini__title {
+	font-size: 16px;
+	line-height: 1.5;
+	font-weight: 600;
+}
+.mwm-lesson-mini__meta {
+	display: block;
+	font-size: 14px;
+	line-height: 1.5;
+	color: var(--muted);
+	font-weight: 400;
+}
+@media (max-width: 700px) {
+	.mwm-pdf object,
+	.mwm-pdf iframe {
+		height: 70vh;
+	}
+}
+
 /* ---- Pathway ----------------------------------------------------------- */
 .mwm-pathway__h1 {
 	margin: 32px 0 0;

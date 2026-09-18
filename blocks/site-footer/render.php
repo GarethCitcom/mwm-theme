@@ -32,7 +32,7 @@ $year    = wp_date( 'Y' );
 					</div>
 					<div class="mwm-footer__col">
 						<span class="mwm-footer__heading">Resources</span>
-						<a href="<?php echo esc_url( add_query_arg( 'worksheet', '1', $url( 'browse' ) ) ); ?>" class="mwm-footer__link">Worksheets</a>
+						<a href="<?php echo esc_url( $url( 'worksheets' ) ); ?>" class="mwm-footer__link">Worksheets</a>
 						<a href="<?php echo esc_url( $url( 'past-papers' ) ); ?>" class="mwm-footer__link">Past papers</a>
 						<a href="<?php echo esc_url( $url( 'my-learning' ) ); ?>" class="mwm-footer__link">My Learning</a>
 					</div>

@@ -79,7 +79,10 @@ $signed_in    = is_user_logged_in();
 			<div class="mwm-panel__row">
 				<?php if ( $card['has_worksheet'] ) : ?>
 					<div class="mwm-panel__line"><span class="mwm-panel__label">Worksheet</span><span class="mwm-panel__size"><?php echo esc_html( $card['worksheet']['label'] ); ?></span></div>
-					<a href="<?php echo esc_url( $card['worksheet']['url'] ); ?>" class="mwm-arrow mwm-arrow--mt8" download>Download<span aria-hidden="true">↓</span></a>
+					<div class="mwm-panel__links">
+						<a href="<?php echo esc_url( $card['worksheet_url'] ); ?>" class="mwm-arrow mwm-arrow--mt8">Open worksheet<span aria-hidden="true">→</span></a>
+						<a href="<?php echo esc_url( $card['worksheet']['url'] ); ?>" class="mwm-arrow mwm-arrow--mt8" download>Download<span aria-hidden="true">↓</span></a>
+					</div>
 				<?php else : ?>
 					<p class="mwm-avail">No worksheet for this lesson yet.</p>
 				<?php endif; ?>

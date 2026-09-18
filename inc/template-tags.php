@@ -106,6 +106,22 @@ function mwm_gaming_card( array $card, string $meta_style = 'duration' ): string
 }
 
 /**
+ * Worksheet card (Worksheets archive, related worksheets): lesson thumbnail, level/topic, title, PDF size, answers badge.
+ */
+function mwm_worksheet_card( array $w ): string {
+	$media = $w['thumb']
+		? '<a href="' . esc_url( $w['url'] ) . '" class="mwm-thumb" tabindex="-1" aria-hidden="true"><img src="' . esc_url( $w['thumb'] ) . '" alt="" loading="lazy" decoding="async"></a>'
+		: '<a href="' . esc_url( $w['url'] ) . '" class="mwm-thumb mwm-thumb--doc" tabindex="-1" aria-hidden="true"><span class="mwm-thumb__doc">' . mwm_icon( 'worksheet', 28 ) . '<span>PDF</span></span></a>';
+	return '<article class="mwm-card mwm-card--worksheet" data-id="' . (int) $w['id'] . '" data-level="' . esc_attr( $w['level_slug'] ) . '" data-topic="' . esc_attr( $w['topic_slug'] ) . '">'
+		. $media
+		. '<div class="mwm-card__body">'
+		. '<div class="mwm-tags">' . ( $w['level'] ? mwm_tag( $w['level'], $w['level_style'] ) : '' ) . ( $w['topic'] ? mwm_tag( $w['topic'], 'outline' ) : '' ) . '</div>'
+		. '<h3 class="mwm-card__title"><a href="' . esc_url( $w['url'] ) . '">' . esc_html( $w['title'] ) . '</a></h3>'
+		. '<div class="mwm-card__foot"><span class="mwm-meta">' . esc_html( $w['pdf']['label'] ?? 'PDF' ) . '</span><span class="mwm-badges">' . ( $w['has_answers'] ? '<span class="mwm-badge"><span class="mwm-badge__icon">' . mwm_icon( 'tick', 16 ) . '</span>Answers</span>' : '' ) . ( $w['lesson_id'] ? '<span class="mwm-badge"><span class="mwm-badge__icon">' . mwm_icon( 'video', 16 ) . '</span>Lesson</span>' : '' ) . '</span></div>'
+		. '</div></article>';
+}
+
+/**
  * Related-lesson card (Lesson page): title + "GCSE Higher · 9 min".
  */
 function mwm_related_card( array $card ): string {
