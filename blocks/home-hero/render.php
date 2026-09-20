@@ -11,11 +11,21 @@ $lead        = mwm_field( 'lead', 'Watch. Practise. Build your confidence.' );
 $sub         = mwm_field( 'sub', 'Free videos, worksheets and step-by-step answers.' );
 $placeholder = mwm_field( 'placeholder', 'What would you like to learn?' );
 $featured_id = (int) mwm_field( 'featured_lesson', 0 );
+$short_title = '';
 
 $card = null;
 if ( mwm_core_active() ) {
+	// Picks made in the Studio ("Home page") win over the block's own field.
+	$home = function_exists( 'mwm_home_settings' ) ? mwm_home_settings() : [];
+	if ( ! empty( $home['hero_lesson'] ) && get_post_status( $home['hero_lesson'] ) === 'publish' ) {
+		$featured_id = (int) $home['hero_lesson'];
+		$short_title = (string) $home['hero_title'];
+	}
 	if ( $featured_id ) {
 		$card = mwm_lesson_card( $featured_id );
+	}
+	if ( $card && $short_title ) {
+		$card['title'] = $short_title;
 	}
 	if ( ! $card ) {
 		foreach ( mwm_query_lessons( [ 'format' => 'lesson', 'per_page' => 12 ] ) as $c ) {

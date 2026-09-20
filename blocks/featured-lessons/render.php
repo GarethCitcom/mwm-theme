@@ -12,6 +12,11 @@ $heading = mwm_field( 'heading', 'Find your next lightbulb moment' );
 $sub     = mwm_field( 'sub', 'Clear examples. One topic at a time.' );
 $link    = mwm_field( 'link_label', 'Browse all videos' );
 $ids     = (array) mwm_field( 'lessons', [] );
+// Picks made in the Studio ("Home page") win over the block's own field.
+$home = function_exists( 'mwm_home_settings' ) ? mwm_home_settings() : [];
+if ( ! empty( $home['featured'] ) ) {
+	$ids = $home['featured'];
+}
 $count   = (int) mwm_field( 'count', 6 );
 $cards   = $ids ? mwm_query_lessons( [ 'include' => array_map( 'intval', $ids ) ] ) : mwm_query_lessons( [ 'format' => 'lesson', 'per_page' => $count ] );
 ?>
