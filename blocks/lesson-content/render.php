@@ -75,44 +75,41 @@ $signed_in    = is_user_logged_in();
 	</div>
 
 	<aside class="mwm-cols__side" aria-label="Practice">
-		<div class="mwm-panel">
-			<h2 class="mwm-panel__h2">Practice</h2>
-			<div class="mwm-panel__row">
+		<?php // Practice and Quiz panels only appear when there is something to show; nothing is flagged as missing. ?>
+		<?php if ( $card['has_worksheet'] || $card['has_answers'] ) : ?>
+			<div class="mwm-panel">
+				<h2 class="mwm-panel__h2">Practice</h2>
 				<?php if ( $card['has_worksheet'] ) : ?>
-					<div class="mwm-panel__line"><span class="mwm-panel__label">Worksheet</span><span class="mwm-panel__size"><?php echo esc_html( $card['worksheet']['label'] ); ?></span></div>
-					<div class="mwm-panel__links">
-						<a href="<?php echo esc_url( $card['worksheet_url'] ); ?>" class="mwm-arrow mwm-arrow--mt8">Open worksheet<span aria-hidden="true">→</span></a>
-						<a href="<?php echo esc_url( $card['worksheet']['url'] ); ?>" class="mwm-arrow mwm-arrow--mt8" download>Download<span aria-hidden="true">↓</span></a>
+					<div class="mwm-panel__row">
+						<div class="mwm-panel__line"><span class="mwm-panel__label">Worksheet</span><span class="mwm-panel__size"><?php echo esc_html( $card['worksheet']['label'] ); ?></span></div>
+						<div class="mwm-panel__links">
+							<a href="<?php echo esc_url( $card['worksheet_url'] ); ?>" class="mwm-arrow mwm-arrow--mt8">Open worksheet<span aria-hidden="true">→</span></a>
+							<a href="<?php echo esc_url( $card['worksheet']['url'] ); ?>" class="mwm-arrow mwm-arrow--mt8" download>Download<span aria-hidden="true">↓</span></a>
+						</div>
 					</div>
-				<?php else : ?>
-					<p class="mwm-avail">No worksheet for this lesson yet.</p>
 				<?php endif; ?>
-			</div>
-			<div class="mwm-panel__row">
-				<div class="mwm-panel__line"><span class="mwm-panel__label">Worked answers</span></div>
 				<?php if ( $card['has_answers'] ) : ?>
-					<div data-answers-hidden>
-						<button type="button" class="mwm-linkbtn" style="margin-top:8px" data-reveal-answers>Reveal answers</button>
-						<p class="mwm-panel__hint">Try the worksheet first — answers appear when you’re ready.</p>
+					<div class="mwm-panel__row">
+						<div class="mwm-panel__line"><span class="mwm-panel__label">Worked answers</span></div>
+						<div data-answers-hidden>
+							<button type="button" class="mwm-linkbtn" style="margin-top:8px" data-reveal-answers>Reveal answers</button>
+							<p class="mwm-panel__hint"><?php echo $card['has_worksheet'] ? 'Try the worksheet first — answers appear when you’re ready.' : 'Answers appear when you’re ready.'; ?></p>
+						</div>
+						<div data-answers-shown hidden>
+							<p class="mwm-panel__hint">Answers revealed below the video, with every step shown.</p>
+							<a href="<?php echo esc_url( $card['answers']['url'] ); ?>" class="mwm-arrow mwm-arrow--mt8" download>Download answers<span aria-hidden="true">↓</span></a>
+						</div>
 					</div>
-					<div data-answers-shown hidden>
-						<p class="mwm-panel__hint">Answers revealed below the video, with every step shown.</p>
-						<a href="<?php echo esc_url( $card['answers']['url'] ); ?>" class="mwm-arrow mwm-arrow--mt8" download>Download answers<span aria-hidden="true">↓</span></a>
-					</div>
-				<?php else : ?>
-					<p class="mwm-panel__hint" style="margin-top:4px">Worked answers for this lesson are on their way.</p>
 				<?php endif; ?>
 			</div>
-		</div>
-		<div class="mwm-panel">
-			<h2 class="mwm-panel__h2">Quiz</h2>
-			<?php if ( $quiz_summary ) : ?>
+		<?php endif; ?>
+		<?php if ( $quiz_summary ) : ?>
+			<div class="mwm-panel">
+				<h2 class="mwm-panel__h2">Quiz</h2>
 				<p class="mwm-panel__sub"><?php echo esc_html( $quiz_summary['label'] ); ?></p>
 				<?php echo mwm_button( $card['quiz_url'], 'Take the quiz', 'primary', [ 'style' => 'margin-top:16px' ] ); ?>
-			<?php else : ?>
-				<p class="mwm-panel__sub">No quiz for this lesson yet.</p>
-			<?php endif; ?>
-		</div>
+			</div>
+		<?php endif; ?>
 		<div class="mwm-panel mwm-panel--controls">
 			<div class="mwm-controls">
 				<button type="button" class="mwm-ctl" aria-pressed="false" data-ctl="saved" data-on="✓ Saved" data-off="Save">Save</button>
