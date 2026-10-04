@@ -34,7 +34,7 @@
 			return '<div class="mwm-pp-group"><h2 class="mwm-h2">' + esc(g) + '</h2><div class="mwm-list mwm-list--pp">' + list.filter(function (p) { return p.group === g; }).map(row).join('') + '</div></div>';
 		}).join('');
 		if (!list.length) {
-			html = '<div class="mwm-empty"><p class="mwm-empty__title">No predicted papers for this level yet</p><p class="mwm-empty__body">Try another level — new ' + esc(D.board) + ' predicted papers are added in the run-up to each exam season.</p></div>';
+			html = '<div class="mwm-empty"><p class="mwm-empty__title">No predicted papers for this level yet</p><p class="mwm-empty__body">Try another level. New ' + esc(D.board) + ' predicted papers are added in the run-up to each exam season.</p></div>';
 		}
 		root.querySelector('[data-groups]').innerHTML = html;
 		root.querySelector('[data-count]').textContent = list.length === 1 ? '1 paper' : list.length + ' papers';

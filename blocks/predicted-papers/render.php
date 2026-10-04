@@ -1,7 +1,7 @@
 <?php
 /**
  * Predicted papers: Melissa's own papers for the coming exam, filtered by board and level, grouped by exam year.
- * Simpler than past papers on purpose — no series or paper-number filters; each paper carries its own name.
+ * Simpler than past papers on purpose: no series or paper-number filters; each paper carries its own name.
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -25,7 +25,7 @@ $board_name = mwm_board_name( $board );
 $heading    = mwm_field( 'heading', 'Predicted papers' );
 // "{board}" is swapped for the selected exam board, so one line of copy works for all three.
 $intro      = str_replace( '{board}', $board_name, mwm_field( 'intro', 'Melissa’s own predicted papers for the next {board} exams, written in the style of the real thing, with worked solutions that explain every step. Switch board to see AQA, Edexcel or OCR.' ) );
-$disclaimer = str_replace( '{board}', $board_name, mwm_field( 'disclaimer', 'Original independent practice material written by Maths with Melissa. Not an official {board} paper and not endorsed by {board}. The worked solutions are not an official mark scheme — other valid methods are fine.' ) );
+$disclaimer = str_replace( '{board}', $board_name, mwm_field( 'disclaimer', 'Original independent practice material written by Maths with Melissa. Not an official {board} paper and not endorsed by {board}. The worked solutions are not an official mark scheme; other valid methods are fine.' ) );
 $cta        = mwm_field( 'cta_text', 'Want the real thing too? Every past paper and mark scheme is a click away.' );
 $cta_btn    = mwm_field( 'cta_button', 'Browse past papers' );
 
