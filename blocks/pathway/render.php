@@ -114,7 +114,7 @@ $tier = $level === 'a-level' ? 'A-level' : str_replace( 'GCSE ', '', $level_name
 			<?php endif; ?>
 		</div>
 
-		<aside class="mwm-cols__side" aria-label="Exam and past papers">
+		<aside class="mwm-cols__side" aria-label="Exam, past papers and predicted papers">
 			<div class="mwm-panel">
 				<span class="mwm-exam-side__label">Next exam for this pathway (<?php echo esc_html( $board_name ); ?>)</span>
 				<?php if ( $exam ) : ?>
@@ -131,6 +131,11 @@ $tier = $level === 'a-level' ? 'A-level' : str_replace( 'GCSE ', '', $level_name
 				<h2 class="mwm-panel__h2">Past papers · <?php echo esc_html( $board_name . ' ' . $tier ); ?></h2>
 				<p class="mwm-panel__sub">Every paper and mark scheme as free PDFs, with matching worksheets.</p>
 				<?php echo mwm_arrow_link( add_query_arg( [ 'tier' => strtolower( $tier ), 'board' => $board ], mwm_page_url( 'past-papers' ) ), 'Browse past papers', 'mwm-arrow--mt12' ); ?>
+			</div>
+			<div class="mwm-panel">
+				<h2 class="mwm-panel__h2">Predicted papers · <?php echo esc_html( $board_name . ' ' . $tier ); ?></h2>
+				<p class="mwm-panel__sub">Melissa’s own papers for the next exam, with worked solutions that explain every step.</p>
+				<?php echo mwm_arrow_link( add_query_arg( [ 'level' => $level, 'board' => $board ], mwm_page_url( 'predicted-papers' ) ), 'Try a predicted paper', 'mwm-arrow--mt12' ); ?>
 			</div>
 		</aside>
 	</div>

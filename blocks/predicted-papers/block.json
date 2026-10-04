@@ -1,0 +1,13 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "acf/predicted-papers",
+	"title": "Predicted papers",
+	"category": "mwm",
+	"icon": "lightbulb",
+	"description": "Filterable list of Melissa's predicted papers with question papers, worked solutions and matching worksheets.",
+	"keywords": [ "mwm" ],
+	"textdomain": "mwm-theme",
+	"acf": { "mode": "preview", "renderTemplate": "render.php" },
+	"supports": { "html": false, "anchor": false, "align": false, "mode": false, "jsx": false, "multiple": false, "customClassName": false }
+}

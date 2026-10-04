@@ -129,8 +129,9 @@ foreach ( $plan as $w ) {
 				</div>
 			<?php endforeach; ?>
 			<div class="mwm-list__foot">
-				<span class="mwm-meta">Practice weeks use the past papers page — every paper and mark scheme as PDFs.</span>
-				<?php echo mwm_arrow_link( mwm_page_url( 'past-papers' ), 'Browse past papers', 'mwm-arrow--sm' ); ?>
+				<span class="mwm-meta">Practice weeks use the past papers page (every paper and mark scheme as PDFs) and Melissa’s predicted papers for this exam.</span>
+				<?php echo mwm_arrow_link( add_query_arg( [ 'board' => $board ], mwm_page_url( 'past-papers' ) ), 'Browse past papers', 'mwm-arrow--sm' ); ?>
+				<?php echo mwm_arrow_link( add_query_arg( [ 'level' => $level, 'board' => $board ], mwm_page_url( 'predicted-papers' ) ), 'Try a predicted paper', 'mwm-arrow--sm' ); ?>
 			</div>
 		</div>
 	<?php elseif ( ! $months ) : ?>

@@ -172,6 +172,19 @@ add_action( 'acf/init', static function () {
 	] );
 
 	acf_add_local_field_group( [
+		'key'      => 'group_mwm_blk_predicted_papers',
+		'title'    => 'Predicted papers page',
+		'location' => $loc( 'predicted-papers' ),
+		'fields'   => [
+			$text( 'pr_heading', 'heading', 'Heading', 'Predicted papers' ),
+			$text( 'pr_intro', 'intro', 'Intro ({board} becomes the chosen exam board)', 'Melissa’s own predicted papers for the next {board} exams, written in the style of the real thing, with worked solutions that explain every step. Switch board to see AQA, Edexcel or OCR.', 'textarea', [ 'rows' => 3 ] ),
+			$text( 'pr_disclaimer', 'disclaimer', 'Disclaimer ({board} becomes the chosen exam board)', 'Original independent practice material written by Maths with Melissa. Not an official {board} paper and not endorsed by {board}. The worked solutions are not an official mark scheme; other valid methods are fine.', 'textarea', [ 'rows' => 3 ] ),
+			$text( 'pr_cta', 'cta_text', 'Strip text', 'Want the real thing too? Every past paper and mark scheme is a click away.' ),
+			$text( 'pr_cta_btn', 'cta_button', 'Strip button', 'Browse past papers' ),
+		],
+	] );
+
+	acf_add_local_field_group( [
 		'key'      => 'group_mwm_blk_calendar',
 		'title'    => 'Exam calendar page',
 		'location' => $loc( 'exam-calendar' ),
