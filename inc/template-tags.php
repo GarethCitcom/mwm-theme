@@ -212,7 +212,7 @@ function mwm_segmented( array $options, string $current, string $aria_label, str
 }
 
 /**
- * Past papers ↔ Predicted papers switch, shown on both pages. Carries the board and level across:
+ * Past papers ↔ Predicted papers switch, shown top-right of both pages (inside .mwm-page-head). Carries the board and level across:
  * past papers filter by GCSE tier, predicted papers by level, so A-level lands on Higher past papers.
  */
 function mwm_papers_switch( string $current, string $board, string $level ): string {

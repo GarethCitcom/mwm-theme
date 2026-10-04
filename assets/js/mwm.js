@@ -15,7 +15,7 @@
 		setTheme(root.getAttribute('data-theme') !== 'dark');
 	});
 
-	/* ---- Header dropdown (Learn Maths → Lessons / Worksheets) -------------- */
+	/* ---- Header dropdowns (Learn Maths, Revision) ------------------------- */
 	function closeDropdowns(except) {
 		document.querySelectorAll('[data-mwm-dropdown].is-open').forEach(function (g) {
 			if (g !== except) { g.classList.remove('is-open'); g.querySelector('.mwm-nav__toggle').setAttribute('aria-expanded', 'false'); }

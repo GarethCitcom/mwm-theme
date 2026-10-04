@@ -54,12 +54,16 @@ $icon_dl = mwm_icon( 'download', 14 );
 $tier    = $level === 'gcse-foundation' ? 'foundation' : 'higher';
 ?>
 <div class="mwm-page" data-predicted-papers>
-	<?php echo mwm_breadcrumb( [ [ 'label' => 'Revision', 'url' => mwm_page_url( 'revision' ) ], [ 'label' => $heading ] ] ); ?>
-	<h1 class="mwm-h1"><?php echo esc_html( $heading ); ?></h1>
-	<p class="mwm-intro"><?php echo esc_html( $intro ); ?></p>
-	<p class="mwm-disclaimer"><?php echo esc_html( $disclaimer ); ?></p>
+	<div class="mwm-page-head">
+		<div class="mwm-page-head__main">
+			<?php echo mwm_breadcrumb( [ [ 'label' => 'Revision', 'url' => mwm_page_url( 'revision' ) ], [ 'label' => $heading ] ] ); ?>
+			<h1 class="mwm-h1"><?php echo esc_html( $heading ); ?></h1>
+			<p class="mwm-intro"><?php echo esc_html( $intro ); ?></p>
+			<p class="mwm-disclaimer"><?php echo esc_html( $disclaimer ); ?></p>
+		</div>
+		<?php echo mwm_papers_switch( 'predicted', $board, $level ); ?>
+	</div>
 
-	<?php echo mwm_papers_switch( 'predicted', $board, $level ); ?>
 	<?php echo mwm_segmented( mwm_boards(), $board, 'Exam board', 'board', $board_urls ); ?>
 
 	<div class="mwm-filterbar">

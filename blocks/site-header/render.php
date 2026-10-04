@@ -28,6 +28,19 @@ $nav = [
 	'quick-maths' => 'Quick Maths',
 	'gaming'      => 'Gaming & Story Maths',
 ];
+// Dropdown entries: [ url, title, one-line description, is this the current page ].
+$menus = [
+	'browse'   => [
+		[ $url( 'browse' ), 'Lessons', 'Videos by level and topic', ! $is_ws && $current === 'browse' ],
+		[ $url( 'worksheets' ), 'Worksheets', 'Free PDFs, with answers', $is_ws ],
+	],
+	'revision' => [
+		[ $url( 'revision' ), 'Revision pathway', 'Every topic in the order to revise it', $is( 'revision' ) ],
+		[ $url( 'calendar' ), 'Exam calendar', 'Verified dates and a week-by-week plan', $is( 'calendar' ) ],
+		[ $url( 'past-papers' ), 'Past papers', 'Real papers with mark schemes', $is( 'past-papers' ) ],
+		[ $url( 'predicted-papers' ), 'Predicted papers', 'Melissa’s papers for the next exam', $is( 'predicted-papers' ) ],
+	],
+];
 $signed_in = is_user_logged_in();
 $user      = $signed_in ? mwm_current_user_label() : null;
 $studio    = $signed_in && class_exists( 'MWM_Studio' ) && current_user_can( MWM_Activator::CAP ) ? MWM_Studio::url() : '';
@@ -44,12 +57,13 @@ $login     = wp_login_url( $url( 'my-learning' ) );
 			</a>
 			<nav aria-label="Primary" class="mwm-nav">
 				<?php foreach ( $nav as $key => $label ) : ?>
-					<?php if ( $key === 'browse' ) : ?>
+					<?php if ( isset( $menus[ $key ] ) ) : ?>
 						<div class="mwm-nav__group" data-mwm-dropdown>
-							<button type="button" class="mwm-nav__link mwm-nav__toggle<?php echo $current === $key ? ' is-current' : ''; ?>" aria-expanded="false" aria-controls="mwm-learn-menu"<?php echo $current === $key ? ' aria-current="page"' : ''; ?>><?php echo esc_html( $label ); ?><span class="mwm-nav__chevron" aria-hidden="true"><?php echo mwm_icon( 'chevron-right', 12 ); ?></span></button>
-							<div id="mwm-learn-menu" class="mwm-nav__menu">
-								<a href="<?php echo esc_url( $url( 'browse' ) ); ?>" class="mwm-nav__item<?php echo ! $is_ws && $current === 'browse' ? ' is-current' : ''; ?>"><span class="mwm-nav__item-title">Lessons</span><span class="mwm-nav__item-sub">Videos by level and topic</span></a>
-								<a href="<?php echo esc_url( $url( 'worksheets' ) ); ?>" class="mwm-nav__item<?php echo $is_ws ? ' is-current' : ''; ?>"><span class="mwm-nav__item-title">Worksheets</span><span class="mwm-nav__item-sub">Free PDFs, with answers</span></a>
+							<button type="button" class="mwm-nav__link mwm-nav__toggle<?php echo $current === $key ? ' is-current' : ''; ?>" aria-expanded="false" aria-controls="mwm-<?php echo esc_attr( $key ); ?>-menu"<?php echo $current === $key ? ' aria-current="page"' : ''; ?>><?php echo esc_html( $label ); ?><span class="mwm-nav__chevron" aria-hidden="true"><?php echo mwm_icon( 'chevron-right', 12 ); ?></span></button>
+							<div id="mwm-<?php echo esc_attr( $key ); ?>-menu" class="mwm-nav__menu">
+								<?php foreach ( $menus[ $key ] as $item ) : ?>
+									<a href="<?php echo esc_url( $item[0] ); ?>" class="mwm-nav__item<?php echo $item[3] ? ' is-current' : ''; ?>"><span class="mwm-nav__item-title"><?php echo esc_html( $item[1] ); ?></span><span class="mwm-nav__item-sub"><?php echo esc_html( $item[2] ); ?></span></a>
+								<?php endforeach; ?>
 							</div>
 						</div>
 					<?php else : ?>
@@ -89,10 +103,11 @@ $login     = wp_login_url( $url( 'my-learning' ) );
 	</div>
 	<nav id="mwm-mobile-nav" aria-label="Mobile" class="mwm-mobile-nav" hidden>
 		<?php foreach ( $nav as $key => $label ) : ?>
-			<?php if ( $key === 'browse' ) : ?>
+			<?php if ( isset( $menus[ $key ] ) ) : ?>
 				<span class="mwm-mobile-nav__heading"><?php echo esc_html( $label ); ?></span>
-				<a href="<?php echo esc_url( $url( 'browse' ) ); ?>" class="is-sub">Lessons</a>
-				<a href="<?php echo esc_url( $url( 'worksheets' ) ); ?>" class="is-sub">Worksheets</a>
+				<?php foreach ( $menus[ $key ] as $item ) : ?>
+					<a href="<?php echo esc_url( $item[0] ); ?>" class="is-sub"><?php echo esc_html( $item[1] ); ?></a>
+				<?php endforeach; ?>
 			<?php else : ?>
 				<a href="<?php echo esc_url( $url( $key ) ); ?>"><?php echo esc_html( $label ); ?></a>
 			<?php endif; ?>
