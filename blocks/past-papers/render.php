@@ -56,6 +56,7 @@ $icon_dl = mwm_icon( 'download', 14 );
 	<h1 class="mwm-h1"><?php echo esc_html( $heading ); ?></h1>
 	<p class="mwm-intro"><?php echo esc_html( $intro ); ?></p>
 
+	<?php echo mwm_papers_switch( 'past', $board, $tier === 'foundation' ? 'gcse-foundation' : 'gcse-higher' ); ?>
 	<?php echo mwm_segmented( mwm_boards(), $board, 'Exam board', 'board', $board_urls ); ?>
 
 	<div class="mwm-filterbar">

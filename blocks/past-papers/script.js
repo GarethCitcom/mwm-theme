@@ -43,6 +43,10 @@
 		if (S.series !== 'All') { q.push('series=' + encodeURIComponent(S.series)); }
 		if (S.paper !== 'All') { q.push('paper=' + S.paper); }
 		try { history.replaceState(null, '', location.pathname + '?' + q.join('&')); } catch (e) {}
+		// Keep the board tabs and the Past/Predicted switch pointing at the tier that's showing.
+		root.querySelectorAll('[data-seg="board"] a, [data-seg="papers"] a').forEach(function (a) {
+			try { var u = new URL(a.href, location.href); if (u.searchParams.has('tier')) { u.searchParams.set('tier', S.tier); } if (u.searchParams.has('level')) { u.searchParams.set('level', 'gcse-' + S.tier); } a.href = u.toString(); } catch (e) {}
+		});
 	}
 	root.addEventListener('click', function (e) {
 		var b = e.target.closest('[data-filter]');

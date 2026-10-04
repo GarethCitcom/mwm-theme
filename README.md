@@ -10,7 +10,7 @@ assets/css/login.css    branded wp-login screen
 assets/js/mwm.js        theme toggle (localStorage mwm-theme), mobile menu, strip arrows, progress store (window.MWMProgress)
 assets/fonts/           Inter (variable, latin)
 assets/img/             logo + icon SVGs (charcoal / white), quiz diagram
-blocks/                 26 ACF blocks (see below)
+blocks/                 27 ACF blocks (see below)
 inc/icons.php           inline SVG icons
 inc/template-tags.php   card / tag / chip / breadcrumb renderers
 inc/blocks.php          block registration, per-block script enqueueing
@@ -23,7 +23,7 @@ theme.json              palette (7 colours), Inter, 1200/1264 layout
 ## Blocks
 
 Home: `home-hero`, `level-cards`, `featured-lessons`, `how-it-works`, `topic-browser`, `pathway-cards`, `gaming-row`, `quick-maths-band`, `exam-panel`, `subscribe-strip`.
-Pages: `browse`, `pathway`, `exam-calendar`, `past-papers`, `quick-maths`, `gaming-story`, `my-learning`, `search-results`, `page-header`, `cta-strip`.
+Pages: `browse`, `pathway`, `exam-calendar`, `past-papers`, `predicted-papers`, `quick-maths`, `gaming-story`, `my-learning`, `search-results`, `page-header`, `cta-strip`.
 Lesson/quiz templates: `lesson-header`, `lesson-content`, `lesson-next`, `quiz`. Chrome: `site-header`, `site-footer`.
 
 Blocks read the current URL/state on the server (no-JS works) and their `script.js` takes over for instant filtering, ticks, quizzes and the topic preview.

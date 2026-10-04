@@ -212,6 +212,19 @@ function mwm_segmented( array $options, string $current, string $aria_label, str
 }
 
 /**
+ * Past papers ↔ Predicted papers switch, shown on both pages. Carries the board and level across:
+ * past papers filter by GCSE tier, predicted papers by level, so A-level lands on Higher past papers.
+ */
+function mwm_papers_switch( string $current, string $board, string $level ): string {
+	$tier = $level === 'gcse-foundation' ? 'foundation' : 'higher';
+	$urls = [
+		'past'      => add_query_arg( [ 'board' => $board, 'tier' => $tier ], mwm_page_url( 'past-papers' ) ),
+		'predicted' => add_query_arg( [ 'board' => $board, 'level' => $level ], mwm_page_url( 'predicted-papers' ) ),
+	];
+	return '<div class="mwm-papers-switch">' . mwm_segmented( [ 'past' => 'Past papers', 'predicted' => 'Predicted papers' ], $current, 'Past or predicted papers', 'papers', $urls ) . '</div>';
+}
+
+/**
  * Toggle chip (aria-pressed). Sizes: lg (44px), md (40px), sm (36px active-filter chip).
  */
 function mwm_chip( string $label, bool $on, array $data = [], string $size = 'lg', string $icon = '' ): string {

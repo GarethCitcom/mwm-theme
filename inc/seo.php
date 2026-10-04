@@ -136,6 +136,18 @@ function mwm_seo_context(): array {
 		return $ctx;
 	}
 
+	if ( is_page() && $id === $page( 'predicted-papers' ) ) {
+		$board = sanitize_key( (string) ( $_GET['board'] ?? '' ) );
+		$board = isset( mwm_boards()[ $board ] ) ? $board : 'edexcel';
+		$bname = mwm_board_name( $board );
+		$ctx['title']       = "$bname predicted maths papers";
+		$ctx['description'] = mwm_seo_trim( "Predicted $bname maths papers for the next exams, GCSE and A-level, written by Maths with Melissa as free PDFs with worked solutions and practice worksheets to match." );
+		$ctx['canonical']   = add_query_arg( 'board', $board, mwm_page_url( 'predicted-papers' ) );
+		$ctx['crumbs'][]    = [ 'Revision', mwm_page_url( 'revision' ) ];
+		$ctx['crumbs'][]    = [ 'Predicted papers', $ctx['canonical'] ];
+		return $ctx;
+	}
+
 	if ( is_page() ) {
 		$fixed = [
 			'quick-maths' => [ 'title' => 'Quick Maths shorts', 'description' => 'Under a minute, straight to the point: one GCSE maths skill per short from Maths with Melissa, filtered by level and ready to play.' ],

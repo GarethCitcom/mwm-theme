@@ -14,7 +14,7 @@ $current = '';
 $is_ws   = is_singular( 'mwm_worksheet' ) || is_post_type_archive( 'mwm_worksheet' );
 if ( $is( 'browse' ) || is_singular( 'mwm_lesson' ) || is_search() || $is_ws ) {
 	$current = 'browse';
-} elseif ( $is( 'revision' ) || $is( 'calendar' ) || $is( 'past-papers' ) ) {
+} elseif ( $is( 'revision' ) || $is( 'calendar' ) || $is( 'past-papers' ) || $is( 'predicted-papers' ) ) {
 	$current = 'revision';
 } elseif ( $is( 'quick-maths' ) ) {
 	$current = 'quick-maths';

@@ -2873,7 +2873,25 @@ a.mwm-pw-row__title:hover {
 	font-weight: 600;
 }
 
-/* ---- Past papers ------------------------------------------------------- */
+/* ---- Past papers & predicted papers ------------------------------------ */
+/* The "Past papers | Predicted papers" switch sits above the board tabs on both pages. */
+.mwm-papers-switch .mwm-seg {
+	margin-top: 24px;
+}
+.mwm-papers-switch + .mwm-seg {
+	margin-top: 16px;
+}
+.mwm-disclaimer {
+	margin: 12px 0 0;
+	max-width: 640px;
+	padding: 12px 16px;
+	border: 1px solid var(--border);
+	border-radius: 12px;
+	background: var(--card);
+	font-size: 14px;
+	line-height: 1.5;
+	color: var(--muted);
+}
 .mwm-pp-group {
 	margin-top: 40px;
 }
