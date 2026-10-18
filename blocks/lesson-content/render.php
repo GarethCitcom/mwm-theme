@@ -17,11 +17,12 @@ if ( ! $card ) {
 }
 $content = apply_filters( 'the_content', get_post_field( 'post_content', $id ) );
 $related = [];
+$levels  = mwm_card_levels( $card ); // Related lessons come from any of the lesson's levels.
 if ( $card['topic_slug'] ) {
-	$related = mwm_query_lessons( [ 'level' => $card['level_slug'], 'topic' => $card['topic_slug'], 'format' => [ 'lesson', 'gaming' ], 'exclude' => [ $id ], 'per_page' => 3 ] );
+	$related = mwm_query_lessons( [ 'level' => $levels, 'topic' => $card['topic_slug'], 'format' => [ 'lesson', 'gaming' ], 'exclude' => [ $id ], 'per_page' => 3 ] );
 }
 if ( count( $related ) < 3 ) {
-	$more = mwm_query_lessons( [ 'level' => $card['level_slug'], 'format' => [ 'lesson', 'gaming' ], 'exclude' => array_merge( [ $id ], array_column( $related, 'id' ) ), 'per_page' => 3 - count( $related ) ] );
+	$more = mwm_query_lessons( [ 'level' => $levels, 'format' => [ 'lesson', 'gaming' ], 'exclude' => array_merge( [ $id ], array_column( $related, 'id' ) ), 'per_page' => 3 - count( $related ) ] );
 	$related = array_merge( $related, $more );
 }
 $quiz_summary = $card['has_quiz'] ? MWM_Quiz::summary( $card['quiz_id'] ) : null;
@@ -66,7 +67,7 @@ $signed_in    = is_user_logged_in();
 		<?php if ( $related ) : ?>
 			<div class="mwm-section__head mwm-lesson__related">
 				<h2 class="mwm-h2">Related lessons</h2>
-				<?php if ( $card['topic_slug'] ) { echo mwm_arrow_link( mwm_browse_url( $card['level_slug'], $card['topic_slug'] ), 'All ' . $card['topic'] ); } ?>
+				<?php if ( $card['topic_slug'] ) { echo mwm_arrow_link( mwm_browse_url( mwm_card_level( $card ), $card['topic_slug'] ), 'All ' . $card['topic'] ); } ?>
 			</div>
 			<div class="mwm-grid3 mwm-grid3--32">
 				<?php foreach ( $related as $r ) { echo mwm_related_card( $r ); } ?>

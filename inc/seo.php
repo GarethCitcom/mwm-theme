@@ -57,10 +57,12 @@ function mwm_seo_context(): array {
 		$ctx['type']        = 'video.other';
 		$ctx['video']       = $card;
 		$ctx['crumbs'][]    = [ 'Learn Maths', mwm_page_url( 'browse' ) ];
-		if ( $card['level_slug'] ) {
-			$ctx['crumbs'][] = [ $card['level'], mwm_browse_url( $card['level_slug'] ) ];
+		// Structured-data breadcrumb uses the lesson's first level, so search engines see the same trail every time.
+		$level = mwm_card_levels( $card )[0] ?? '';
+		if ( $level ) {
+			$ctx['crumbs'][] = [ mwm_level_name( $level ), mwm_browse_url( $level ) ];
 			if ( $card['topic_slug'] ) {
-				$ctx['crumbs'][] = [ $card['topic'], mwm_browse_url( $card['level_slug'], $card['topic_slug'] ) ];
+				$ctx['crumbs'][] = [ $card['topic'], mwm_browse_url( $level, $card['topic_slug'] ) ];
 			}
 		}
 		$ctx['crumbs'][] = [ $card['title'], get_permalink( $id ) ];

@@ -15,7 +15,7 @@ $questions = MWM_Quiz::questions( $quiz_id );
 $lesson_id = (int) get_post_meta( $quiz_id, 'lesson', true );
 $lesson    = $lesson_id ? mwm_lesson_card( $lesson_id ) : null;
 $title     = $lesson ? $lesson['title'] : preg_replace( '/\s+—\s+quiz$/u', '', get_the_title( $quiz_id ) );
-$revision  = trailingslashit( mwm_page_url( 'revision' ) ) . ( $lesson && $lesson['level_slug'] ? $lesson['level_slug'] . '/' : '' );
+$revision  = trailingslashit( mwm_page_url( 'revision' ) ) . ( $lesson && mwm_card_level( $lesson ) ? mwm_card_level( $lesson ) . '/' : '' );
 $signed_in = is_user_logged_in();
 $n         = count( $questions );
 ?>

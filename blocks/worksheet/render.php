@@ -16,20 +16,23 @@ if ( ! $w ) {
 }
 $lesson  = $w['lesson'];
 $content = apply_filters( 'the_content', get_post_field( 'post_content', $w['id'] ) );
+// A worksheet takes its lesson's levels, so it can have more than one: same rule as the lesson page.
+$level   = mwm_card_level( $w );
+$levels  = mwm_card_levels( $w );
 $crumbs  = [ [ 'label' => 'Worksheets', 'url' => mwm_page_url( 'worksheets' ) ] ];
-if ( $w['level_slug'] ) {
-	$crumbs[] = [ 'label' => $w['level'], 'url' => add_query_arg( 'level', $w['level_slug'], mwm_page_url( 'worksheets' ) ) ];
+if ( $level ) {
+	$crumbs[] = [ 'label' => mwm_level_name( $level ), 'url' => add_query_arg( 'level', $level, mwm_page_url( 'worksheets' ) ) ];
 }
 if ( $w['topic_slug'] ) {
-	$crumbs[] = [ 'label' => $w['topic'], 'url' => add_query_arg( [ 'level' => $w['level_slug'], 'topic' => $w['topic_slug'] ], mwm_page_url( 'worksheets' ) ) ];
+	$crumbs[] = [ 'label' => $w['topic'], 'url' => add_query_arg( [ 'level' => $level, 'topic' => $w['topic_slug'] ], mwm_page_url( 'worksheets' ) ) ];
 }
 $crumbs[] = [ 'label' => $w['title'] ];
 $related  = [];
 if ( $w['topic_slug'] ) {
-	$related = mwm_query_worksheets( [ 'topic' => $w['topic_slug'], 'level' => $w['level_slug'], 'exclude' => [ $w['id'] ], 'per_page' => 3 ] );
+	$related = mwm_query_worksheets( [ 'topic' => $w['topic_slug'], 'level' => $levels, 'exclude' => [ $w['id'] ], 'per_page' => 3 ] );
 }
 if ( count( $related ) < 3 ) {
-	$related = array_merge( $related, mwm_query_worksheets( [ 'level' => $w['level_slug'], 'exclude' => array_merge( [ $w['id'] ], array_column( $related, 'id' ) ), 'per_page' => 3 - count( $related ) ] ) );
+	$related = array_merge( $related, mwm_query_worksheets( [ 'level' => $levels, 'exclude' => array_merge( [ $w['id'] ], array_column( $related, 'id' ) ), 'per_page' => 3 - count( $related ) ] ) );
 }
 $quiz = $lesson && $lesson['has_quiz'] ? MWM_Quiz::summary( $lesson['quiz_id'] ) : null;
 $pdf  = $w['pdf'];
@@ -82,7 +85,7 @@ $pdf  = $w['pdf'];
 			<?php if ( $related ) : ?>
 				<div class="mwm-section__head mwm-lesson__related">
 					<h2 class="mwm-h2">More worksheets</h2>
-					<?php echo mwm_arrow_link( add_query_arg( array_filter( [ 'level' => $w['level_slug'], 'topic' => $w['topic_slug'] ] ), mwm_page_url( 'worksheets' ) ), $w['topic'] ? 'All ' . $w['topic'] . ' worksheets' : 'All worksheets' ); ?>
+					<?php echo mwm_arrow_link( add_query_arg( array_filter( [ 'level' => $level, 'topic' => $w['topic_slug'] ] ), mwm_page_url( 'worksheets' ) ), $w['topic'] ? 'All ' . $w['topic'] . ' worksheets' : 'All worksheets' ); ?>
 				</div>
 				<div class="mwm-grid3 mwm-grid3--32">
 					<?php foreach ( $related as $r ) { echo mwm_worksheet_card( $r ); } ?>
