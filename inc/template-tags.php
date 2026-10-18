@@ -22,6 +22,23 @@ function mwm_level_tag( array $card ): string {
 }
 
 /**
+ * Every level on a lesson or worksheet card (a lesson can suit more than one).
+ */
+function mwm_card_levels( array $card ): array {
+	return ! empty( $card['levels'] ) ? array_values( $card['levels'] ) : ( empty( $card['level_slug'] ) ? [] : [ $card['level_slug'] ] );
+}
+
+/**
+ * The one level to use where a page needs a single level (breadcrumb, pathway link): the visitor's own level
+ * when the lesson suits it, otherwise the lesson's first level.
+ */
+function mwm_card_level( array $card ): string {
+	$levels = mwm_card_levels( $card );
+	$mine   = mwm_user_prefs()['level'] ?? '';
+	return in_array( $mine, $levels, true ) ? $mine : ( $levels[0] ?? '' );
+}
+
+/**
  * "Worksheet" / "Quiz" badge with icon (card footers).
  */
 function mwm_badge( string $kind ): string {

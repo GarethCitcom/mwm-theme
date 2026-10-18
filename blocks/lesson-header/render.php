@@ -12,12 +12,14 @@ $card = mwm_lesson_card( get_the_ID() );
 if ( ! $card ) {
 	return;
 }
+// A lesson can suit more than one level: the breadcrumb follows the visitor's own level when it's one of them.
+$level  = mwm_card_level( $card );
 $crumbs = [ [ 'label' => 'Learn Maths', 'url' => mwm_page_url( 'browse' ) ] ];
-if ( $card['level_slug'] ) {
-	$crumbs[] = [ 'label' => $card['level'], 'url' => mwm_browse_url( $card['level_slug'] ) ];
+if ( $level ) {
+	$crumbs[] = [ 'label' => mwm_level_name( $level ), 'url' => mwm_browse_url( $level ) ];
 }
 if ( $card['topic_slug'] ) {
-	$crumbs[] = [ 'label' => $card['topic'], 'url' => mwm_browse_url( $card['level_slug'], $card['topic_slug'] ) ];
+	$crumbs[] = [ 'label' => $card['topic'], 'url' => mwm_browse_url( $level, $card['topic_slug'] ) ];
 }
 $crumbs[] = [ 'label' => $card['title'] ];
 $mins = $card['seconds'] >= 60 ? max( 1, (int) round( $card['seconds'] / 60 ) ) : 0;
