@@ -2690,27 +2690,6 @@ a.mwm-short:hover {
 	font-weight: 600;
 	white-space: normal;
 }
-.mwm-pw-row__lessons .mwm-quiz-result {
-	margin: 0 0 0 8px;
-	vertical-align: middle;
-}
-/* A subtopic with several lessons lists them under its name. */
-.mwm-pw-row__lessons {
-	list-style: none;
-	margin: 6px 0 0;
-	padding: 0;
-	display: flex;
-	flex-direction: column;
-	gap: 4px;
-}
-.mwm-pw-row__lessons a {
-	font-size: 14px;
-	line-height: 1.5;
-	color: var(--muted);
-}
-.mwm-pw-row__lessons a:hover {
-	color: var(--link);
-}
 .mwm-pw-row--soon .mwm-pw-row__step {
 	color: var(--border);
 }
@@ -2801,11 +2780,71 @@ a.mwm-short:hover {
 	margin: 0 0 8px;
 }
 .mwm-pw-row {
+	padding: 18px 0;
+	border-bottom: 1px solid var(--border);
+}
+.mwm-pw-row__head {
 	display: flex;
 	align-items: center;
 	gap: 20px;
-	padding: 18px 0;
-	border-bottom: 1px solid var(--border);
+}
+.mwm-pw-row__count {
+	display: block;
+	font-size: 12px;
+	line-height: 1.5;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: var(--muted);
+	margin-top: 2px;
+}
+/* One line per lesson under the subtopic: title, then completed / quiz chips, then its own video, worksheet, quiz icons. */
+.mwm-pw-lessons {
+	list-style: none;
+	margin: 10px 0 0 56px;
+	padding: 0;
+}
+.mwm-pw-lesson {
+	display: flex;
+	align-items: center;
+	gap: 12px 16px;
+	flex-wrap: wrap;
+	padding: 8px 0;
+	border-top: 1px solid var(--border);
+}
+.mwm-pw-lesson__title {
+	flex: 1 1 240px;
+	min-width: 0;
+	font-size: 15px;
+	line-height: 1.5;
+	color: var(--ink);
+}
+.mwm-pw-lesson__title:hover {
+	color: var(--link);
+}
+.mwm-pw-lesson__status {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+.mwm-pw-lesson__status .mwm-pw-done,
+.mwm-pw-lesson__status .mwm-quiz-result {
+	margin: 0;
+}
+.mwm-pw-lesson__icons {
+	display: inline-flex;
+	gap: 14px;
+	margin-left: auto;
+	flex-shrink: 0;
+}
+@media (max-width: 700px) {
+	.mwm-pw-lessons {
+		margin-left: 0;
+	}
+	.mwm-pw-lesson__icons {
+		margin-left: 0;
+	}
 }
 .mwm-pw-row__step {
 	width: 36px;
@@ -2837,11 +2876,6 @@ a.mwm-pw-row__title:hover {
 	line-height: 1.5;
 	color: var(--muted);
 	margin-top: 2px;
-}
-.mwm-pw-row__icons {
-	display: inline-flex;
-	gap: 14px;
-	flex-shrink: 0;
 }
 .mwm-res {
 	display: inline-flex;

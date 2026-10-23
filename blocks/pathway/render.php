@@ -82,46 +82,47 @@ $island = [
 					<div class="mwm-pw-group" data-pathway="<?php echo esc_attr( $pathway['id'] ); ?>">
 						<?php foreach ( $pathway['rows'] as $r ) : ?>
 							<div class="mwm-pw-row<?php echo $r['coming_soon'] ? ' mwm-pw-row--soon' : ''; ?>" id="row-<?php echo esc_attr( $r['key'] ); ?>" data-row="<?php echo esc_attr( $r['key'] ); ?>">
-								<span class="mwm-pw-row__step"><?php echo esc_html( $r['step'] ); ?></span>
-								<div class="mwm-pw-row__main">
-									<?php if ( count( $r['lessons'] ) === 1 ) : ?>
-										<a href="<?php echo esc_url( $r['lessons'][0]['url'] ); ?>" class="mwm-pw-row__title"><?php echo esc_html( $r['name'] ); ?></a> <span class="mwm-pw-done" data-lesson-done="<?php echo (int) $r['lessons'][0]['id']; ?>" hidden>✓ Completed</span>
-									<?php else : ?>
+								<div class="mwm-pw-row__head">
+									<span class="mwm-pw-row__step"><?php echo esc_html( $r['step'] ); ?></span>
+									<div class="mwm-pw-row__main">
 										<span class="mwm-pw-row__title<?php echo $r['coming_soon'] ? ' mwm-pw-row__title--soon' : ''; ?>"><?php echo esc_html( $r['name'] ); ?></span>
-									<?php endif; ?>
-									<?php if ( $r['note'] ) : ?><span class="mwm-pw-row__note"><?php echo esc_html( $r['note'] ); ?></span><?php endif; ?>
-									<?php if ( count( $r['lessons'] ) === 1 && $r['lessons'][0]['quiz_id'] ) : ?>
-										<a href="<?php echo esc_url( $r['lessons'][0]['quiz_url'] ); ?>" class="mwm-quiz-result" data-quiz-result="<?php echo (int) $r['lessons'][0]['quiz_id']; ?>" hidden></a>
-									<?php endif; ?>
-									<?php if ( count( $r['lessons'] ) > 1 ) : ?>
-										<ul class="mwm-pw-row__lessons">
-											<?php foreach ( $r['lessons'] as $l ) : ?>
-												<li><a href="<?php echo esc_url( $l['url'] ); ?>"><?php echo esc_html( $l['title'] ); ?></a> <span class="mwm-pw-done" data-lesson-done="<?php echo (int) $l['id']; ?>" hidden>✓ Completed</span><?php if ( $l['quiz_id'] ) : ?> <a href="<?php echo esc_url( $l['quiz_url'] ); ?>" class="mwm-quiz-result" data-quiz-result="<?php echo (int) $l['quiz_id']; ?>" hidden></a><?php endif; ?></li>
-											<?php endforeach; ?>
-										</ul>
+										<?php if ( $r['note'] ) : ?><span class="mwm-pw-row__note"><?php echo esc_html( $r['note'] ); ?></span><?php endif; ?>
+										<?php if ( count( $r['lessons'] ) > 1 ) : ?><span class="mwm-pw-row__count"><?php echo count( $r['lessons'] ); ?> lessons</span><?php endif; ?>
+									</div>
+									<?php if ( $r['coming_soon'] ) : ?>
+										<span class="mwm-pw-row__soon">Coming soon</span>
+									<?php else : ?>
+										<button type="button" class="mwm-tick" aria-pressed="false" aria-label="<?php echo esc_attr( 'Mark ' . $r['name'] . ' as done' ); ?>" data-tick="<?php echo esc_attr( $r['key'] ); ?>" data-topic="<?php echo esc_attr( $r['name'] ); ?>"><?php echo mwm_icon( 'tick', 14, [ 'stroke' => '#FFFFFF', 'stroke-width' => '2' ] ); ?></button>
 									<?php endif; ?>
 								</div>
-								<?php if ( $r['coming_soon'] ) : ?>
-									<span class="mwm-pw-row__soon">Coming soon</span>
-								<?php else : ?>
-									<span class="mwm-pw-row__icons">
-										<?php
-										$first = $r['lessons'][0];
-										$res   = [
-											[ 'video', true, $first['url'] ],
-											[ 'worksheet', $r['worksheet'], $first['worksheet_url'] ?: $first['url'] ],
-											[ 'quiz', $r['quiz'], $first['quiz_url'] ?: $first['url'] ],
-										];
-										foreach ( $res as [ $kind, $on, $href ] ) {
-											if ( $on && $href ) {
-												echo '<a href="' . esc_url( $href ) . '" class="mwm-res" aria-label="' . esc_attr( 'Open ' . $kind ) . '" title="' . esc_attr( $kind . ' available' ) . '">' . mwm_icon( $kind, 16 ) . '</a>';
-											} else {
-												echo '<span class="mwm-res mwm-res--off" title="' . esc_attr( $kind . ' not available yet' ) . '">' . mwm_icon( $kind, 16 ) . '</span>';
-											}
-										}
-										?>
-									</span>
-									<button type="button" class="mwm-tick" aria-pressed="false" aria-label="<?php echo esc_attr( 'Mark ' . $r['name'] . ' as done' ); ?>" data-tick="<?php echo esc_attr( $r['key'] ); ?>" data-topic="<?php echo esc_attr( $r['name'] ); ?>"><?php echo mwm_icon( 'tick', 14, [ 'stroke' => '#FFFFFF', 'stroke-width' => '2' ] ); ?></button>
+								<?php if ( $r['lessons'] ) : ?>
+									<ul class="mwm-pw-lessons">
+										<?php foreach ( $r['lessons'] as $l ) : ?>
+											<li class="mwm-pw-lesson" data-lesson-row="<?php echo (int) $l['id']; ?>">
+												<a href="<?php echo esc_url( $l['url'] ); ?>" class="mwm-pw-lesson__title"><?php echo esc_html( $l['title'] ); ?></a>
+												<span class="mwm-pw-lesson__status">
+													<span class="mwm-pw-done" data-lesson-done="<?php echo (int) $l['id']; ?>" hidden>✓ Completed</span>
+													<?php if ( $l['quiz_id'] ) : ?><a href="<?php echo esc_url( $l['quiz_url'] ); ?>" class="mwm-quiz-result" data-quiz-result="<?php echo (int) $l['quiz_id']; ?>" hidden></a><?php endif; ?>
+												</span>
+												<span class="mwm-pw-lesson__icons">
+													<?php
+													$res = [
+														[ 'video', true, $l['url'], 'Watch the lesson' ],
+														[ 'worksheet', $l['has_worksheet'], $l['worksheet_url'] ?: $l['url'], 'Open the worksheet' ],
+														[ 'quiz', $l['has_quiz'], $l['quiz_url'], 'Take the quiz' ],
+													];
+													foreach ( $res as [ $kind, $on, $href, $label ] ) {
+														if ( $on && $href ) {
+															echo '<a href="' . esc_url( $href ) . '" class="mwm-res" aria-label="' . esc_attr( $label ) . '" title="' . esc_attr( $label ) . '">' . mwm_icon( $kind, 16 ) . '</a>';
+														} else {
+															echo '<span class="mwm-res mwm-res--off" title="' . esc_attr( 'No ' . $kind . ' yet' ) . '">' . mwm_icon( $kind, 16 ) . '</span>';
+														}
+													}
+													?>
+												</span>
+											</li>
+										<?php endforeach; ?>
+									</ul>
 								<?php endif; ?>
 							</div>
 						<?php endforeach; ?>
