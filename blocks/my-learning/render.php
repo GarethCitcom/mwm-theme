@@ -41,25 +41,19 @@ $progress = MWM_Progress::get( get_current_user_id() );
 $prefs    = mwm_user_prefs();
 $level    = $prefs['level'];
 $board    = $prefs['board'];
-$pathway  = mwm_find_pathway( $level, $board );
-$pdata    = $pathway ? mwm_pathway_data( $pathway ) : null;
-$ticked   = $pdata ? (array) ( $progress['ticks'][ (string) $pdata['id'] ] ?? [] ) : [];
-$rows     = [];
-if ( $pdata ) {
-	foreach ( $pdata['groups'] as $g ) {
-		foreach ( $g['rows'] as $r ) {
-			$rows[] = $r;
+$topics   = mwm_pathway_overview( $level );
+$total    = 0;
+$count    = 0;
+$next     = null;
+foreach ( $topics as $t ) {
+	$ticked = (array) ( $progress['ticks'][ $t['id'] ] ?? [] );
+	$total += count( $t['keys'] );
+	foreach ( $t['keys'] as $k ) {
+		if ( in_array( $k, $ticked, true ) ) {
+			$count++;
+		} elseif ( ! $next ) {
+			$next = $t;
 		}
-	}
-}
-$total  = count( $rows );
-$count  = 0;
-$next   = null;
-foreach ( $rows as $r ) {
-	if ( in_array( $r['key'], $ticked, true ) ) {
-		$count++;
-	} elseif ( ! $next && ! $r['coming_soon'] ) {
-		$next = $r;
 	}
 }
 $pct = $total ? (int) round( $count / $total * 100 ) : 0;
@@ -101,14 +95,14 @@ foreach ( array_reverse( (array) $progress['saved'] ) as $lid ) {
 	<div class="mwm-ml-grid">
 		<div class="mwm-panel">
 			<h2 class="mwm-panel__h2">Your pathway</h2>
-			<p class="mwm-panel__sub"><?php echo esc_html( mwm_level_name( $level ) . ' revision pathway' ); ?></p>
-			<?php if ( $pdata ) : ?>
+			<p class="mwm-panel__sub"><?php echo esc_html( mwm_level_name( $level ) . ' revision pathways, every topic' ); ?></p>
+			<?php if ( $total ) : ?>
 				<div class="mwm-progress__labels mwm-ml__labels"><span><?php echo (int) $count; ?> of <?php echo (int) $total; ?> ticked</span><span><?php echo (int) $pct; ?>%</span></div>
 				<div class="mwm-bar"><div class="mwm-bar__fill" style="width:<?php echo (int) $pct; ?>%"></div></div>
-				<p class="mwm-ml__next"><?php echo $next ? 'Next up: ' . esc_html( $next['topic'] ) : 'Every topic ticked — brilliant.'; ?></p>
-				<?php echo mwm_arrow_link( trailingslashit( $revision ) . $level . '/' . $board . '/', 'Continue pathway', 'mwm-arrow--mt16' ); ?>
+				<p class="mwm-ml__next"><?php echo $next ? 'Next up: ' . esc_html( $next['topic_name'] ) : 'Every subtopic ticked. Brilliant.'; ?></p>
+				<?php echo mwm_arrow_link( $next ? $next['url'] : mwm_pathway_url( $level ), 'Continue pathway', 'mwm-arrow--mt16' ); ?>
 			<?php else : ?>
-				<p class="mwm-ml__empty">This pathway is coming soon.</p>
+				<p class="mwm-ml__empty">The <?php echo esc_html( mwm_level_name( $level ) ); ?> pathways are coming soon.</p>
 				<?php echo mwm_arrow_link( $revision, 'See the pathways', 'mwm-arrow--mt16' ); ?>
 			<?php endif; ?>
 		</div>

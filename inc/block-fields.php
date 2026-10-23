@@ -74,7 +74,7 @@ add_action( 'acf/init', static function () {
 		'fields'   => [
 			$text( 'pc_heading', 'heading', 'Heading (plain part)', 'A little revision.' ),
 			$text( 'pc_highlight', 'highlight', 'Heading (pink part)', 'A lot more confidence.' ),
-			$text( 'pc_sub', 'sub', 'Sub-heading', 'Choose your level and exam board. Follow a clear path.' ),
+			$text( 'pc_sub', 'sub', 'Sub-heading', 'Choose your level, pick a topic, follow a clear path.' ),
 			$text( 'pc_link', 'link_label', 'Card link label', 'Start pathway' ),
 		],
 	] );

@@ -19,10 +19,8 @@ $board      = $st['board'];
 $level_name = mwm_level_name( $level );
 $board_name = mwm_board_name( $board );
 $exams      = array_values( array_filter( mwm_exam_dates( $level, $board ), static fn( $e ) => $e['verified'] && $e['date'] ) );
-$pathway    = mwm_find_pathway( $level, $board );
-$pdata      = $pathway ? mwm_pathway_data( $pathway ) : null;
-$plan       = $pdata ? $pdata['plan'] : [];
-$revision   = trailingslashit( mwm_page_url( 'revision' ) ) . $level . '/' . $board . '/';
+$plan       = mwm_revision_plan( $level );
+$revision   = mwm_pathway_url( $level );
 $verified   = $exams ? $exams[0]['verified_label'] : '';
 $season     = $exams ? ( $exams[0]['month'] >= 5 && $exams[0]['month'] <= 7 ? 'Summer ' : 'Autumn ' ) . $exams[0]['year'] : '';
 

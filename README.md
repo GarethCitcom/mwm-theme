@@ -28,6 +28,8 @@ Lesson/quiz templates: `lesson-header`, `lesson-content`, `lesson-next`, `quiz`.
 
 Blocks read the current URL/state on the server (no-JS works) and their `script.js` takes over for instant filtering, ticks, quizzes and the topic preview.
 
+Revision (`pathway` block) renders `/revision/{level}/` (one card per topic with tick progress) and `/revision/{level}/{topic}/` (that topic's subtopics in revision order, each with its lessons and a tick). Pathways come from the plugin's `mwm_pathway()` / `mwm_pathway_overview()`; ticks are keyed by pathway id (`level:topic`) and subtopic key. The exam board only drives the exam panel and papers links.
+
 ## Design rules baked in
 
 * Palette only: `#FFFFFF #171717 #5C5C5C #F9E8EE #F1CBD8 #C2185B #A3144C` plus the dark-mode set on `html[data-theme="dark"]`. No gradients, no green, no orange.

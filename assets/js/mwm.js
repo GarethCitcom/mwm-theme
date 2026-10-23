@@ -238,6 +238,7 @@
 			return now;
 		},
 		hasTick: function (pathway, key) { return (state.ticks[String(pathway)] || []).indexOf(key) !== -1; },
+		ticksFor: function (pathway) { return (state.ticks[String(pathway)] || []).slice(); },
 		toggleTick: function (pathway, key) {
 			var p = String(pathway);
 			state.ticks[p] = state.ticks[p] || [];

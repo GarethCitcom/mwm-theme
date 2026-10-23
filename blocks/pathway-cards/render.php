@@ -10,7 +10,7 @@ if ( ! mwm_core_active() ) {
 }
 $heading   = mwm_field( 'heading', 'A little revision.' );
 $highlight = mwm_field( 'highlight', 'A lot more confidence.' );
-$sub       = mwm_field( 'sub', 'Choose your level and exam board. Follow a clear path.' );
+$sub       = mwm_field( 'sub', 'Choose your level, pick a topic, follow a clear path.' );
 $link      = mwm_field( 'link_label', 'Start pathway' );
 $revision  = trailingslashit( mwm_page_url( 'revision' ) );
 ?>
@@ -21,11 +21,12 @@ $revision  = trailingslashit( mwm_page_url( 'revision' ) );
 		<div class="mwm-pathways__grid">
 			<?php foreach ( mwm_levels() as $slug => $level ) : ?>
 				<?php
-				$p    = mwm_find_pathway( $slug );
-				$d    = $p ? mwm_pathway_data( $p ) : null;
-				$line = $d && $d['total']
-					? sprintf( '%d topics · %d with worksheets · %d with quizzes', $d['total'], $d['with_worksheets'], $d['with_quizzes'] )
-					: 'Coming soon — topics are being recorded now.';
+				$topics  = array_filter( mwm_pathway_overview( $slug ), static fn( $t ) => $t['total'] );
+				$subs    = array_sum( array_column( $topics, 'total' ) );
+				$lessons = array_sum( array_column( $topics, 'with_lessons' ) );
+				$line    = $topics
+					? sprintf( '%d topics · %d subtopics in order · %d with lessons', count( $topics ), $subs, $lessons )
+					: 'Coming soon: topics are being lined up now.';
 				?>
 				<div class="mwm-pathway-card">
 					<h3><?php echo esc_html( $level['name'] . ' pathway' ); ?></h3>
