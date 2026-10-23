@@ -108,6 +108,7 @@ $signed_in    = is_user_logged_in();
 			<div class="mwm-panel">
 				<h2 class="mwm-panel__h2">Quiz</h2>
 				<p class="mwm-panel__sub"><?php echo esc_html( $quiz_summary['label'] ); ?></p>
+				<p class="mwm-panel__sub mwm-quiz-result mwm-quiz-result--long" data-quiz-result="<?php echo (int) $card['quiz_id']; ?>" data-quiz-style="long" hidden></p>
 				<?php echo mwm_button( $card['quiz_url'], 'Take the quiz', 'primary', [ 'style' => 'margin-top:16px' ] ); ?>
 			</div>
 		<?php endif; ?>

@@ -58,8 +58,23 @@
 
 	function renderResult() {
 		var msg = S.score >= Math.ceil(N * 0.8) ? 'Strong work — you’re ready for exam questions on this topic.' : S.score >= Math.ceil(N * 0.4) ? 'Good start. Rewatch the tricky steps and try the worksheet before going again.' : 'This one takes practice. Watch the lesson again, then come back — the steps will click.';
-		app.innerHTML = '<div class="mwm-quiz__result"><div class="mwm-quiz__result-label">Your score</div><div class="mwm-quiz__score">' + S.score + '<span> / ' + N + '</span></div><p class="mwm-quiz__msg">' + msg + '</p>' +
-			(D.signedIn ? '<p class="mwm-quiz__saved">✓ Saved to My Learning</p>' : '<p class="mwm-quiz__signin"><a href="' + esc(D.loginUrl) + '">Sign in</a> to keep your quiz scores.</p>') +
+		// What was there before this go, so the student can see whether they're improving.
+		var P = window.MWMProgress, before = P && P.quiz ? P.quiz(D.id) : null, now = Math.round(S.score / N * 100), today = P ? P.formatDate(new Date().toISOString()) : '';
+		var compare = '';
+		if (before) {
+			var diff = now - before.latest.pct;
+			compare = diff > 0 ? 'Up ' + diff + '% on last time (' + before.latest.pct + '% on ' + P.formatDate(before.latest.at) + ').'
+				: diff < 0 ? 'Down ' + (-diff) + '% on last time (' + before.latest.pct + '% on ' + P.formatDate(before.latest.at) + ').'
+				: 'Same as last time (' + before.latest.pct + '% on ' + P.formatDate(before.latest.at) + ').';
+			if (now > before.best.pct) { compare += ' Your best so far.'; } else if (before.best.pct > now) { compare += ' Your best is ' + before.best.pct + '%.'; }
+		}
+		var history = before ? '<details class="mwm-quiz__history"><summary>Your earlier goes (' + before.count + ')</summary><ul>' + before.attempts.slice().reverse().map(function (a) {
+			return '<li><span>' + esc(P.formatDate(a.at)) + '</span><strong>' + P.percent(a) + '%</strong><span class="mwm-meta">' + a.score + ' / ' + a.total + '</span></li>';
+		}).join('') + '</ul></details>' : '';
+		app.innerHTML = '<div class="mwm-quiz__result"><div class="mwm-quiz__result-label">Your score</div><div class="mwm-quiz__score">' + S.score + '<span> / ' + N + '</span></div>' +
+			'<p class="mwm-quiz__when">You got ' + now + '% on ' + esc(today) + '.' + (compare ? ' ' + esc(compare) : '') + '</p>' +
+			'<p class="mwm-quiz__msg">' + msg + '</p>' + history +
+			(D.signedIn ? '<p class="mwm-quiz__saved">✓ Saved to My Learning</p>' : '<p class="mwm-quiz__signin"><a href="' + esc(D.loginUrl) + '">Sign in</a> to keep your quiz scores on every device.</p>') +
 			'<div class="mwm-quiz__actions"><button type="button" class="mwm-btn mwm-btn--secondary" data-retry>Try again</button><a href="' + esc(D.lessonUrl) + '" class="mwm-btn mwm-btn--primary">Back to the lesson</a></div>' +
 			'<a href="' + esc(D.pathwayUrl) + '" class="mwm-arrow mwm-quiz__continue">Continue your pathway<span aria-hidden="true">→</span></a></div>';
 		if (window.MWMProgress) { window.MWMProgress.setQuiz(D.id, S.score, N); }

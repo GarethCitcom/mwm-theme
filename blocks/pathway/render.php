@@ -90,10 +90,13 @@ $island = [
 										<span class="mwm-pw-row__title<?php echo $r['coming_soon'] ? ' mwm-pw-row__title--soon' : ''; ?>"><?php echo esc_html( $r['name'] ); ?></span>
 									<?php endif; ?>
 									<?php if ( $r['note'] ) : ?><span class="mwm-pw-row__note"><?php echo esc_html( $r['note'] ); ?></span><?php endif; ?>
+									<?php if ( count( $r['lessons'] ) === 1 && $r['lessons'][0]['quiz_id'] ) : ?>
+										<a href="<?php echo esc_url( $r['lessons'][0]['quiz_url'] ); ?>" class="mwm-quiz-result" data-quiz-result="<?php echo (int) $r['lessons'][0]['quiz_id']; ?>" hidden></a>
+									<?php endif; ?>
 									<?php if ( count( $r['lessons'] ) > 1 ) : ?>
 										<ul class="mwm-pw-row__lessons">
 											<?php foreach ( $r['lessons'] as $l ) : ?>
-												<li><a href="<?php echo esc_url( $l['url'] ); ?>"><?php echo esc_html( $l['title'] ); ?></a></li>
+												<li><a href="<?php echo esc_url( $l['url'] ); ?>"><?php echo esc_html( $l['title'] ); ?></a><?php if ( $l['quiz_id'] ) : ?> <a href="<?php echo esc_url( $l['quiz_url'] ); ?>" class="mwm-quiz-result" data-quiz-result="<?php echo (int) $l['quiz_id']; ?>" hidden></a><?php endif; ?></li>
 											<?php endforeach; ?>
 										</ul>
 									<?php endif; ?>
