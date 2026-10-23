@@ -13,61 +13,37 @@ $card = mwm_lesson_card( $id );
 if ( ! $card || ! mwm_card_levels( $card ) ) {
 	return;
 }
-$prefs = mwm_user_prefs();
-// A lesson can suit more than one level. Try the visitor's own level first, then the others, and use the first
-// pathway that actually lists this lesson; failing that, the first pathway found.
+// A lesson can suit more than one level: try the visitor's own level first, then the others, and use the first
+// pathway that lists this lesson.
 $first  = mwm_card_level( $card );
 $levels = array_values( array_unique( array_merge( [ $first ], mwm_card_levels( $card ) ) ) );
-$level  = '';
-$data   = null;
-$rows   = [];
+$hit    = null;
 foreach ( $levels as $try ) {
-	$pathway = mwm_find_pathway( $try, $prefs['board'] );
-	if ( ! $pathway ) {
-		continue;
+	$r = mwm_next_in_pathway( $id, $try );
+	if ( $r && ( ! $hit || $r['found'] ) ) {
+		$hit = $r;
 	}
-	$try_data = mwm_pathway_data( $pathway );
-	$try_rows = [];
-	foreach ( $try_data['groups'] as $g ) {
-		foreach ( $g['rows'] as $r ) {
-			$try_rows[] = $r;
-		}
-	}
-	$listed = in_array( (int) $id, array_map( static fn( $r ) => (int) $r['lesson_id'], $try_rows ), true );
-	if ( ! $data || $listed ) {
-		[ $level, $data, $rows ] = [ $try, $try_data, $try_rows ];
-	}
-	if ( $listed ) {
+	if ( $hit && $hit['found'] ) {
 		break;
 	}
 }
-if ( ! $data ) {
+if ( ! $hit ) {
 	return;
 }
-$next  = null;
-$found = false;
-foreach ( $rows as $r ) {
-	if ( $found && ! $r['coming_soon'] ) {
-		$next = $r;
-		break;
-	}
-	if ( (int) $r['lesson_id'] === (int) $id ) {
-		$found = true;
-	}
-}
-$revision = trailingslashit( mwm_page_url( 'revision' ) ) . $level . '/' . $prefs['board'] . '/';
-if ( $next ) {
+$pw       = $hit['pathway'];
+$revision = $pw['url'];
+if ( $hit['next'] ) {
 	$label = 'Next in your pathway';
-	$title = $next['topic'];
+	$title = $hit['next']['name'];
 	$link  = 'Continue pathway';
-} elseif ( $found ) {
-	$label = 'You’ve reached the end of the pathway';
-	$title = $data['level_name'] . ' revision pathway';
-	$link  = 'Review your pathway';
+} elseif ( $hit['found'] ) {
+	$label = 'You’ve reached the end of this topic';
+	$title = $pw['topic_name'] . ' · ' . $pw['level_name'];
+	$link  = 'Review the pathway';
 } else {
 	$label = 'Keep going with a pathway';
-	$title = $data['level_name'] . ' revision pathway';
-	$link  = 'Open pathway';
+	$title = $pw['topic_name'] . ' · ' . $pw['level_name'];
+	$link  = 'Open the pathway';
 }
 ?>
 <div class="mwm-cta mwm-cta--next">

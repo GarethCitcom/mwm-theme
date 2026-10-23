@@ -41,25 +41,19 @@ $progress = MWM_Progress::get( get_current_user_id() );
 $prefs    = mwm_user_prefs();
 $level    = $prefs['level'];
 $board    = $prefs['board'];
-$pathway  = mwm_find_pathway( $level, $board );
-$pdata    = $pathway ? mwm_pathway_data( $pathway ) : null;
-$ticked   = $pdata ? (array) ( $progress['ticks'][ (string) $pdata['id'] ] ?? [] ) : [];
-$rows     = [];
-if ( $pdata ) {
-	foreach ( $pdata['groups'] as $g ) {
-		foreach ( $g['rows'] as $r ) {
-			$rows[] = $r;
+$topics   = mwm_pathway_overview( $level );
+$total    = 0;
+$count    = 0;
+$next     = null;
+foreach ( $topics as $t ) {
+	$ticked = (array) ( $progress['ticks'][ $t['id'] ] ?? [] );
+	$total += count( $t['keys'] );
+	foreach ( $t['keys'] as $k ) {
+		if ( in_array( $k, $ticked, true ) ) {
+			$count++;
+		} elseif ( ! $next ) {
+			$next = $t;
 		}
-	}
-}
-$total  = count( $rows );
-$count  = 0;
-$next   = null;
-foreach ( $rows as $r ) {
-	if ( in_array( $r['key'], $ticked, true ) ) {
-		$count++;
-	} elseif ( ! $next && ! $r['coming_soon'] ) {
-		$next = $r;
 	}
 }
 $pct = $total ? (int) round( $count / $total * 100 ) : 0;
@@ -71,7 +65,11 @@ foreach ( (array) $progress['quizzes'] as $qid => $res ) {
 		continue;
 	}
 	$lid = (int) get_post_meta( $q->ID, 'lesson', true );
-	$quiz_rows[] = [ 'title' => $lid ? mwm_title( $lid ) : mwm_title( $q->ID ), 'url' => get_permalink( $q ), 'score' => (int) $res['score'], 'total' => (int) $res['total'], 'at' => $res['at'] ?? '' ];
+	$h   = MWM_Progress::quiz_history( $progress, (int) $qid );
+	if ( ! $h ) {
+		continue;
+	}
+	$quiz_rows[] = [ 'title' => $lid ? mwm_title( $lid ) : mwm_title( $q->ID ), 'url' => get_permalink( $q ), 'score' => (int) $res['score'], 'total' => (int) $res['total'], 'at' => $h['latest']['at'], 'history' => $h ];
 }
 usort( $quiz_rows, static fn( $a, $b ) => strcmp( $b['at'], $a['at'] ) );
 $saved = [];
@@ -101,24 +99,41 @@ foreach ( array_reverse( (array) $progress['saved'] ) as $lid ) {
 	<div class="mwm-ml-grid">
 		<div class="mwm-panel">
 			<h2 class="mwm-panel__h2">Your pathway</h2>
-			<p class="mwm-panel__sub"><?php echo esc_html( mwm_level_name( $level ) . ' revision pathway' ); ?></p>
-			<?php if ( $pdata ) : ?>
+			<p class="mwm-panel__sub"><?php echo esc_html( mwm_level_name( $level ) . ' revision pathways, every topic' ); ?></p>
+			<?php if ( $total ) : ?>
 				<div class="mwm-progress__labels mwm-ml__labels"><span><?php echo (int) $count; ?> of <?php echo (int) $total; ?> ticked</span><span><?php echo (int) $pct; ?>%</span></div>
 				<div class="mwm-bar"><div class="mwm-bar__fill" style="width:<?php echo (int) $pct; ?>%"></div></div>
-				<p class="mwm-ml__next"><?php echo $next ? 'Next up: ' . esc_html( $next['topic'] ) : 'Every topic ticked — brilliant.'; ?></p>
-				<?php echo mwm_arrow_link( trailingslashit( $revision ) . $level . '/' . $board . '/', 'Continue pathway', 'mwm-arrow--mt16' ); ?>
+				<p class="mwm-ml__next"><?php echo $next ? 'Next up: ' . esc_html( $next['topic_name'] ) : 'Every subtopic ticked. Brilliant.'; ?></p>
+				<?php echo mwm_arrow_link( $next ? $next['url'] : mwm_pathway_url( $level ), 'Continue pathway', 'mwm-arrow--mt16' ); ?>
 			<?php else : ?>
-				<p class="mwm-ml__empty">This pathway is coming soon.</p>
+				<p class="mwm-ml__empty">The <?php echo esc_html( mwm_level_name( $level ) ); ?> pathways are coming soon.</p>
 				<?php echo mwm_arrow_link( $revision, 'See the pathways', 'mwm-arrow--mt16' ); ?>
 			<?php endif; ?>
 		</div>
 		<div class="mwm-panel">
 			<h2 class="mwm-panel__h2">Quiz scores</h2>
 			<?php if ( $quiz_rows ) : ?>
-				<?php foreach ( $quiz_rows as $qr ) : ?>
-					<div class="mwm-ml__quizrow"><a href="<?php echo esc_url( $qr['url'] ); ?>"><?php echo esc_html( $qr['title'] ); ?></a><span class="mwm-ml__score"><?php echo (int) $qr['score']; ?> / <?php echo (int) $qr['total']; ?></span></div>
+				<?php
+				$when = static fn( string $at ) => $at ? gmdate( 'j F Y', strtotime( $at ) ) : '';
+				foreach ( $quiz_rows as $qr ) :
+					$h = $qr['history'];
+					?>
+					<div class="mwm-ml__quizrow">
+						<div class="mwm-ml__quizmain">
+							<a href="<?php echo esc_url( $qr['url'] ); ?>"><?php echo esc_html( $qr['title'] ); ?></a>
+							<span class="mwm-ml__quizmeta">You got <?php echo (int) $h['latest']['pct']; ?>% on <?php echo esc_html( $when( $h['latest']['at'] ) ); ?><?php if ( $h['count'] > 1 ) : ?> · best <?php echo (int) $h['best']['pct']; ?>% · <?php echo (int) $h['count']; ?> goes<?php endif; ?></span>
+							<?php if ( $h['count'] > 1 ) : ?>
+								<details class="mwm-ml__history"><summary>Every go</summary><ul>
+									<?php foreach ( array_reverse( $h['attempts'] ) as $a ) : ?>
+										<li><span><?php echo esc_html( $when( $a['at'] ) ); ?></span><strong><?php echo $a['total'] ? (int) round( $a['score'] / $a['total'] * 100 ) : 0; ?>%</strong><span class="mwm-meta"><?php echo (int) $a['score']; ?> / <?php echo (int) $a['total']; ?></span></li>
+									<?php endforeach; ?>
+								</ul></details>
+							<?php endif; ?>
+						</div>
+						<span class="mwm-ml__score"><?php echo (int) $qr['score']; ?> / <?php echo (int) $qr['total']; ?></span>
+					</div>
 				<?php endforeach; ?>
-				<p class="mwm-ml__avg">Average <?php echo (int) $avg; ?>% · Quiz scores are separate from your pathway ticks.</p>
+				<p class="mwm-ml__avg">Average <?php echo (int) $avg; ?>% across your latest go at each quiz · Quiz scores are separate from your pathway ticks.</p>
 			<?php else : ?>
 				<p class="mwm-ml__empty">No quizzes yet — lessons with a quiz show one under Practice.</p>
 				<?php echo mwm_arrow_link( add_query_arg( 'quiz', '1', mwm_browse_url( $level ) ), 'Find a lesson with a quiz', 'mwm-arrow--mt16' ); ?>

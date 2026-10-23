@@ -117,12 +117,20 @@ function mwm_seo_context(): array {
 	if ( is_page() && $id === $page( 'revision' ) ) {
 		$st    = MWM_Rewrites::pathway_state();
 		$lname = mwm_level_name( $st['level'] );
-		$bname = mwm_board_name( $st['board'] );
-		$ctx['title']       = "$lname revision pathway · $bname";
-		$ctx['description'] = mwm_seo_trim( "A step-by-step $lname maths revision pathway for $bname: every topic in the order to revise it, ticked off as you go, with lessons, worksheets and past papers to match." );
-		$ctx['canonical']   = trailingslashit( mwm_page_url( 'revision' ) ) . $st['level'] . '/' . $st['board'] . '/';
-		$ctx['crumbs'][]    = [ 'Revision', mwm_page_url( 'revision' ) ];
-		$ctx['crumbs'][]    = [ "$lname · $bname", $ctx['canonical'] ];
+		$pw    = $st['topic'] ? mwm_pathway( $st['level'], $st['topic'] ) : null;
+		$ctx['crumbs'][] = [ 'Revision', mwm_page_url( 'revision' ) ];
+		if ( $pw ) {
+			$ctx['title']       = $pw['topic_name'] . " revision pathway · $lname";
+			$ctx['description'] = mwm_seo_trim( "$lname " . $pw['topic_name'] . ' maths revision in the right order: ' . $pw['total'] . ' subtopics with free video lessons, worksheets and quizzes, ticked off as you go.' );
+			$ctx['canonical']   = $pw['url'];
+			$ctx['crumbs'][]    = [ $lname, mwm_pathway_url( $st['level'] ) ];
+			$ctx['crumbs'][]    = [ $pw['topic_name'], $pw['url'] ];
+		} else {
+			$ctx['title']       = "$lname revision pathways";
+			$ctx['description'] = mwm_seo_trim( "Step-by-step $lname maths revision pathways, one per topic: every subtopic in the order to revise it, ticked off as you go, with lessons, worksheets and past papers to match." );
+			$ctx['canonical']   = mwm_pathway_url( $st['level'] );
+			$ctx['crumbs'][]    = [ $lname, $ctx['canonical'] ];
+		}
 		return $ctx;
 	}
 

@@ -2459,6 +2459,13 @@ a.mwm-short:hover {
 .mwm-ctl.is-on {
 	font-weight: 600;
 }
+.mwm-controls__back {
+	display: inline-flex;
+	margin-top: 12px;
+}
+.mwm-controls__back.is-ready {
+	font-weight: 600;
+}
 .mwm-controls__note {
 	margin: 10px 0 0;
 	font-size: 14px;
@@ -2565,6 +2572,158 @@ a.mwm-short:hover {
 .mwm-pathway__h1 {
 	margin: 32px 0 0;
 }
+.mwm-h1__muted {
+	font-weight: 400;
+	color: var(--muted);
+}
+/* Level overview: one card per topic with its tick progress. */
+.mwm-pw-topics {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+	gap: 20px;
+}
+.mwm-pw-topic {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	padding: 24px;
+	background: var(--card);
+	border: 1px solid var(--border);
+	border-radius: 12px;
+	color: var(--ink);
+	text-decoration: none;
+	transition: box-shadow 0.15s ease;
+}
+.mwm-pw-topic:hover {
+	box-shadow: 0 12px 28px -8px var(--shadow);
+	color: var(--ink);
+}
+.mwm-pw-topic__icon {
+	display: inline-flex;
+	width: 40px;
+	height: 40px;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	background: var(--tint);
+	color: var(--link);
+	margin-bottom: 6px;
+}
+.mwm-pw-topic__name {
+	font-size: 20px;
+	line-height: 1.4;
+	font-weight: 600;
+}
+.mwm-pw-topic:hover .mwm-pw-topic__name {
+	color: var(--link);
+}
+.mwm-pw-topic__meta,
+.mwm-pw-topic__count {
+	font-size: 14px;
+	line-height: 1.5;
+	color: var(--muted);
+}
+.mwm-pw-topic__progress {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	margin-top: 10px;
+}
+/* "Completed" beside a lesson the student has marked done. */
+.mwm-pw-done {
+	display: inline-flex;
+	align-items: center;
+	margin-left: 6px;
+	padding: 1px 8px;
+	border-radius: 100px;
+	background: var(--action);
+	color: #fff;
+	font-size: 12px;
+	line-height: 1.6;
+	font-weight: 600;
+	vertical-align: middle;
+	white-space: nowrap;
+}
+.mwm-pw-done[hidden] {
+	display: none;
+}
+.mwm-pw-row {
+	scroll-margin-top: 120px;
+}
+.mwm-pw-row:target {
+	background: var(--tint);
+	border-radius: 12px;
+	padding-left: 12px;
+	padding-right: 12px;
+	margin-left: -12px;
+	margin-right: -12px;
+}
+/* A student's own quiz result, shown next to anything that has a quiz. */
+.mwm-quiz-result {
+	display: inline-flex;
+	align-items: center;
+	margin-top: 6px;
+	padding: 2px 10px;
+	border-radius: 100px;
+	border: 1px solid var(--border);
+	background: var(--tint);
+	font-size: 12px;
+	line-height: 1.6;
+	font-weight: 500;
+	color: var(--link);
+	white-space: nowrap;
+}
+.mwm-quiz-result:hover {
+	border-color: var(--link);
+}
+.mwm-quiz-result[hidden] {
+	display: none;
+}
+.mwm-quiz-result--long {
+	display: block;
+	margin-top: 8px;
+	padding: 0;
+	border: none;
+	background: none;
+	border-radius: 0;
+	font-size: 14px;
+	font-weight: 600;
+	white-space: normal;
+}
+.mwm-pw-row--soon .mwm-pw-row__step {
+	color: var(--border);
+}
+.mwm-prevnext {
+	display: flex;
+	justify-content: space-between;
+	gap: 20px;
+	margin-top: 32px;
+}
+.mwm-prevnext__link {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	font-size: 16px;
+	font-weight: 600;
+	color: var(--ink);
+}
+.mwm-prevnext__link--next {
+	text-align: right;
+	margin-left: auto;
+}
+.mwm-prevnext__link:hover {
+	color: var(--link);
+}
+.mwm-prevnext__label {
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: var(--muted);
+}
+.mwm-exam-side__board {
+	margin: 8px 0 12px;
+}
 .mwm-pathway__line {
 	margin: 8px 0 0;
 	font-size: 16px;
@@ -2621,11 +2780,71 @@ a.mwm-short:hover {
 	margin: 0 0 8px;
 }
 .mwm-pw-row {
+	padding: 18px 0;
+	border-bottom: 1px solid var(--border);
+}
+.mwm-pw-row__head {
 	display: flex;
 	align-items: center;
 	gap: 20px;
-	padding: 18px 0;
-	border-bottom: 1px solid var(--border);
+}
+.mwm-pw-row__count {
+	display: block;
+	font-size: 12px;
+	line-height: 1.5;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: var(--muted);
+	margin-top: 2px;
+}
+/* One line per lesson under the subtopic: title, then completed / quiz chips, then its own video, worksheet, quiz icons. */
+.mwm-pw-lessons {
+	list-style: none;
+	margin: 10px 0 0 56px;
+	padding: 0;
+}
+.mwm-pw-lesson {
+	display: flex;
+	align-items: center;
+	gap: 12px 16px;
+	flex-wrap: wrap;
+	padding: 8px 0;
+	border-top: 1px solid var(--border);
+}
+.mwm-pw-lesson__title {
+	flex: 1 1 240px;
+	min-width: 0;
+	font-size: 15px;
+	line-height: 1.5;
+	color: var(--ink);
+}
+.mwm-pw-lesson__title:hover {
+	color: var(--link);
+}
+.mwm-pw-lesson__status {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+.mwm-pw-lesson__status .mwm-pw-done,
+.mwm-pw-lesson__status .mwm-quiz-result {
+	margin: 0;
+}
+.mwm-pw-lesson__icons {
+	display: inline-flex;
+	gap: 14px;
+	margin-left: auto;
+	flex-shrink: 0;
+}
+@media (max-width: 700px) {
+	.mwm-pw-lessons {
+		margin-left: 0;
+	}
+	.mwm-pw-lesson__icons {
+		margin-left: 0;
+	}
 }
 .mwm-pw-row__step {
 	width: 36px;
@@ -2657,11 +2876,6 @@ a.mwm-pw-row__title:hover {
 	line-height: 1.5;
 	color: var(--muted);
 	margin-top: 2px;
-}
-.mwm-pw-row__icons {
-	display: inline-flex;
-	gap: 14px;
-	flex-shrink: 0;
 }
 .mwm-res {
 	display: inline-flex;
@@ -3055,6 +3269,63 @@ a.mwm-pw-row__title:hover {
 }
 
 /* ---- Quiz -------------------------------------------------------------- */
+.mwm-quiz__when {
+	margin: 12px 0 0;
+	font-size: 16px;
+	line-height: 1.5;
+	font-weight: 600;
+}
+.mwm-quiz__history {
+	margin: 16px auto 0;
+	max-width: 420px;
+	text-align: left;
+}
+.mwm-quiz__history summary,
+.mwm-ml__history summary {
+	cursor: pointer;
+	font-size: 14px;
+	color: var(--muted);
+}
+.mwm-quiz__history summary:hover,
+.mwm-ml__history summary:hover {
+	color: var(--link);
+}
+.mwm-quiz__history ul,
+.mwm-ml__history ul {
+	list-style: none;
+	margin: 8px 0 0;
+	padding: 0;
+}
+.mwm-quiz__history li,
+.mwm-ml__history li {
+	display: flex;
+	align-items: baseline;
+	gap: 12px;
+	padding: 6px 0;
+	border-top: 1px solid var(--border);
+	font-size: 14px;
+	line-height: 1.5;
+}
+.mwm-quiz__history li span:first-child,
+.mwm-ml__history li span:first-child {
+	flex: 1;
+	color: var(--muted);
+}
+.mwm-ml__quizmain {
+	flex: 1;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+.mwm-ml__quizmeta {
+	font-size: 14px;
+	line-height: 1.5;
+	color: var(--muted);
+}
+.mwm-ml__history {
+	margin-top: 4px;
+}
 .mwm-quiz {
 	flex: 1;
 	width: 100%;

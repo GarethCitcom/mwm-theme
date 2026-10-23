@@ -89,7 +89,7 @@ $icon_dl = mwm_icon( 'download', 14 );
 
 	<div class="mwm-cta">
 		<p class="mwm-cta__text"><?php echo esc_html( $cta ); ?></p>
-		<?php echo mwm_button( trailingslashit( mwm_page_url( 'revision' ) ) . ( $tier === 'foundation' ? 'gcse-foundation' : 'gcse-higher' ) . '/' . $board . '/', $cta_btn ); ?>
+		<?php echo mwm_button( mwm_pathway_url( $tier === 'foundation' ? 'gcse-foundation' : 'gcse-higher' ), $cta_btn ); ?>
 	</div>
 	<?php echo mwm_json_script( 'mwm-past-papers-data', [ 'papers' => $papers_public, 'series' => $series, 'state' => [ 'tier' => $tier, 'series' => $series_sel, 'paper' => $paper_sel ], 'icon' => $icon_dl, 'board' => mwm_board_name( $board ), 'boardSlug' => $board ] ); ?>
 	<noscript>

@@ -203,11 +203,47 @@
 			state.ticks[p] = union(state.ticks[p] || [], server.ticks[p]);
 		});
 		Object.keys(server.quizzes || {}).forEach(function (q) {
-			var s = server.quizzes[q], l = state.quizzes[q];
-			if (!l || (s.at || '') >= (l.at || '')) { state.quizzes[q] = s; }
+			state.quizzes[q] = mergeQuiz(state.quizzes[q], server.quizzes[q]);
 		});
 		state.prefs = Object.assign({}, server.prefs || {}, state.prefs || {});
 		persist();
+	}
+	/* A quiz record keeps every attempt with its date (newest last, up to 30); score/total/at are the latest. */
+	function attemptsOf(r) {
+		if (!r) { return []; }
+		if (r.attempts && r.attempts.length) { return r.attempts.slice(); }
+		return r.total ? [{ score: r.score || 0, total: r.total, at: r.at || '' }] : [];
+	}
+	function mergeQuiz(a, b) {
+		var seen = {}, all = [];
+		attemptsOf(a).concat(attemptsOf(b)).forEach(function (x) {
+			var k = String(x.at || '') + ':' + x.score + '/' + x.total;
+			if (!seen[k]) { seen[k] = true; all.push({ score: Number(x.score) || 0, total: Number(x.total) || 0, at: String(x.at || '') }); }
+		});
+		all.sort(function (x, y) { return x.at < y.at ? -1 : (x.at > y.at ? 1 : 0); });
+		all = all.slice(-30);
+		var last = all[all.length - 1];
+		return last ? { score: last.score, total: last.total, at: last.at.slice(0, 10), attempts: all } : undefined;
+	}
+	function pct(a) { return a && a.total ? Math.round(a.score / a.total * 100) : 0; }
+	function formatDate(iso, style) {
+		if (!iso) { return ''; }
+		var d = new Date(iso.length === 10 ? iso + 'T12:00:00' : iso);
+		if (isNaN(d.getTime())) { return iso; }
+		return d.toLocaleDateString('en-GB', { day: 'numeric', month: style === 'short' ? 'short' : 'long', year: 'numeric' });
+	}
+	/* Fill every [data-quiz-result="quizId"] on the page with the student's latest result (and best, and how many goes). */
+	function paintQuizResults() {
+		document.querySelectorAll('[data-quiz-result]').forEach(function (el) {
+			var h = Progress.quiz(el.getAttribute('data-quiz-result'));
+			if (!h) { el.hidden = true; return; }
+			var long = el.getAttribute('data-quiz-style') === 'long';
+			var text = (long ? 'You got ' : 'Quiz: ') + h.latest.pct + '% on ' + formatDate(h.latest.at, long ? 'long' : 'short');
+			if (h.count > 1 && h.best.pct > h.latest.pct) { text += ' · best ' + h.best.pct + '%'; }
+			if (h.count > 1) { text += ' · ' + h.count + ' goes'; }
+			el.textContent = text;
+			el.hidden = false;
+		});
 	}
 	function push(patch) {
 		if (!signedIn || !window.MWM || !window.MWM.rest) { return; }
@@ -238,6 +274,7 @@
 			return now;
 		},
 		hasTick: function (pathway, key) { return (state.ticks[String(pathway)] || []).indexOf(key) !== -1; },
+		ticksFor: function (pathway) { return (state.ticks[String(pathway)] || []).slice(); },
 		toggleTick: function (pathway, key) {
 			var p = String(pathway);
 			state.ticks[p] = state.ticks[p] || [];
@@ -251,13 +288,24 @@
 			return now;
 		},
 		setQuiz: function (quizId, score, total) {
-			var r = { score: score, total: total, at: new Date().toISOString().slice(0, 10) };
+			var attempt = { score: score, total: total, at: new Date().toISOString() };
+			var r = mergeQuiz(state.quizzes[String(quizId)], { attempts: [attempt] });
 			state.quizzes[String(quizId)] = r;
 			persist();
 			var patch = { quizzes: {} }; patch.quizzes[String(quizId)] = r;
 			push(patch);
 			emit();
 		},
+		/* Latest, best and every attempt for a quiz (newest last), or null if never taken. */
+		quiz: function (quizId) {
+			var all = attemptsOf(state.quizzes[String(quizId)]);
+			if (!all.length) { return null; }
+			var best = all.reduce(function (b, a) { return pct(a) > pct(b) ? a : b; }, all[0]);
+			var latest = all[all.length - 1];
+			return { latest: Object.assign({ pct: pct(latest) }, latest), best: Object.assign({ pct: pct(best) }, best), attempts: all, count: all.length };
+		},
+		formatDate: formatDate,
+		percent: pct,
 		setPrefs: function (prefs) {
 			state.prefs = Object.assign({}, state.prefs, prefs);
 			persist();
@@ -284,5 +332,7 @@
 		} catch (e) {}
 	}
 	window.MWMProgress = Progress;
+	paintQuizResults();
+	document.addEventListener('mwm:progress', paintQuizResults);
 	document.dispatchEvent(new CustomEvent('mwm:ready', { detail: state }));
 })();
