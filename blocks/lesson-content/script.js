@@ -4,6 +4,16 @@
 	var root = document.querySelector('[data-lesson]');
 	if (!root) { return; }
 	var lessonId = Number(root.getAttribute('data-lesson'));
+	var pathwayRows = [];
+	try { pathwayRows = JSON.parse(root.getAttribute('data-pathway-rows') || '[]'); } catch (e) {}
+	/* Completing the last lesson in a pathway row ticks that row; un-completing any lesson unticks it. */
+	function syncPathwayTicks(completed) {
+		var P = window.MWMProgress;
+		pathwayRows.forEach(function (r) {
+			var allDone = completed && (r.lessons || [lessonId]).every(function (id) { return P.has('completed', id); });
+			if (P.hasTick(r.pathway, r.key) !== allDone) { P.toggleTick(r.pathway, r.key); }
+		});
+	}
 
 	var player = root.querySelector('[data-player]');
 	var play = root.querySelector('[data-play]');
@@ -35,6 +45,8 @@
 
 	function paint() {
 		if (!window.MWMProgress) { return; }
+		var back = root.querySelector('[data-back-to-pathway]');
+		if (back) { back.classList.toggle('is-ready', window.MWMProgress.has('completed', lessonId)); }
 		root.querySelectorAll('[data-ctl]').forEach(function (b) {
 			var on = window.MWMProgress.has(b.getAttribute('data-ctl'), lessonId);
 			b.classList.toggle('is-on', on);
@@ -45,7 +57,12 @@
 	root.addEventListener('click', function (e) {
 		var b = e.target.closest('[data-ctl]');
 		if (!b || !window.MWMProgress) { return; }
-		window.MWMProgress.toggleList(b.getAttribute('data-ctl'), lessonId);
+		var now = window.MWMProgress.toggleList(b.getAttribute('data-ctl'), lessonId);
+		if (b.getAttribute('data-ctl') === 'completed') {
+			syncPathwayTicks(now);
+			var back = root.querySelector('[data-back-to-pathway]');
+			if (back) { back.classList.toggle('is-ready', now); if (now) { back.focus({ preventScroll: true }); } }
+		}
 		paint();
 	});
 	if (window.MWMProgress) { paint(); } else { document.addEventListener('mwm:ready', paint); }

@@ -30,7 +30,17 @@ $yt           = mwm_youtube_channel_url();
 $embed        = $card['youtube_id'] ? 'https://www.youtube-nocookie.com/embed/' . rawurlencode( $card['youtube_id'] ) . '?autoplay=1&rel=0' : '';
 $signed_in    = is_user_logged_in();
 ?>
-<div class="mwm-cols" data-lesson="<?php echo (int) $id; ?>">
+<?php
+// The pathway rows this lesson sits in (one per level), so marking it complete ticks the row, and a way back.
+$pw_rows = function_exists( 'mwm_lesson_pathway_rows' ) ? mwm_lesson_pathway_rows( $id ) : [];
+$pw_back = null;
+foreach ( $pw_rows as $pr ) {
+	if ( ! $pw_back || $pr['level'] === mwm_card_level( $card ) ) {
+		$pw_back = $pr;
+	}
+}
+?>
+<div class="mwm-cols" data-lesson="<?php echo (int) $id; ?>" data-pathway-rows="<?php echo esc_attr( wp_json_encode( array_map( static fn( $r ) => [ 'pathway' => $r['pathway'], 'key' => $r['key'], 'lessons' => $r['lessons'] ], $pw_rows ) ) ); ?>">
 	<div class="mwm-cols__main">
 		<div class="mwm-player<?php echo $card['is_short'] ? ' mwm-player--short' : ''; ?>" data-player data-embed="<?php echo esc_attr( $embed ); ?>">
 			<?php if ( $card['thumb'] ) : ?>
@@ -117,6 +127,9 @@ $signed_in    = is_user_logged_in();
 				<button type="button" class="mwm-ctl" aria-pressed="false" data-ctl="saved" data-on="✓ Saved" data-off="Save">Save</button>
 				<button type="button" class="mwm-ctl" aria-pressed="false" data-ctl="completed" data-on="✓ Completed" data-off="Mark complete">Mark complete</button>
 			</div>
+			<?php if ( $pw_back ) : ?>
+				<a href="<?php echo esc_url( $pw_back['url'] . '#row-' . $pw_back['key'] ); ?>" class="mwm-arrow mwm-controls__back" data-back-to-pathway>Back to your <?php echo esc_html( $pw_back['topic_name'] ); ?> pathway<span aria-hidden="true">→</span></a>
+			<?php endif; ?>
 			<?php if ( $signed_in ) : ?>
 				<p class="mwm-controls__note mwm-controls__note--ok">✓ Progress saves to your account.</p>
 			<?php else : ?>

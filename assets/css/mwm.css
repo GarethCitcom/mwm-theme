@@ -2459,6 +2459,13 @@ a.mwm-short:hover {
 .mwm-ctl.is-on {
 	font-weight: 600;
 }
+.mwm-controls__back {
+	display: inline-flex;
+	margin-top: 12px;
+}
+.mwm-controls__back.is-ready {
+	font-weight: 600;
+}
 .mwm-controls__note {
 	margin: 10px 0 0;
 	font-size: 14px;
@@ -2621,6 +2628,35 @@ a.mwm-short:hover {
 	flex-direction: column;
 	gap: 6px;
 	margin-top: 10px;
+}
+/* "Completed" beside a lesson the student has marked done. */
+.mwm-pw-done {
+	display: inline-flex;
+	align-items: center;
+	margin-left: 6px;
+	padding: 1px 8px;
+	border-radius: 100px;
+	background: var(--action);
+	color: #fff;
+	font-size: 12px;
+	line-height: 1.6;
+	font-weight: 600;
+	vertical-align: middle;
+	white-space: nowrap;
+}
+.mwm-pw-done[hidden] {
+	display: none;
+}
+.mwm-pw-row {
+	scroll-margin-top: 120px;
+}
+.mwm-pw-row:target {
+	background: var(--tint);
+	border-radius: 12px;
+	padding-left: 12px;
+	padding-right: 12px;
+	margin-left: -12px;
+	margin-right: -12px;
 }
 /* A student's own quiz result, shown next to anything that has a quiz. */
 .mwm-quiz-result {

@@ -7,6 +7,7 @@
 	var D;
 	try { D = JSON.parse(island.textContent); } catch (e) { return; }
 	var ticks = root.querySelectorAll('[data-tick]');
+	var doneMarks = root.querySelectorAll('[data-lesson-done]');
 
 	function countTicks(P, pw) {
 		var have = P.ticksFor ? P.ticksFor(pw.id) : [];
@@ -16,6 +17,7 @@
 		var P = window.MWMProgress;
 		if (!P) { return; }
 		var count = 0, total = 0;
+		doneMarks.forEach(function (m) { m.hidden = !P.has('completed', m.getAttribute('data-lesson-done')); });
 		if (D.current) {
 			ticks.forEach(function (b) {
 				var on = P.hasTick(D.current.id, b.getAttribute('data-tick'));

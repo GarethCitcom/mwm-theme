@@ -81,11 +81,11 @@ $island = [
 				<?php if ( $pathway['rows'] ) : ?>
 					<div class="mwm-pw-group" data-pathway="<?php echo esc_attr( $pathway['id'] ); ?>">
 						<?php foreach ( $pathway['rows'] as $r ) : ?>
-							<div class="mwm-pw-row<?php echo $r['coming_soon'] ? ' mwm-pw-row--soon' : ''; ?>" data-row="<?php echo esc_attr( $r['key'] ); ?>">
+							<div class="mwm-pw-row<?php echo $r['coming_soon'] ? ' mwm-pw-row--soon' : ''; ?>" id="row-<?php echo esc_attr( $r['key'] ); ?>" data-row="<?php echo esc_attr( $r['key'] ); ?>">
 								<span class="mwm-pw-row__step"><?php echo esc_html( $r['step'] ); ?></span>
 								<div class="mwm-pw-row__main">
 									<?php if ( count( $r['lessons'] ) === 1 ) : ?>
-										<a href="<?php echo esc_url( $r['lessons'][0]['url'] ); ?>" class="mwm-pw-row__title"><?php echo esc_html( $r['name'] ); ?></a>
+										<a href="<?php echo esc_url( $r['lessons'][0]['url'] ); ?>" class="mwm-pw-row__title"><?php echo esc_html( $r['name'] ); ?></a> <span class="mwm-pw-done" data-lesson-done="<?php echo (int) $r['lessons'][0]['id']; ?>" hidden>✓ Completed</span>
 									<?php else : ?>
 										<span class="mwm-pw-row__title<?php echo $r['coming_soon'] ? ' mwm-pw-row__title--soon' : ''; ?>"><?php echo esc_html( $r['name'] ); ?></span>
 									<?php endif; ?>
@@ -96,7 +96,7 @@ $island = [
 									<?php if ( count( $r['lessons'] ) > 1 ) : ?>
 										<ul class="mwm-pw-row__lessons">
 											<?php foreach ( $r['lessons'] as $l ) : ?>
-												<li><a href="<?php echo esc_url( $l['url'] ); ?>"><?php echo esc_html( $l['title'] ); ?></a><?php if ( $l['quiz_id'] ) : ?> <a href="<?php echo esc_url( $l['quiz_url'] ); ?>" class="mwm-quiz-result" data-quiz-result="<?php echo (int) $l['quiz_id']; ?>" hidden></a><?php endif; ?></li>
+												<li><a href="<?php echo esc_url( $l['url'] ); ?>"><?php echo esc_html( $l['title'] ); ?></a> <span class="mwm-pw-done" data-lesson-done="<?php echo (int) $l['id']; ?>" hidden>✓ Completed</span><?php if ( $l['quiz_id'] ) : ?> <a href="<?php echo esc_url( $l['quiz_url'] ); ?>" class="mwm-quiz-result" data-quiz-result="<?php echo (int) $l['quiz_id']; ?>" hidden></a><?php endif; ?></li>
 											<?php endforeach; ?>
 										</ul>
 									<?php endif; ?>
